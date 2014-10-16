@@ -28,6 +28,13 @@ namespace Tyvj
             );
 
             routes.MapRoute(
+                name: "User",
+                url: "User/{id}",
+                defaults: new { controller = "User", action = "Index" },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapRoute(
                 name: "Contest",
                 url: "Contest/{id}",
                 defaults: new { controller = "Contest", action = "Show" },

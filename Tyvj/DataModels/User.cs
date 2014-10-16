@@ -69,7 +69,7 @@ namespace Tyvj.DataModels
             set { CommonLanguageAsInt = (int)value; }
         }
 
-        public ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; }
 
         public override bool Equals(object obj)
         {

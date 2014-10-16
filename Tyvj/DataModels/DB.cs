@@ -32,6 +32,9 @@ namespace Tyvj.DataModels
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.Ratings)
+                .WithRequired(x => x.User);
         }
     }
 }
