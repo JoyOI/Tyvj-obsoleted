@@ -14,7 +14,7 @@
                     <table>
                         <tbody>
                             <tr><td class="tyvj-status-info-left">记录号</td><td>S@(Model.ID)</td></tr>
-                            <tr><td class="tyvj-status-info-left">评测状态</td><td>@CommonEnums.JudgeResultDisplay[Model.ResultAsInt]</td></tr>
+                            <tr><td class="tyvj-status-info-left">评测状态</td><td class="judgeState@(Model.ResultAsInt)">@CommonEnums.JudgeResultDisplay[Model.ResultAsInt]</td></tr>
                             <tr><td class="tyvj-status-info-left">题目</td><td><a href="/p/@(Model.ProblemID)">P@(Model.ProblemID) @Model.Problem.Title</a></td></tr>
                             <tr><td class="tyvj-status-info-left">提交时间</td><td>@Model.Time.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
                             <tr><td class="tyvj-status-info-left">代码语言</td><td>@CommonEnums.LanguageDisplay[Model.LanguageAsInt]</td></tr>
@@ -37,13 +37,16 @@
 </div>
 <div class="tyvj-right" style="width:200px;">
     <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
-        <h3>@Model.User.Username</h3>
+        <h3><a href="/User/@Model.UserID">@Model.User.Username</a></h3>
         <p>@Html.Gravatar(Model.User.Gravatar, 80)</p>
         <p>@Model.User.Role.ToString()</p>
     </div>
 
-    <ul class="section" id="actions">
-        <li><a class="action" href="/p/@Model.ID/solution">查看题解</a></li>
-        <li><a class="action" href="/p/@Model.ID/statuses" target="_self">查看本题提交记录</a></li>
-    </ul>
+    <div class="tyvj-border-top-gray tyvj-side-content tyvj-block">
+        <h3>题目操作</h3>
+        <ul class="section" id="actions">
+            <li><a class="action" href="/p/@Model.ProblemID/solution">查看题解</a></li>
+            <li><a class="action" href="/p/@Model.ProblemID/statuses" target="_self">查看本题提交记录</a></li>
+        </ul>
+    </div>
 </div>
