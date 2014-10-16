@@ -16,13 +16,15 @@ namespace Tyvj
             routes.MapRoute(
                 name: "Problem",
                 url: "p/{id}",
-                defaults: new { controller = "Problem", action = "Show" }
+                defaults: new { controller = "Problem", action = "Show" },
+                constraints: new { id = @"\d+" }
             );
 
             routes.MapRoute(
                 name: "Status",
                 url: "Status/{id}",
-                defaults: new { controller = "Status", action = "Show" }
+                defaults: new { controller = "Status", action = "Show" },
+                constraints: new { id = @"\d+" }
             );
 
             routes.MapRoute(
