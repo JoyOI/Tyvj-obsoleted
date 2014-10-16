@@ -29,5 +29,24 @@ namespace Tyvj.DataModels
         public int UserID { get; set; }
 
         public virtual User User { get; set; }
+
+        [Column("father_id")]
+        [ForeignKey("Father")]
+        public int? FatherID { get; set; }
+        public virtual Reply Father { get; set; }
+
+
+        public virtual ICollection<Reply> Replies { get; set; }
+        public override bool Equals(object obj)
+        {
+            var data = obj as Reply;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

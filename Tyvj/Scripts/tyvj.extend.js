@@ -5,6 +5,8 @@ var isIE6 = isIE && !window.XMLHttpRequest;
 var isIE8 = isIE && !!document.documentMode;
 var isIE7 = isIE && !isIE6 && !isIE8;
 var isIE678 = isIE6 || isIE7 || isIE8;
+var id = null;
+
 
 function Load()
 {
@@ -18,6 +20,7 @@ function Load()
     LoadContests();
     LoadProblems();
     LoadStatuses();
+    LoadTopics();
 }
 
 function Lock()
@@ -139,6 +142,43 @@ function LoadStatuses() {
         });
     }
 }
+
+function LoadTopics() {
+    if ($("#lstTopics").length > 0) {
+        $.getJSON("/Topic/GetTopics", {
+            page: page,
+            id: id,
+            rnd: Math.random()
+        }, function (topics) {
+            $("#btnMore").html("点击加载更多");
+            if (page == 0 && topics.length == 0) {
+                $("#lstTopics").remove();
+                $("#topicList").append("<div><h2>该板块没有任何主题，快点来发主题！<h2></div>")
+                return;
+            }
+            if (topics.length < 10) {
+                Lock();
+                if (topics.length == 0) {
+                    return;
+                }
+            }
+            if (topics.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
+            for (var i = 0; i < topics.length; i++) {
+                if (topics[i] == null) continue;
+                //var color = topics[i].UserRole != Master ? "#333" : "green";
+                $("#lstTopics").append('<tr class=""><td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
+                                                 + '</td><td class="c2">'
+                                                 + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
+                                                 + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a> / ' + topics[i].Time + ' 发表在 <a href="/Forum/' + topics[i].ForumID + '">' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? '最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
+                                                 + '</td>'
+                                                 + '<td class="c3">' + topics[i].ForumID + '</td></tr>');
+            }
+            lock = false;
+            page++;
+        });
+    }
+}
+
 
 $(document).ready(function () {
     //SignalR

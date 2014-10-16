@@ -18,6 +18,12 @@ namespace Tyvj.DataModels
         [Column("content")]
         public string Content { get; set; }
 
+        [Column("top")]
+        public bool Top { get; set; }
+
+        [Column("last_reply")]
+        public DateTime LastReply { get; set; }
+
         [Column("time")]
         public DateTime Time { get; set; }
 
@@ -25,12 +31,26 @@ namespace Tyvj.DataModels
         [ForeignKey("Forum")]
         public int ForumID { get; set; }
 
-        public Forum Forum { get; set; }
+        public virtual Forum Forum { get; set; }
 
         [Column("user_id")]
         [ForeignKey("User")]
         public int UserID { get; set; }
 
         public virtual User User { get; set; }
+
+        public virtual ICollection<Reply> Replies { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as Topic;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }
