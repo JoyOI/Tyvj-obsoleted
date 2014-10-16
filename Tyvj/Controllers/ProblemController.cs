@@ -17,6 +17,25 @@ namespace Tyvj.Controllers
                         where t.FatherID == null
                         select t).ToList();
             ViewBag.Tags = tags;
+            var pager = new List<vPager>();
+            if (DbContext.Problems.Count() > 0)
+            {
+                var begin = DbContext.Problems.OrderBy(x => x.ID).First().ID;
+                var end = DbContext.Problems.OrderByDescending(x => x.ID).First().ID;
+                begin = begin / 100 * 100;
+                if (end % 100 != 0)
+                    end = end / 100 * 100 + 1;
+                for (int i = begin; i <= end; i += 100)
+                {
+                    pager.Add(new vPager
+                    {
+                        Begin = i,
+                        End = i + 99,
+                        Display = "P" + i + ">"
+                    });
+                }
+            }
+            ViewBag.Pager = pager;
             return View();
         }
 

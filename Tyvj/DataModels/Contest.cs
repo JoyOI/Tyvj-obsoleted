@@ -43,6 +43,8 @@ namespace Tyvj.DataModels
             set { FormatAsInt = (int)value; }
         }
 
+        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as Contest;

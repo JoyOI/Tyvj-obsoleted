@@ -2,6 +2,15 @@
 @{
     ViewBag.Title = "题目列表";
 }
+<div class="tyvj-left grid_12">
+    <div class="tyvj-shadow tyvj-block tyvj-border-side tyvj-toolbar" style="line-height:40px;">
+        快速换页：
+        @foreach (vPager p in ViewBag.Pager)
+        { 
+            <a href="javascript:Jump(@p.Begin, @p.End)">@p.Display</a>
+        }
+    </div>
+</div>
 
 <div class="tyvj-left grid_9">
     <div class="tyvj-shadow tyvj-block">

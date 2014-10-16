@@ -40,5 +40,11 @@ namespace Tyvj.Controllers
                 contests.Add(new vContest(c));
             return Json(contests, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Show(int id)
+        { 
+            var contest = DbContext.Contests.Find(id);
+            return View(contest);
+        }
     }
 }

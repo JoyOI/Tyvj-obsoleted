@@ -228,6 +228,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\vContest.cs" />
     <Compile Include="ViewModels\vLogin.cs" />
+    <Compile Include="ViewModels\vPager.cs" />
     <Compile Include="ViewModels\vProblem.cs" />
     <Compile Include="ViewModels\vProblemStatus.cs" />
     <Compile Include="ViewModels\vStatus.cs" />
@@ -495,6 +496,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Status\Show.cshtml" />
+    <Content Include="Views\Contest\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

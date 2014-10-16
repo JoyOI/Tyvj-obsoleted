@@ -50,7 +50,7 @@ function LoadContests()
                 if (contests[i] == null) continue;
                 var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
                 $("#lstContests").append('<tr><td class="c1">'
-                                                 + '<div class="title"><a href="/Contest/Show/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
+                                                 + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
                                                  + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + '</span></div></td>'
                                                  + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
             }
