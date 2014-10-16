@@ -829,6 +829,8 @@ table {
         z-index: 10;
         color: #0d498c;
         text-shadow: 1px 1px 2px #FFF;
+        font-weight: bold;
+        behavior:url(/Styles/PIE.htc);
     }
 
     .tyvjlc2 .pg.ac .pglt {
@@ -858,7 +860,7 @@ table {
 }
 
 .judgeState11 {
-    color: #cc559d !important;
+    color: #d33e7e !important;
 }
 
 .tyvj-content-header {
