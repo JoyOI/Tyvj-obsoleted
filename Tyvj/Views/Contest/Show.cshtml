@@ -32,9 +32,9 @@
             <table>
                 <tr><td style="width:45px;">开始</td><td><small>@Model.Begin.ToString("yyyy-MM-dd HH:mm")</small></td></tr>
                 <tr><td style="width:45px;">结束</td><td><small>@Model.End.ToString("yyyy-MM-dd HH:mm")</small></td></tr>
-                <tr><td style="width:45px;">赛制</td><td>@Model.Format.ToString()</td></tr>
-                <tr><td style="width:45px;">题量</td><td>@Model.ContestProblems.Count</td></tr>
-                <tr><td style="width:45px;">举办</td><td><a href="/User/@Model.UserID">@Model.User.Username</a></td></tr>
+                <tr><td style="width:45px;">赛制</td><td><small>@Model.Format.ToString()</small></td></tr>
+                <tr><td style="width:45px;">题量</td><td><small>@Model.ContestProblems.Count</small></td></tr>
+                <tr><td style="width:45px;">举办</td><td><small><a href="/User/@Model.UserID">@Model.User.Username</a></small></td></tr>
             </table>
         </div>
     </div>
