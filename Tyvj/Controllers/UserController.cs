@@ -12,9 +12,10 @@ namespace Tyvj.Controllers
     public class UserController : BaseController
     {
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            var user = DbContext.Users.Find(id);
+            return View(user);
         }
 
         public ActionResult Login()

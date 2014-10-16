@@ -30,6 +30,25 @@ namespace Tyvj.DataModels
         [Column("school")]
         public string School { get; set; }
 
+        [Column("sex")]
+        public int SexAsInt { get; set; }
+
+        [NotMapped]
+        public Sex Sex
+        {
+            get { return (Sex)SexAsInt; }
+            set { SexAsInt = (int)value; }
+        }
+
+        [Column("last_login_time")]
+        public DateTime LastLoginTime { get; set; }
+
+        [Column("register_time")]
+        public DateTime RegisterTime { get; set; }
+
+        [Column("qq")]
+        public string QQ { get; set; }
+
         [Column("role")]
         public int RoleAsInt { get; set; }
 
@@ -50,6 +69,8 @@ namespace Tyvj.DataModels
             set { CommonLanguageAsInt = (int)value; }
         }
 
+        public ICollection<Rating> Ratings { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as User;
@@ -63,4 +84,5 @@ namespace Tyvj.DataModels
         }
     }
     public enum UserRole { Temporary, Member, VIP, Master, Root };
+    public enum Sex{Male, Female};
 }
