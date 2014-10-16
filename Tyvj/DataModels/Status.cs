@@ -57,5 +57,17 @@ namespace Tyvj.DataModels
             get { return (JudgeResult)ResultAsInt; }
             set { ResultAsInt = (int)value; }
         }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as User;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

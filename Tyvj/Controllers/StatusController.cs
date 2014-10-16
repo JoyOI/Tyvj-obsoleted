@@ -185,5 +185,10 @@ namespace Tyvj.Controllers
             SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(status));
             return Content(status.ID.ToString());
         }
+
+        public ActionResult Show(int id)
+        {
+            return View(DbContext.Statuses.Find(id));
+        }
     }
 }

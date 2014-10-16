@@ -90,10 +90,10 @@ function LoadProblems() {
                 else {
                     var flag = '<td class="tyvj-list-td vjlc1"></td>';
                     if (problems[i].Flag == 1) {
-                        flag = '<td class="tyvj-list-td vjlc1"><span style="color:green">AC</span></td>';
+                        flag = '<td class="tyvj-list-td vjlc1"><span style="color:dodgerblue">PEND</span></td>';
                     }
                     else if (problems[i].Flag == 2) {
-                        flag = '<td class="tyvj-list-td vjlc1"><span style="color:dodgerblue">PEND</span></td>';
+                        flag = '<td class="tyvj-list-td vjlc1"><span style="color:green">AC</span></td>';
                     }
                     $("#lstProblems").append('<tr data-id="' + problems[i].ID + '" class="tyvj-list-body-tr even">' + flag + '<td class="tyvj-list-td vjlc3" style="text-align:left"><div class="wrap"><div class="title">'
                                                  + '<a href="/p/' + problems[i].ID + '" target="_self" class="pid">P' + problems[i].ID + '</a> '
