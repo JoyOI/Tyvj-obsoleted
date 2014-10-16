@@ -20,6 +20,12 @@ namespace Tyvj
             );
 
             routes.MapRoute(
+                name: "Status",
+                url: "Status/{id}",
+                defaults: new { controller = "Status", action = "Show" }
+            );
+
+            routes.MapRoute(
                 name: "Login",
                 url: "Login",
                 defaults: new { controller = "User", action = "Login" }
