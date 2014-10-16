@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Tyvj Online Judge</title>
+    <link href="/Styles/tyvj.base.css?v20141013" rel="stylesheet" type="text/css" />
+    <link href="/Styles/tyvj.extend.css?v20141013" rel="stylesheet" type="text/css" />
+    <link href="/Styles/codemirror.css?v20141013" rel="stylesheet" type="text/css" />
+    <link href="/Styles/colorbox.css?v20141013" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.colorbox.js"></script>
+    <script src="/Scripts/codemirror.js"></script>
+    <script src="/Scripts/ckeditor.js"></script>
+    <script src="/Scripts/clike.js"></script>
+    <script src="/Scripts/pascal.js"></script>
+    <script src="/Scripts/python.js"></script>
+    <script src="/Scripts/ruby.js"></script>
+    <script src="/Scripts/vb.js"></script>
+    <script src="/Scripts/tyvj.base.js?v20141013" type="text/javascript"></script>
+    <script src="/Scripts/tyvj.extend.js?v20141013" type="text/javascript"></script>
+    <script src="/Scripts/jquery.signalR-2.1.2.js"></script>
+    <script src="/signalr/hubs"></script>
+    <!--[if lte IE 9]>
+    <script type="text/javascript" src="/Scripts/excanvas.js"></script>
+    <script src="/Scripts/jplaceholder.js"></script>
+    <script src="/Scripts/pie.js"></script>
+    <![endif]-->
+    <!--[if lte IE 6]>
+    <script src="/Scripts/png.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div id="tyvj-nav">
+        <div class="container_12">
+            <a href="/"><div class="tyvj-nav-item"><span style="color: orange">T</span><span style="color: rgb(192,225,252)">yvj</span> <span style="color: pink; font-size: 14px;">O</span><span style="font-size: 14px; color: rgb(192,225,252);">nline</span><span style="color: #99ff99; font-size: 14px;">J</span><span style="font-size: 14px; color: rgb(192,225,252);">udge</span></div></a>
+            <a href="/Problem"><div class="tyvj-nav-item">题库</div></a>
+            <a href="/Contest"><div class="tyvj-nav-item">比赛</div></a>
+            <a href="/Status"><div class="tyvj-nav-item">记录</div></a>
+            <a href="/Group"><div class="tyvj-nav-item">团队</div></a>
+            <a href="/Forum"><div class="tyvj-nav-item">论坛</div></a>
+            <a href="/Rank"><div class="tyvj-nav-item">排名</div></a>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href="/Register"><div class="tyvj-nav-item tyvj-right">注册</div></a>
+                <a href="javascript:;" onclick="popupLogin.call(this)" id="btnShowLogin"><div class="tyvj-nav-item tyvj-right" id="nav-login">登陆</div></a>
+            }
+            else
+            {
+                <a href="javascript:$('#frmLogout').submit();"><div class="tyvj-nav-item tyvj-right">注销</div></a>
+                using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "frmLogout", style = "display:none;" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
+                <a href="/User/@ViewBag.CurrentUser.ID">
+                    <div class="tyvj-nav-item tyvj-right">
+                        <div class="tyvj-nav-face-container">
+                            @Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 32, "tyvj-nav-face")
+                        </div>
+                        <div class="tyvj-nav-face-name">@ViewBag.CurrentUser.Username</div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { style = "display:none;color:gray;", @class = "login-form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id="NormalLogin">
+            <p><label>用户名</label><input name="Username" type="text" class="textbox role-login-user" style="width: 120px;" /></p>
+            <p><label>密　码</label><input name="Password" type="password" class="textbox role-login-pass" style="width: 120px;" /></p>
+            <p><input type="submit" class="button button-def" value="登录" /> @Html.CheckBox("Remember", false, new { @class = "checkbox" })<small>记住我</small> <a href="/User/Forgot"><small>忘记密码</small></a></p>
+        </div>
+    }
+    <div id="tyvj-banner">
+        <div class="container_12">
+            <img id="tyvj-logo" src="/Images/logo.png" />
+        </div>
+    </div>
+    <div id="tyvj-body">
+        <div class="container_12">
+            <div class="grid_12">
+                <p style="line-height:30px;">当前位置：@Request.RawUrl</p>
+                @if (Request.RawUrl == "/")
+                {
+                    <p><img src="/Images/banner.jpg" class="tyvj-shadow" id="tyvj-banner-pic" /></p>
+                }
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+    <div id="tyvj-footer">
+        <div class="container_12">
+            <div class="tyvj-footer-info grid_12">
+                <div class="tyvj-footer-item">
+                    <h2>评测机</h2>
+                </div>
+                <div class="tyvj-footer-item">
+                    <h2>新闻</h2>
+                    @foreach (News n in ViewBag.News)
+                    { 
+                        <ul>
+                            <li><a href="/News" class="tyvj-footer-text">@n.Time.ToString("yyyy-MM-dd") @n.Title</a></li>
+                        </ul>
+                    }
+                </div>
+            </div>
+            <p id="tyvj-copyright">Copyright © 2009-2014 清北学堂教育科技有限公司</p>
+        </div>
+    </div>
+</body>
+</html>

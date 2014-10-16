@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "题目列表";
+}
+
+<div class="tyvj-left grid_9">
+    <div class="tyvj-shadow tyvj-block">
+        <table class="tyvj-list-problems tyvj-list">
+            <thead class="tyvj-list-head">
+                <tr>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <th class="tyvj-list-th tyvjlc1" style="width:10%">Flag</th>
+                        <th class="tyvj-list-th tyvjlc3" style="width:60%;text-align:left">标题</th>
+                    }
+                    else
+                    {
+                        <th class="tyvj-list-th tyvjlc3" style="width:70%;text-align:left">标题</th>
+                    }
+                    <th class="tyvj-list-th tyvjlc4" style="width:10%">通过</th>
+                    <th class="tyvj-list-th tyvjlc5" style="width:10%">提交</th>
+                    <th class="tyvj-list-th tyvjlc6" style="width:10%">通过率</th>
+                </tr>
+            </thead>
+            <tbody id="lstProblems">
+
+            </tbody>
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right grid_3">
+    <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <h2>检索</h2>
+        <p><input type="text" placeholder="题目名称" class="textbox" id="txtTitle" /></p>
+        <p><input type="button" value="检索" class="button button-def" id="btnSearch" /></p>
+        <h2>分类</h2>
+        @foreach (AlgorithmTag father in ViewBag.Tags)
+        { 
+            <h3>@father.Title</h3>
+            foreach (var child in father.Children)
+            { 
+                
+            }
+        }
+    </div>
+
+</div>
+<div class="tyvj-clear"></div>
+<script>
+    var title = "";
+    var tags = "";
+    var morethan = null;
+    var lessthan = null;
+    var Signed = false;
+    $("#btnSearch").click(function () {
+        title = $("#txtTitle").val();
+        page = 0;
+        lock = false;
+        $("#lstProblems").html("");
+        Load();
+    });
+</script>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script>Signed = true;</script>
+}

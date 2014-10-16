@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "记录";
+}
+
+<div class="tyvj-left grid_12">
+    <div class="tyvj-shadow tyvj-block tyvj-border-side tyvj-toolbar">
+        题目编号: <input type="text" class="textbox" style="width:70px" />
+        用户名: <input type="text" class="textbox" />
+        评测结果: <select class="select">
+            <option selected value="">全部结果</option>
+            <option value="0">Accepted</option>
+            <option value="1">Presentation Error</option>
+            <option value="2">Wrong Answer</option>
+            <option value="3">Output Limit Exceeded</option>
+            <option value="4">Time Limit Exceeded</option>
+            <option value="5">Memory Limit Exceeded</option>
+            <option value="6">Runtime Error</option>
+            <option value="7">Compile Error</option>
+            <option value="8">System Error</option>
+            <option value="9">Hacked</option>
+            <option value="10">Running</option>
+            <option value="11">Pending</option>
+        </select>
+        <input type="button" class="button button-def" value="检索" id="btnSearch"/>
+    </div>
+    <div class="tyvj-shadow tyvj-block">
+        <table class="tyvj-list-records tyvj-list">
+            <thead class="tyvj-list-head">
+                <tr>
+                    <th class="tyvj-list-th" style="width:130px;">Status</th>
+                    <th class="tyvj-list-th" style="width:60px;border-left:1px solid #ccc">得分</th>
+                    <th class="tyvj-list-th" style="width:60px;">(ms)</th>
+                    <th class="tyvj-list-th" style="width:70px;border-right:1px solid #ccc">(KiB)</th>
+                    <th class="tyvj-list-th" style="text-align:left">题目</th>
+                    <th class="tyvj-list-th" style="width:95px;">提交者</th>
+                    <th class="tyvj-list-th" style="width:75px;border-left:1px solid #ccc;border-right:1px solid #ccc">语言</th>
+                    <th class="tyvj-list-th" style="width:170px;">提交时间</th>
+                </tr>
+            </thead>
+            <tbody id="lstStatuses"></tbody>
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    var contest_id = null;
+    var problem_id = null;
+    var username = null;
+    var result = null;
+    $("#btnSearch").click(function () {
+        problem_id = $("#txtProblemID").val();
+        username = $("#txtSubmitter").val();
+        result = $("#lstResult").val();
+        page = 0;
+        lock = false;
+        $("#lstStatuses").html("");
+        Load();
+    });
+</script>

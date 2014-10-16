@@ -1,0 +1,73 @@
+﻿@model IEnumerable<vContest>
+@{
+    ViewBag.Title = "比赛";
+}
+
+<div class="tyvj-left grid_9">
+    <div class="tyvj-boder-top-red tyvj-shadow tyvj-block">
+        <table class="tyvj-list-case">
+            <tbody>
+                @foreach (vContest c in Model)
+                {
+                    <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
+                        <td class="c1">
+                            <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
+                            <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
+                        </td>
+                        @if (c.StatusAsInt == 0)
+                        {
+                            <td class="c2"><span style="color:green">@c.Status</span></td>
+                        }
+                        else if (c.StatusAsInt == 1)
+                        {
+                            <td class="c2"><span style="color:rgb(255,128,128)">@c.Status</span></td>
+                        }
+                        else
+                        {
+                            <td class="c2"><span style="color:#333">@c.Status</span></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+            <tbody id="lstContests"></tbody>
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right grid_3">
+    <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <h2>检索</h2>
+        <p><input type="text" placeholder="比赛名称" class="textbox" id="txtTitle" /></p>
+        <p>
+            <select class="select" id="lstFormat">
+                <option selected value="">比赛类型</option>
+                <option value="0">OI</option>
+                <option value="1">ACM</option>
+                <option value="2">Codeforces</option>
+            </select>
+        </p>
+        <p><input type="button" value="检索" class="button button-def" id="btnSearch" /></p>
+        <h2>操作</h2>
+        <p>@Html.ActionLink("我要举办比赛", "Create", "Contest", null, null)</p>
+        <p>@Html.ActionLink("我举办的比赛", "My", "Contest", null, null)</p>
+    </div>
+
+</div>
+<div class="tyvj-clear"></div>
+<script>
+    var format = null;
+    var title = "";
+    $("#btnSearch").click(function () {
+        title = $("#txtTitle").val();
+        format = $("#lstFormat").val();
+        page = 0;
+        lock = false;
+        $("#lstContests").html("");
+        Load();
+    });
+</script>
+

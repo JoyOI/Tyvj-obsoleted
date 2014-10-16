@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "首页";
+}
+
+<div class="tyvj-left grid_9">
+    <table class="tyvj-boder-top-red tyvj-shadow tyvj-list-case tyvj-block">
+        @foreach (vContest c in ViewBag.Contests)
+        {
+            <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
+                <td class="c1">
+                    <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id=c.ID}, null)</div>
+                    <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
+                </td>
+                @if (c.StatusAsInt == 0)
+                {
+                    <td class="c2"><span style="color:green">@c.Status</span></td>
+                }
+                else if (c.StatusAsInt == 1)
+                {
+                    <td class="c2"><span style="color:rgb(255,128,128)">@c.Status</span></td>
+                }
+                else
+                {
+                    <td class="c2"><span style="color:#333">@c.Status</span></td>
+                }
+            </tr>
+        }
+    </table>
+    <table class="tyvj-boder-top tyvj-shadow tyvj-list-discuss">
+        <tr class="">
+            <td class="c1">
+                <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">
+            </td>
+            <td class="c2">
+                <div class="title"><a href="/bbs/Discuss_Show.aspx?id=30435">P1064旧版题解</a></div>
+                <div class="footer">作者：<a href="/User_Show.aspx?id=3" target="_blank" class="user usergroup3">huangrl</a> / 发表在 <a href="/bbs/Discuss.aspx?districtid=2" class="node" target="_self">题解区</a></div>
+            </td>
+            <td class="c3">1</td>
+        </tr>
+    </table>
+</div>
+<div class="tyvj-right grid_3">
+    <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <h2>友情链接</h2>
+        <ul>
+            <li><a href="http://www.qbxt.cn">清北学堂</a></li>
+            <li><a href="http://www.codeforces.com">Codeforces</a></li>
+        </ul>
+    </div>
+</div>
+<div class="tyvj-clear"></div>
