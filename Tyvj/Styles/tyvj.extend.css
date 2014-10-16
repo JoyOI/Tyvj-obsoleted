@@ -1010,3 +1010,16 @@ a.highlight {
     .login-form label {
         margin-right: 10px;
     }
+
+.tyvj-status-info {
+    padding:10px;
+    font-size:14px;
+}
+
+.tyvj-status-info td {
+    height:28px;
+}
+
+.tyvj-status-info-left {
+    width:100px;
+}

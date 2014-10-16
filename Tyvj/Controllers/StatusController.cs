@@ -188,7 +188,17 @@ namespace Tyvj.Controllers
 
         public ActionResult Show(int id)
         {
-            return View(DbContext.Statuses.Find(id));
+            var status = DbContext.Statuses.Find(id);
+            int MemoryUsage = 0, TimeUsage = 0;
+            try
+            {
+                MemoryUsage = status.JudgeTasks.Max(x => x.MemoryUsage);
+                TimeUsage = status.JudgeTasks.Sum(x => x.TimeUsage);
+            }
+            catch { }
+            ViewBag.TimeUsage = TimeUsage;
+            ViewBag.MemoryUsage = MemoryUsage;
+            return View(status);
         }
     }
 }
