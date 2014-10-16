@@ -26,7 +26,22 @@
     </div>
 </div>
 <div class="tyvj-right" style="width:200px;">
-    <ul class="section" id="actions">
+    <div class="tyvj-border-top-gray tyvj-side-content tyvj-block">
+        <h3 style="margin: 10px 0 0 0;">比赛信息</h3>
+        <div class="tyvj-status-info">
+            <table>
+                <tr><td style="width:45px;">开始</td><td><small>@Model.Begin.ToString("yyyy-MM-dd HH:mm")</small></td></tr>
+                <tr><td style="width:45px;">结束</td><td><small>@Model.End.ToString("yyyy-MM-dd HH:mm")</small></td></tr>
+                <tr><td style="width:45px;">赛制</td><td>@Model.Format.ToString()</td></tr>
+                <tr><td style="width:45px;">题量</td><td>@Model.ContestProblems.Count</td></tr>
+                <tr><td style="width:45px;">举办</td><td><a href="/User/@Model.UserID">@Model.User.Username</a></td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="tyvj-border-top-gray tyvj-side-content">
+        <h3>操作</h3>
+    </div>
+    <ul class="section" id="actions" style="margin-left:10px">
         <li><a class="action" href="/Contest/@Model.ID">比赛首页</a></li>
         <li><a class="action" href="/Contest/@Model.ID/Standings">比赛排名</a></li>
         <li><a class="action" href="/Contest/@Model.ID/Statistics">数据统计</a></li>
