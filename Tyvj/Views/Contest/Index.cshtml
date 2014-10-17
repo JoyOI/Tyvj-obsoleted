@@ -51,9 +51,12 @@
             </select>
         </p>
         <p><input type="button" value="检索" class="button button-def" id="btnSearch" /></p>
-        <h2>操作</h2>
-        <p>@Html.ActionLink("我要举办比赛", "Create", "Contest", null, null)</p>
-        <p>@Html.ActionLink("我举办的比赛", "My", "Contest", null, null)</p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h2>操作</h2>
+            <p>@Html.ActionLink("我要举办比赛", "Contests", "User", new { id = ViewBag.CurrentUser.ID }, null)</p>
+            <p>@Html.ActionLink("我举办的比赛", "Contests", "User", new { id = ViewBag.CurrentUser.ID }, null)</p>
+        }
     </div>
 
 </div>
