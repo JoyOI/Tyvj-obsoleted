@@ -25,6 +25,7 @@ namespace Tyvj.DataModels
         public DbSet<JudgeTask> JudgeTasks { get; set; }
         public DbSet<ContestRegister> ContestRegisters { get; set; }
         public DbSet<Lock> Locks { get; set; }
+        public DbSet<Hack> Hacks { get; set; }
         public DB()
             : base("mysqldb")
         { 

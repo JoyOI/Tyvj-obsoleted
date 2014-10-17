@@ -5,10 +5,10 @@ using System.Web;
 
 namespace Tyvj.ViewModels
 {
-    public class Topic
+    public class vTopic
     {
-        public Topic() { }
-        public Topic(DataModels.Topic topic)
+        public vTopic() { }
+        public vTopic(DataModels.Topic topic)
         {
             ID = topic.ID;
             ForumID = topic.ForumID;

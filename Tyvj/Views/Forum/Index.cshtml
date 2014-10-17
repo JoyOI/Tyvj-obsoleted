@@ -11,23 +11,26 @@
         ViewBag.Title = Model.Title + " - 论坛";
     }
 }
-
-<div class="tyvj-left grid_9" id="topicList">
-    <table class="tyvj-boder-top-red tyvj-shadow tyvj-list-case tyvj-block" ></table>
-
-    <table class="tyvj-boder-top tyvj-shadow tyvj-list-discuss" id="lstTopics">
-    </table>
+<div class="tyvj-left grid_9">
+    <div class="tyvj-shadow tyvj-block tyvj-boder-top">
+        <table class="tyvj-boder-top tyvj-shadow tyvj-list-discuss">
+            <tbody id="lstTopics"></tbody>
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
 </div>
 <div class="tyvj-right grid_3">
-
     @if (Request.RequestContext.RouteData.Values["id"] != null)
     {
         <div class="tyvj-shadow tyvj-boder-top tyvj-content">
             <p>@Html.ActionLink("发表新主题", "Create", "Topic", new { id = Request.RequestContext.RouteData.Values["id"] }, null)</p>
         </div>
     }
-
-    <div class="tyvj-shadow tyvj-boder-top tyvj-content" style="margin-top:20px;">
+    <div class="tyvj-shadow tyvj-boder-top tyvj-content">
         @foreach (Forum item in ViewBag.ForumList)
         {
             <h3>@item.Title</h3>
@@ -39,16 +42,14 @@
             </div>
         }
     </div>
-
 </div>
 <div class="tyvj-clear"></div>
-
 <script>
     var forum_id=null;
 </script>
 @if (Request.RequestContext.RouteData.Values["id"] != null)
 {
     <script>
-       forum_id = @Request.RequestContext.RouteData.Values["id"];
+        forum_id = @Request.RequestContext.RouteData.Values["id"];
     </script>
 }

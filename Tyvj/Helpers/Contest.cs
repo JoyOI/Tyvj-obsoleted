@@ -16,5 +16,24 @@ namespace Tyvj.Helpers
                     && cr.ContestID == ContestID
                     select cr).Count() > 0;
         }
+        public static IQueryable<Status> GetStatuses(int ProblemID, int ContestID)
+        { 
+            var DbContext = new DB();
+            return (from s in DbContext.Statuses
+                    where s.ContestID == ContestID
+                    && s.ProblemID == ProblemID
+                    orderby s.ID ascending
+                    select s);
+        }
+
+        public static int GetStatusesCount(int ProblemID, int ContestID)
+        {
+            var DbContext = new DB();
+            return (from s in DbContext.Statuses
+                    where s.ContestID == ContestID
+                    && s.ProblemID == ProblemID
+                    orderby s.ID ascending
+                    select s).Count();
+        }
     }
 }

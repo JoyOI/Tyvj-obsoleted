@@ -35,9 +35,9 @@ namespace Tyvj.Controllers
                            orderby t.LastReply descending
                            select t).Skip(page * 10).Take(10).ToList();
             }
-            List<ViewModels.Topic> topics = new List<ViewModels.Topic>();
+            List<ViewModels.vTopic> topics = new List<ViewModels.vTopic>();
             foreach (var topic in _topics)
-                topics.Add(new ViewModels.Topic(topic));
+                topics.Add(new ViewModels.vTopic(topic));
             return Json(topics, JsonRequestBehavior.AllowGet);
         }
 
@@ -53,7 +53,7 @@ namespace Tyvj.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ViewModels.Post model)
+        public ActionResult Create(ViewModels.vPost model)
         {
             if ((from f in DbContext.Forums where f.ID == model.ForumID && f.FatherID != null select f).Count() == 0)
                 return RedirectToAction("Message", "Shared", new { msg = "没有找到这个论坛版块！" });
