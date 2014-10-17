@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Tyvj.ViewModels
 {
-    public class Post
+    public class vPost
     {
         public string Title { get; set; }
         public string Content { get; set; }

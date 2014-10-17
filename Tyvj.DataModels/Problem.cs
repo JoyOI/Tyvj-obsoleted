@@ -80,6 +80,8 @@ namespace Tyvj.DataModels
 
         public virtual ICollection<TestCase> TestCases { get; set; }
 
+        public virtual ICollection<Status> Statuses { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as Problem;

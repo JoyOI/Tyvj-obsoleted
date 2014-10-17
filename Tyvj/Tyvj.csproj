@@ -192,25 +192,7 @@
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DataModels\AlgorithmTag.cs" />
-    <Compile Include="DataModels\Common.cs" />
-    <Compile Include="DataModels\Contest.cs" />
-    <Compile Include="DataModels\ContestProblem.cs" />
-    <Compile Include="DataModels\ContestRegister.cs" />
     <Compile Include="DataModels\DB.cs" />
-    <Compile Include="DataModels\Forum.cs" />
-    <Compile Include="DataModels\JudgeTask.cs" />
-    <Compile Include="DataModels\Lock.cs" />
-    <Compile Include="DataModels\News.cs" />
-    <Compile Include="DataModels\Problem.cs" />
-    <Compile Include="DataModels\Rating.cs" />
-    <Compile Include="DataModels\Reply.cs" />
-    <Compile Include="DataModels\Solution.cs" />
-    <Compile Include="DataModels\SolutionTag.cs" />
-    <Compile Include="DataModels\Status.cs" />
-    <Compile Include="DataModels\TestCase.cs" />
-    <Compile Include="DataModels\Topic.cs" />
-    <Compile Include="DataModels\User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -227,10 +209,15 @@
     <Compile Include="Helpers\Time.cs" />
     <Compile Include="Helpers\Zip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignalR\Client.cs" />
+    <Compile Include="SignalR\JudgeHub.cs" />
     <Compile Include="SignalR\UserHub.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\Post.cs" />
-    <Compile Include="ViewModels\Topic.cs" />
+    <Compile Include="ViewModels\vHackResult.cs" />
+    <Compile Include="ViewModels\vStanding.cs" />
+    <Compile Include="ViewModels\vJudger.cs" />
+    <Compile Include="ViewModels\vPost.cs" />
+    <Compile Include="ViewModels\vTopic.cs" />
     <Compile Include="ViewModels\vContest.cs" />
     <Compile Include="ViewModels\vLogin.cs" />
     <Compile Include="ViewModels\vPager.cs" />
@@ -518,6 +505,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeComb.Judge\CodeComb.Judge.csproj">
+      <Project>{efdc47b1-fc64-48f7-a5bc-de9e3ef0a65a}</Project>
+      <Name>CodeComb.Judge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tyvj.DataModels\Tyvj.DataModels.csproj">
+      <Project>{ee79be4c-51a3-456b-b40a-027a45ebd1e3}</Project>
+      <Name>Tyvj.DataModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

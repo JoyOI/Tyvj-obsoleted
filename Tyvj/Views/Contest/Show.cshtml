@@ -50,7 +50,10 @@
                 <li><a class="action" href="/Contest/@Model.ID/Standings">比赛排名</a></li>
                 <li><a class="action" href="/Contest/@Model.ID/Statistics">数据统计</a></li>
                 <li><a class="action" href="/Contest/@Model.ID/Statuses">提交记录</a></li>
-                <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
+                if (Model.Format == ContestFormat.Codeforces)
+                {
+                    <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
+                }
             }
             <li><a class="action" href="/Contest/@Model.ID/Clarification">答疑平台</a></li>
         }
