@@ -45,7 +45,7 @@
                             }
                             <tr>
                                 <td><input type="text" class="textbox" style="width:50px" id="txtNewNumber" /></td>
-                                <td><input type="text" class="textbox" style="width:50px" id="txtNewPID" /></td>
+                                <td><input type="text" class="textbox" style="width:50px" id="txtNewPID" placeholder="不要加P" /></td>
                                 <td id="lbNewTitle"></td>
                                 <td><input type="text" class="textbox" style="width:50px" id="txtNewPoint" /></td>
                                 <td><input type="button" class="button button-def" id="btnAddProblem" value="添加" /></td>
@@ -74,11 +74,10 @@
 @using (Html.BeginForm("DeleteProblem", "Contest", new { id=Model.ID}, FormMethod.Post, new { id = "frmDeleteProblem" }))
 { 
     @Html.AntiForgeryToken()
-    <input id="CPID" value="0" name="CPID" />
+    <input id="CPID" value="0" type="hidden" name="CPID" />
 }
 <script>
     $("#txtNewPID").change(function () {
-        $("txtNewPID").val($("txtNewPID").val().replace("P", ""));
         var pid = $("#txtNewPID").val();
         $.get("/Problem/GetTitle/" + pid, {}, function (title) {
             $("#lbNewTitle").html('<a href="/p/' + pid + '">' + title + '</a>');

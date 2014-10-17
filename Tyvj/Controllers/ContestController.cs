@@ -197,6 +197,10 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             if (!IsMaster() && CurrentUser.ID != contest.UserID)
                 return Message("您无权执行本操作");
+            if ((from cp in DbContext.ContestProblems where cp.ContestID == id && cp.ProblemID == PID select cp).Count() > 0)
+            {
+                return Message("请不要重复添加同一道题目");
+            }
             DbContext.ContestProblems.Add(new ContestProblem 
             { 
                 ContestID = id,
