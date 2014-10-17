@@ -17,7 +17,7 @@ namespace Tyvj.ViewModels
             ProblemID = Status.ProblemID;
             ProblemTitle = Status.Problem.Title;
             ResultAsInt = Status.ResultAsInt;
-            Result = Status.Result.ToString();
+            Result = CommonEnums.JudgeResultDisplay[Status.ResultAsInt];
             try
             {
                 TimeUsage = Status.JudgeTasks.Sum(x => x.TimeUsage);

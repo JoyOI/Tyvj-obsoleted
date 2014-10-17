@@ -82,9 +82,24 @@ namespace Tyvj.Controllers
             return Json(problems, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Show(int id)
+        public ActionResult Show(int? id, int? cpid)
         {
-            var problem = DbContext.Problems.Find(id);
+            Problem problem;
+            Contest contest;
+            ViewBag.ContestID = null;
+            if (id != null)
+            {
+                problem = DbContext.Problems.Find(id);
+            }
+            else
+            {
+                var cp = DbContext.ContestProblems.Find(id);
+                problem = cp.Problem;
+                contest = cp.Contest;
+                if (DateTime.Now >= contest.End)
+                    return RedirectToAction("Show", "Problem", new { id = problem.ID });
+                ViewBag.ContestID = cp.ContestID;
+            }
             if (problem == null)
                 return RedirectToAction("Message", "Shared", new { msg = "没有找到这道题目" });
             var uid = 0;

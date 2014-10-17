@@ -81,7 +81,7 @@
             <h3>我的记录</h3>
             @foreach (vProblemStatus s in ViewBag.Statuses)
             { 
-                <p>@s.Time <a href="/Status/@s.ID" class="judgeState@(s.ResultAsInt)">@s.Result</a></p>
+                <p>@s.Time <a href="/Status/@s.ID" class="judgeState@(s.ResultAsInt)">@CommonEnums.JudgeResultDisplay[s.ResultAsInt]</a></p>
             }
         </div>
     }
@@ -95,6 +95,10 @@
             {
                 @Html.AntiForgeryToken()
                 <input type="hidden" value="@Model.ID" name="problem_id" />
+                @if (ViewBag.ContestID != null)
+                {
+                    <input type="hidden" value="@ViewBag.ContestID" name="contest_id" />
+                }
                 <textarea id="editor" name="code" style="width:600px;height:280px;font-size:12px;"></textarea>
                 <p>
                     <select id="lstLanguages" name="language_id" class="select" style="width:100px;">

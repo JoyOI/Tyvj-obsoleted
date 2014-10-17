@@ -114,7 +114,8 @@ namespace Tyvj.Controllers
                 ProblemID = problem_id,
                 UserID = user.ID,
                 Time = DateTime.Now,
-                Result = JudgeResult.Pending
+                Result = JudgeResult.Pending,
+                ContestID = contest_id
             };
             DbContext.Statuses.Add(status);
             var testcase_ids = (from tc in problem.TestCases
