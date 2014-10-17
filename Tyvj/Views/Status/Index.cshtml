@@ -49,7 +49,7 @@
 <script>
     var contest_id = @(ViewBag.DestContestID != null ? ((int)ViewBag.DestContestID).ToString() : "null");
     var problem_id = null;
-    var username = @(ViewBag.DestUsername !=null?(string)ViewBag.DestUsername:"null");
+    var username = "@(ViewBag.DestUsername !=null?(string)ViewBag.DestUsername:"")";
     var result = null;
     $("#btnSearch").click(function () {
         problem_id = $("#txtProblemID").val();
