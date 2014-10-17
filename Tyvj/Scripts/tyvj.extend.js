@@ -22,6 +22,59 @@ function Load() {
     LoadReplies();
 }
 
+function BuildStandings(rank, data) {
+    if (data == null) return "";
+    var html = '<td>' + rank + '</td>'
+                  + '<td><img src="' + data.Gravatar + '" class="rank-avatar" /></td>'
+                  + '<td><a href="/User/' + data.UserID + '">' + data.Nickname + '</a></td>'
+                  + '<td>' + data.Display1 + '</td>'
+                  + '<td>' + data.Display2 + '</td>';
+    for (var i = 0; i < data.Details.length; i++) {
+        if (data.Details[i].Key1 == 0 || !allowhack)
+            html += '<td class="' + data.Details[i].Css + '">' + data.Details[i].Display + '</td>';
+        else
+            html += '<td class="' + data.Details[i].Css + '"><a class="btn-hack" href="javascript:Hack(' + data.Details[i].StatusID + ')">' + data.Details[i].Display + '</a></td>';
+    }
+    return "<tr id='u_" + data.UserID + "'>" + html + "</tr>";
+}
+function StandingsDisplay() {
+    var html = "";
+    for (var i = 0; i < standings.length; i++) {
+        html += BuildStandings(parseInt(i) + 1, standings[i]);
+    }
+    $("#lstStandings").html(html);
+}
+function StandingsUpdate(data) {
+    var updated = false;
+    for (var i = 0; i < standings.length; i++) {
+        if (standings[i].UserID == data.UserID) {
+            standings[i] = data;
+            updated = true;
+        }
+    }
+    if (!updated)
+        standings.push(data);
+    var cmp;
+    if (key2desc) {
+        cmp = function (a, b) {
+            if (a.Key1 == b.Key1) {
+                return b.Key2 - a.Key2;
+            }
+            return b.Key1 - a.Key1;
+        }
+    }
+    else {
+        cmp = function (a, b) {
+            if (a.Key1 == b.Key1) {
+                return a.Key2 - b.Key2;
+            }
+            return b.Key1 - a.Key1;
+        }
+    }
+    standings.sort(cmp);
+    StandingsDisplay();
+}
+
 function Lock() {
     lock = true;
     if ($("#btnMore").length > 0) {
@@ -138,7 +191,6 @@ function LoadStatuses() {
         });
     }
 }
-
 function LoadTopics() {
     if ($("#lstTopics").length > 0) {
         $.getJSON("/Topic/GetTopics", {
@@ -166,7 +218,14 @@ function LoadTopics() {
         });
     }
 }
-
+function LoadStandings() {
+    if ($("#lstStandings").length > 0) {
+        $.getJSON("/Contest/GetStandings/" + id, { rnd: Math.random() }, function (data) {
+            standings = data;
+            StandingsDisplay();
+        });
+    }
+}
 
 function LoadReplies() {
     if ($("#discuss_detail_list").length > 0) {
@@ -304,7 +363,7 @@ $(document).ready(function () {
     UserHub = $.connection.userHub;
     UserHub.client.onStatusChanged = function (status) {
         if ($("#lstStatuses").length > 0) {
-            if ($("#s-" + status.ID) > 0) {
+            if ($("#s-" + status.ID).length > 0) {
                 $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'

@@ -150,19 +150,6 @@ namespace Tyvj.Controllers
                     }
                     testcase_ids = testcase_ids.Distinct().ToList();
                 }
-
-                foreach (var id in testcase_ids)
-                {
-                    DbContext.JudgeTasks.Add(new JudgeTask
-                    {
-                        StatusID = status.ID,
-                        TestCaseID = id,
-                        Result = JudgeResult.Pending,
-                        MemoryUsage = 0,
-                        TimeUsage = 0,
-                        Hint = ""
-                    });
-                }
                 //foreach (var jt in status.JudgeTasks)
                 //{
                 //    try
@@ -180,6 +167,19 @@ namespace Tyvj.Controllers
                 //if (contest.Format == Entity.ContestFormat.OI && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                 //    return Content("OI");
 
+            }
+
+            foreach (var id in testcase_ids)
+            {
+                DbContext.JudgeTasks.Add(new JudgeTask
+                {
+                    StatusID = status.ID,
+                    TestCaseID = id,
+                    Result = JudgeResult.Pending,
+                    MemoryUsage = 0,
+                    TimeUsage = 0,
+                    Hint = ""
+                });
             }
             DbContext.SaveChanges();
             SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(status));

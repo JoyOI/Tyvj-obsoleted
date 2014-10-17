@@ -497,7 +497,9 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Topic\Create.cshtml" />
     <Content Include="Views\Topic\Index.cshtml" />
+    <Content Include="Views\Contest\Standings.cshtml" />
     <Content Include="Views\Reply\GetReplies.cshtml" />
+    <Content Include="Views\Contest\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -46,5 +46,64 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             return View(contest);
         }
+
+        public ActionResult Standings(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
+            if (!Helpers.Contest.UserInContest(user.ID,id))
+                return RedirectToAction("Register", "Contest", new { id = id });
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+                return RedirectToAction("Message", "Shared", new { msg = "目前不提供比赛排名显示。" });
+            ViewBag.AllowHack = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                if (contest.Format == ContestFormat.Codeforces && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
+                    ViewBag.AllowHack = true;
+            }
+            return View(contest);
+        }
+
+        [HttpGet]
+        public ActionResult GetStandings(int id)
+        {
+            var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
+            var contest = DbContext.Contests.Find(id);
+            if (!Helpers.Contest.UserInContest(user.ID, id))
+                return RedirectToAction("Register", "Contest", new { id = id });
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            var standings = Helpers.Standings.Build(id);
+            return Json(standings, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult Register(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            return View(contest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Register(int id, string Password)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (string.IsNullOrEmpty(contest.Password) || contest.Password == Password)
+            {
+                DbContext.ContestRegisters.Add(new ContestRegister
+                {
+                    ContestID = id,
+                    UserID = ViewBag.CurrentUser.ID
+                });
+                DbContext.SaveChanges();
+                return RedirectToAction("Show", "Contest", new { id = id });
+            }
+            else
+            {
+                return RedirectToAction("Message", "Shared", new { msg="参赛密码不正确！" });
+            }
+        }
     }
 }
