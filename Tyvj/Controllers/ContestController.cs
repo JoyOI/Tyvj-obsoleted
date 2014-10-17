@@ -105,5 +105,50 @@ namespace Tyvj.Controllers
                 return RedirectToAction("Message", "Shared", new { msg="参赛密码不正确！" });
             }
         }
+
+        public ActionResult Statistics(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
+            if (!Helpers.Contest.UserInContest(user.ID, id))
+                return RedirectToAction("Register", "Contest", new { id = id });
+            var statistics = new int[contest.ContestProblems.Count, 9];
+            var i = 0;
+            foreach (var p in contest.ContestProblems.OrderBy(x => x.Point))
+            {
+                var statuses = Helpers.Contest.GetStatuses(p.ProblemID, id);
+                if (contest.Format == ContestFormat.OI)
+                {
+                    var user_ids = (from s in statuses
+                                    select s.UserID).Distinct();
+                    foreach (var uid in user_ids)
+                    {
+                        var last_status = statuses.Where(x => x.UserID == uid).LastOrDefault();
+                        if (last_status != null)
+                        {
+                            if (last_status.ResultAsInt < 8)
+                                statistics[i, last_status.ResultAsInt]++;
+                            else
+                                statistics[i, 8]++;
+                        }
+                    }
+                }
+                else
+                {
+                    statistics[i, 0] = statuses.Where(x => x.Result == JudgeResult.Accepted).Count();
+                    statistics[i, 1] = statuses.Where(x => x.Result == JudgeResult.PresentationError).Count();
+                    statistics[i, 2] = statuses.Where(x => x.Result == JudgeResult.WrongAnswer).Count();
+                    statistics[i, 3] = statuses.Where(x => x.Result == JudgeResult.OutputLimitExceeded).Count();
+                    statistics[i, 4] = statuses.Where(x => x.Result == JudgeResult.TimeLimitExceeded).Count();
+                    statistics[i, 5] = statuses.Where(x => x.Result == JudgeResult.MemoryLimitExceeded).Count();
+                    statistics[i, 6] = statuses.Where(x => x.Result == JudgeResult.RuntimeError).Count();
+                    statistics[i, 7] = statuses.Where(x => x.Result == JudgeResult.CompileError).Count();
+                    statistics[i, 8] = statuses.Where(x => x.Result == JudgeResult.Hacked).Count();
+                }
+                i++;
+            }
+            ViewBag.Statistics = statistics;
+            return View(contest);
+        }
     }
 }

@@ -74,6 +74,14 @@
         }
         <li><a class="action" href="/p/@Model.ID/solution">查看题解</a></li>
         <li><a class="action" href="/p/@Model.ID/statuses" target="_self">查看本题提交记录</a></li>
+        @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.UserID == ViewBag.CurrentUser.ID))
+        {
+            <li><a class="action" href="/Problem/@Model.ID/Edit">编辑题目</a></li>
+            if (ViewBag.ContestID != null)
+            {
+                <li><a class="action" href="/Contest/@ViewBag.ContestID/Edit">编辑比赛</a></li>
+            }
+        }
     </ul>
     @if (User.Identity.IsAuthenticated && ViewBag.Statuses.Count > 0)
     {
@@ -95,7 +103,7 @@
             {
                 @Html.AntiForgeryToken()
                 <input type="hidden" value="@Model.ID" name="problem_id" />
-                @if (ViewBag.ContestID != null)
+                if (ViewBag.ContestID != null)
                 {
                     <input type="hidden" value="@ViewBag.ContestID" name="contest_id" />
                 }

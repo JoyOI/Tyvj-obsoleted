@@ -500,6 +500,7 @@
     <Content Include="Views\Contest\Standings.cshtml" />
     <Content Include="Views\Reply\GetReplies.cshtml" />
     <Content Include="Views\Contest\Register.cshtml" />
+    <Content Include="Views\Contest\Statistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

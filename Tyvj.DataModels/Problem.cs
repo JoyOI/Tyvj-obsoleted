@@ -39,11 +39,18 @@ namespace Tyvj.DataModels
         [Column("memory_limit")]
         public int MemoryLimit { get; set; }
 
-        [Column("standard_problem_language")]
-        public int StandardProgramLanguageAsInt { get; set; }
 
         [Column("hide")]
         public bool Hide { get; set; }
+
+        [Column("user_id")]
+        [ForeignKey("User")]
+        public int UserID { get; set; }
+
+        public virtual User User { get; set; }
+
+        [Column("standard_problem_language")]
+        public int StandardProgramLanguageAsInt { get; set; }
 
         [NotMapped]
         public Language StandardProgramLanguage
