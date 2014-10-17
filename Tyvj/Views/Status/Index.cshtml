@@ -4,9 +4,9 @@
 
 <div class="tyvj-left grid_12">
     <div class="tyvj-shadow tyvj-block tyvj-border-side tyvj-toolbar">
-        题目编号: <input type="text" class="textbox" style="width:70px" />
-        用户名: <input type="text" class="textbox" />
-        评测结果: <select class="select">
+        题目编号: <input type="text" class="textbox" id="txtProblemID" style="width:70px" />
+        用户名: <input type="text" class="textbox" id="txtSubmitter" value="@(ViewBag.DestUsername !=null?(string)ViewBag.DestUsername:"")" />
+        评测结果: <select class="select" id="lstResult">
             <option selected value="">全部结果</option>
             <option value="0">Accepted</option>
             <option value="1">Presentation Error</option>
@@ -47,9 +47,9 @@
     </div>
 </div>
 <script>
-    var contest_id = null;
+    var contest_id = @(ViewBag.DestContestID != null ? ((int)ViewBag.DestContestID).ToString() : "null");
     var problem_id = null;
-    var username = null;
+    var username = @(ViewBag.DestUsername !=null?(string)ViewBag.DestUsername:"null");
     var result = null;
     $("#btnSearch").click(function () {
         problem_id = $("#txtProblemID").val();

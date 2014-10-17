@@ -14,6 +14,20 @@ namespace Tyvj
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "UserStatuses",
+                url: "User/{uid}/Statuses",
+                defaults: new { controller = "Status", action = "Index" },
+                constraints: new { uid = @"\d+" }
+            );
+
+            routes.MapRoute(
+                name: "ContestStatuses",
+                url: "Contest/{cid}/Statuses",
+                defaults: new { controller = "Status", action = "Index" },
+                constraints: new { uid = @"\d+" }
+            );
+
+            routes.MapRoute(
                 name: "Problem",
                 url: "p/{id}",
                 defaults: new { controller = "Problem", action = "Show" },
