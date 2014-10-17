@@ -136,7 +136,7 @@
         <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
         <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>
         <li><a class="action" href="/User/@Model.ID/Statuses">Ta的评测记录</a></li>
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.ID == ViewBag.CurrentUser.ID))
         {
             <li><a class="action" href="/User/@Model.ID/Settings">个人设置</a></li>
         }
