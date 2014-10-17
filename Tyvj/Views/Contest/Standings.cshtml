@@ -6,27 +6,28 @@
     <div class="tyvj-shadow">
             <div style="background-color:white">
                 <table class="tyvj-list">
-                    <thead>
+                    <thead class="tyvj-list-head">
                         <tr>
-                            <th style="width:35px;">排名</th>
-                            <th style="width:40px;">头像</th>
-                            <th style="width:120px;">昵称</th>
+                            <th class="tyvj-list-th" style="width:35px;">排名</th>
+                            <th class="tyvj-list-th" style="width:40px;">头像</th>
+                            <th class="tyvj-list-th" style="width:120px;">昵称</th>
                             @if (Model.Format == ContestFormat.ACM)
                             {
-                                <th style="width:35px;">AC</th>
-                                <th style="width:80px;">总罚时</th>
+                                <th class="tyvj-list-th" style="width:35px;">AC</th>
+                                <th class="tyvj-list-th" style="width:80px;">总罚时</th>
                             }
                             else if (Model.Format == ContestFormat.OI)
                             {
-                                <th style="width:45px;">分数</th>
-                                <th style="width:55px;">耗时</th>
+                                <th class="tyvj-list-th" style="width:45px;">分数</th>
+                                <th class="tyvj-list-th" style="width:55px;">耗时</th>
                             }
-                                @for (char i = 'A'; i < Model.ContestProblems.Count + 'A'; i++)
-                                {
-                                    <th>@i</th>
-                                }
-                            </tr>
-                        </thead>
+                            @for (char i = 'A'; i < Model.ContestProblems.Count + 'A'; i++)
+                            {
+                                <th class="tyvj-list-th">@i</th>
+                            }
+                        </tr>
+                    </thead>
+
                         <tbody id="lstStandings"></tbody>
                     </table>
                 </div>
