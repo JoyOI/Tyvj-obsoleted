@@ -8,7 +8,7 @@
     <div class="tyvj-shadow tyvj-content-narrow">
         <div class="tyvj-content-narrow-header">注册验证</div>
         <div class="tyvj-content" style="margin-top:40px;">
-            @using (Html.BeginForm("Register", "User", new { id = Model.id }, FormMethod.Post, null))
+            @using (Html.BeginForm("Register", "User",null, FormMethod.Post, null))
             {
                 @Html.AntiForgeryToken()
                 <p>为了防止恶意注册，我们需要通过您的电子邮件验证身份。</p>

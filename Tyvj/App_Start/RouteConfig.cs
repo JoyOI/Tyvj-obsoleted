@@ -63,7 +63,7 @@ namespace Tyvj
             routes.MapRoute(
                 name: "C-I-A",
                 url: "{controller}/{id}/{action}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Home", action = "Index" },
                 constraints: new { id = @"\d+" }
             );
 

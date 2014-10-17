@@ -129,5 +129,24 @@ namespace Tyvj.Controllers
             if (problem == null) return Content("");
             return Content(problem.Title);
         }
+
+        [Authorize]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetExistedProblems(string Title)
+        {
+            var _problems = (from p in DbContext.Problems
+                             where p.Title.Contains(Title)
+                             || Title.Contains(p.Title)
+                             select p).ToList();
+            var problems = new List<vExistedProblem>();
+            foreach (var p in _problems)
+                problems.Add(new vExistedProblem(p));
+            return Json(problems, JsonRequestBehavior.AllowGet);
+        }
     }
 }

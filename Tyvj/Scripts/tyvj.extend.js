@@ -20,6 +20,7 @@ function Load() {
     LoadStatuses();
     LoadTopics();
     LoadReplies();
+    LoadStandings();
 }
 
 function BuildStandings(rank, data) {

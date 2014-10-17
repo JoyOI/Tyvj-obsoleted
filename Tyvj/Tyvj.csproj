@@ -213,6 +213,7 @@
     <Compile Include="SignalR\JudgeHub.cs" />
     <Compile Include="SignalR\UserHub.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\vExistedProblem.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
@@ -504,6 +505,7 @@
     <Content Include="Views\Contest\Edit.cshtml" />
     <Content Include="Views\Contest\Problem.cshtml" />
     <Content Include="Views\User\Contests.cshtml" />
+    <Content Include="Views\Problem\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

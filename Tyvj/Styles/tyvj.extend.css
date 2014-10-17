@@ -1352,3 +1352,21 @@ a.highlight {
     .black:hover {
         background-color: #EEE;
     }
+.rank-avatar {
+    height:40px;
+    width:40px;
+    margin-top:5px;
+    border-radius:5px;
+    behavior:url(/Styles/PIE.htc);
+}
+.rank-red {
+    background-color:#f2dede;
+}
+
+.rank-green {
+     background-color:#dff0d8;
+}
+
+.rank-orange {
+    background-color:rgb(255, 233, 201);
+}
