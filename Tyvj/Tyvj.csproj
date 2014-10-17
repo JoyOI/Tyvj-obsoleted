@@ -501,6 +501,7 @@
     <Content Include="Views\Reply\GetReplies.cshtml" />
     <Content Include="Views\Contest\Register.cshtml" />
     <Content Include="Views\Contest\Statistics.cshtml" />
+    <Content Include="Views\Contest\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

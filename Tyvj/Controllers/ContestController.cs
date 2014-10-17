@@ -150,5 +150,33 @@ namespace Tyvj.Controllers
             ViewBag.Statistics = statistics;
             return View(contest);
         }
+
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Message("您无权执行本操作");
+            return View(contest);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult Edit(int id, string Title, string Description, DateTime Begin, DateTime End, int Format, string Password)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Message("您无权执行本操作");
+            contest.Title = Title;
+            contest.Description = Description;
+            contest.Begin = Begin;
+            contest.End = End;
+            contest.Password = Password;
+            contest.FormatAsInt = Format;
+            DbContext.SaveChanges();
+            return RedirectToAction("Edit", "Contest", new { id = id });
+        }
     }
 }

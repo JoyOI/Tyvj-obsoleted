@@ -22,6 +22,7 @@ namespace Tyvj.Controllers
                 ViewBag.CurrentUser = (from u in DbContext.Users
                                        where u.Username == requestContext.HttpContext.User.Identity.Name
                                        select u).Single();
+                CurrentUser = ViewBag.CurrentUser;
             }
             else
             {
@@ -30,6 +31,21 @@ namespace Tyvj.Controllers
             ViewBag.News = (from n in DbContext.News
                             orderby n.Time descending
                             select n).Take(5).ToList();
+        }
+        public bool IsMaster()
+        {
+            var ret = false;
+            try
+            {
+                ret = ViewBag.CurrentUser.Role >= UserRole.Master;
+            }
+            catch { }
+            return ret;
+        }
+        public User CurrentUser { get; set; }
+        public ActionResult Message(string msg)
+        {
+            return RedirectToAction("Message", "Shared", new { msg = msg });
         }
     }
 }
