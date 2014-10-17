@@ -12,7 +12,7 @@
                 <h2>@Model.Username 举办的比赛</h2>
                 @if (User.Identity.IsAuthenticated && Model.ID == ViewBag.CurrentUser.ID)
                 {
-                    @using (Html.BeginForm("Create", "Contest", FormMethod.Post))
+                    using (Html.BeginForm("Create", "Contest", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <p><input type="submit" class="button button-def" value="创建新比赛" /></p>

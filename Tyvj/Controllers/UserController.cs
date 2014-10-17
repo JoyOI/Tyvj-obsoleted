@@ -120,6 +120,11 @@ namespace Tyvj.Controllers
         public ActionResult Contests(int id)
         {
             var user = DbContext.Users.Find(id);
+            var contests = (from c in DbContext.Contests
+                            where c.UserID == id
+                            orderby c.ID descending
+                            select c).ToList();
+            ViewBag.Contests = contests;
             return View(user);
         }
     }
