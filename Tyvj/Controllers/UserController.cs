@@ -101,5 +101,12 @@ namespace Tyvj.Controllers
             }
             return View();
         }
+
+        [Authorize]
+        public ActionResult Settings(int id)
+        {
+            var user = DbContext.Users.Find(id);
+            return View(user);
+        }
     }
 }

@@ -500,6 +500,7 @@
     <Content Include="Views\Status\Show.cshtml" />
     <Content Include="Views\Contest\Show.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -141,35 +141,6 @@ function LoadStatuses() {
 }
 
 $(document).ready(function () {
-    //SignalR
-    UserHub = $.connection.userHub;
-    UserHub.client.onStatusChanged = function (status) {
-        if ($("#lstStatuses").length > 0) {
-            if ($("#s-" + status.ID) > 0) {
-                $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td>');
-            }
-            else {
-                $("#lstStatuses").prepend('<tr id="s-' + status.ID + '" class="tyvj-list-body-tr">'
-                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
-                                                 + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
-            }
-        }
-    }
-    $.connection.hub.start();
-
     Load();
     $(window).scroll(function () {
         totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
@@ -268,4 +239,33 @@ $(document).ready(function () {
             }
         });
     });
+
+    //SignalR
+    UserHub = $.connection.userHub;
+    UserHub.client.onStatusChanged = function (status) {
+        if ($("#lstStatuses").length > 0) {
+            if ($("#s-" + status.ID) > 0) {
+                $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td>');
+            }
+            else {
+                $("#lstStatuses").prepend('<tr id="s-' + status.ID + '" class="tyvj-list-body-tr">'
+                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
+                                                 + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
+            }
+        }
+    }
+    $.connection.hub.start();
 });
