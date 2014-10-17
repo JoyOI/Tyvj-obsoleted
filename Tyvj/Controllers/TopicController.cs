@@ -19,10 +19,10 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetTopics(int page, int? id)
+        public ActionResult GetTopics(int page, int? ForumID)
         {
             List<DataModels.Topic> _topics;
-            if (id == null)
+            if (ForumID == null)
             {
                 _topics = (from t in DbContext.Topics
                            orderby t.LastReply descending
@@ -31,7 +31,7 @@ namespace Tyvj.Controllers
             else
             {
                 _topics = (from t in DbContext.Topics
-                           where t.ForumID == id
+                           where t.ForumID == ForumID
                            orderby t.LastReply descending
                            select t).Skip(page * 10).Take(10).ToList();
             }

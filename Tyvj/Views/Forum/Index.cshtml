@@ -43,10 +43,12 @@
 </div>
 <div class="tyvj-clear"></div>
 
-
+<script>
+    var forum_id=null;
+</script>
 @if (Request.RequestContext.RouteData.Values["id"] != null)
 {
     <script>
-        id = @Request.RequestContext.RouteData.Values["id"];
+       forum_id = @Request.RequestContext.RouteData.Values["id"];
     </script>
 }

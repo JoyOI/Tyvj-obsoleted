@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
+    <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -513,6 +514,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
     <Folder Include="Views\CKEditor\" />
+    <Folder Include="Views\Reply\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

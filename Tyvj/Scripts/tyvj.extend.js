@@ -8,12 +8,10 @@ var isIE678 = isIE6 || isIE7 || isIE8;
 var id = null;
 
 
-function Load()
-{
+function Load() {
     if (lock) return;
     lock = true;
-    if ($("#btnMore").length > 0)
-    {
+    if ($("#btnMore").length > 0) {
         $("#btnMore").html("加载中...");
     }
 
@@ -23,8 +21,7 @@ function Load()
     LoadTopics();
 }
 
-function Lock()
-{
+function Lock() {
     lock = true;
     if ($("#btnMore").length > 0) {
         $("#btnMore").html("没有更多内容了 ╮(╯▽╰)╭");
@@ -32,8 +29,7 @@ function Lock()
     }
 }
 
-function LoadContests()
-{
+function LoadContests() {
     if ($("#lstContests").length > 0) {
         $.getJSON("/Contest/GetContests", {
             page: page,
@@ -42,10 +38,9 @@ function LoadContests()
             rnd: Math.random()
         }, function (contests) {
             $("#btnMore").html("点击加载更多");
-            if (contests.length < 10)
-            {
+            if (contests.length < 10) {
                 Lock();
-                if(contests.length == 0)
+                if (contests.length == 0)
                     return;
             }
             if (contests.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
@@ -127,9 +122,9 @@ function LoadStatuses() {
             }
             for (var i = 0; i < statuses.length; i++) {
                 if (statuses[i] == null) continue;
-                $("#lstStatuses").append('<tr id="s-'+statuses[i].ID+'" class="tyvj-list-body-tr">'
-                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState'+statuses[i].ResultAsInt+'">'+statuses[i].Result+'</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:'+statuses[i].Score+'%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
+                $("#lstStatuses").append('<tr id="s-' + statuses[i].ID + '" class="tyvj-list-body-tr">'
+                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState' + statuses[i].ResultAsInt + '">' + statuses[i].Result + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + statuses[i].Score + '%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + statuses[i].TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + statuses[i].MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + statuses[i].ProblemID + '" target="_self">P' + statuses[i].ProblemID + '&nbsp;' + statuses[i].ProblemTitle + '</a></span></div></td>'
@@ -147,25 +142,17 @@ function LoadTopics() {
     if ($("#lstTopics").length > 0) {
         $.getJSON("/Topic/GetTopics", {
             page: page,
-            id: id,
+            forumid: forum_id,
             rnd: Math.random()
         }, function (topics) {
             $("#btnMore").html("点击加载更多");
-            if (page == 0 && topics.length == 0) {
-                $("#lstTopics").remove();
-                $("#topicList").append("<div><h2>该板块没有任何主题，快点来发主题！<h2></div>")
-                return;
-            }
             if (topics.length < 10) {
                 Lock();
-                if (topics.length == 0) {
+                if (topics.length == 0)
                     return;
-                }
             }
-            if (topics.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
             for (var i = 0; i < topics.length; i++) {
                 if (topics[i] == null) continue;
-                //var color = topics[i].UserRole != Master ? "#333" : "green";
                 $("#lstTopics").append('<tr class=""><td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
                                                  + '</td><td class="c2">'
                                                  + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
@@ -178,6 +165,7 @@ function LoadTopics() {
         });
     }
 }
+
 
 
 $(document).ready(function () {
