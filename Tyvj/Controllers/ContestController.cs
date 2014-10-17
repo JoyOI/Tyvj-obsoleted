@@ -187,5 +187,38 @@ namespace Tyvj.Controllers
                 return Message("您无权执行本操作");
             return View(contest);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult AddProblem(int id, string Number, int PID, int Point)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Message("您无权执行本操作");
+            DbContext.ContestProblems.Add(new ContestProblem 
+            { 
+                ContestID = id,
+                Number = Number,
+                ProblemID = PID
+            });
+            DbContext.SaveChanges();
+            return RedirectToAction("Problem", "Contest", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult DeleteProblem(int id, int CPID)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Message("您无权执行本操作");
+            var cp = DbContext.ContestProblems.Find(CPID);
+            DbContext.ContestProblems.Remove(cp);
+            DbContext.SaveChanges();
+            return RedirectToAction("Problem", "Contest", new { id = id });
+        }
     }
 }

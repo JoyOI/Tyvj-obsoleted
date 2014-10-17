@@ -123,6 +123,7 @@ namespace Tyvj.Controllers
         public ActionResult GetTitle(int id)
         {
             var problem = DbContext.Problems.Find(id);
+            if (problem == null) return Content("");
             return Content(problem.Title);
         }
     }

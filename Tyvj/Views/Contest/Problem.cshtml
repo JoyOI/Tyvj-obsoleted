@@ -40,7 +40,7 @@
                                     <td id="cp-pid-@p.ID">@p.ProblemID</td>
                                     <td id="cp-title-@p.ID">@p.Problem.Title</td>
                                     <td id="cp-point-@p.ID">@p.Point</td>
-                                    <td id="cp-control-@p.ID"><input type="button" class="button button-def" value="删除" cpid="@p.ID" /></td>
+                                    <td id="cp-control-@p.ID"><input type="button" class="btnDeleteProblem button button-def" value="删除" cpid="@p.ID" /></td>
                                 </tr>
                             }
                             <tr>
@@ -48,7 +48,7 @@
                                 <td><input type="text" class="textbox" style="width:50px" id="txtNewPID" /></td>
                                 <td id="lbNewTitle"></td>
                                 <td><input type="text" class="textbox" style="width:50px" id="txtNewPoint" /></td>
-                                <td><input type="button" class="button button-def" value="添加" /></td>
+                                <td><input type="button" class="button button-def" id="btnAddProblem" value="添加" /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,11 +64,34 @@
         <li><a class="action" href="/Contest/@Model.ID/Problem">比赛题目设置</a></li>
     </ul>
 </div>
+@using (Html.BeginForm("AddProblem", "Contest", new { id = Model.ID }, FormMethod.Post, new { id = "frmAddProblem" }))
+{ 
+    @Html.AntiForgeryToken()
+    <input id="Number" name="Number" type="hidden" value="0" />
+    <input id="PID" name="PID" type="hidden" value="0" />
+    <input id="Point" name="Point" type="hidden" value="0" />
+}
+@using (Html.BeginForm("DeleteProblem", "Contest", new { id=Model.ID}, FormMethod.Post, new { id = "frmDeleteProblem" }))
+{ 
+    @Html.AntiForgeryToken()
+    <input id="CPID" value="0" name="CPID" />
+}
 <script>
     $("#txtNewPID").change(function () {
+        $("txtNewPID").val($("txtNewPID").val().replace("P", ""));
         var pid = $("#txtNewPID").val();
         $.get("/Problem/GetTitle/" + pid, {}, function (title) {
-            $("#lbNewTitle").html(title);
+            $("#lbNewTitle").html('<a href="/p/' + pid + '">' + title + '</a>');
         });
+    });
+    $("#btnAddProblem").click(function () {
+        $("#Number").val($("#txtNewNumber").val());
+        $("#Point").val($("#txtNewPoint").val());
+        $("#PID").val($("#txtNewPID").val());
+        $("#frmAddProblem").submit();
+    });
+    $(".btnDeleteProblem").click(function () {
+        $("#CPID").val($(this).attr("cpid"));
+        $("#frmDeleteProblem").submit();
     });
 </script>
