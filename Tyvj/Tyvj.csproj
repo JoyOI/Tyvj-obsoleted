@@ -185,9 +185,11 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\ContestController.cs" />
+    <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
+    <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataModels\AlgorithmTag.cs" />
     <Compile Include="DataModels\Common.cs" />
@@ -226,6 +228,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\UserHub.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Post.cs" />
+    <Compile Include="ViewModels\Topic.cs" />
     <Compile Include="ViewModels\vContest.cs" />
     <Compile Include="ViewModels\vLogin.cs" />
     <Compile Include="ViewModels\vPager.cs" />
@@ -501,6 +505,9 @@
     <Content Include="Views\Contest\Show.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Settings.cshtml" />
+    <Content Include="Views\Forum\Index.cshtml" />
+    <Content Include="Views\Topic\Create.cshtml" />
+    <Content Include="Views\Topic\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
