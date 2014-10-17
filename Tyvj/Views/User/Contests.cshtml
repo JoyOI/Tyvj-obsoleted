@@ -1,0 +1,102 @@
+﻿@model User
+@{
+    ViewBag.Title = Model.Username + "举办的比赛";
+}
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow">
+        <div class="tyvj-content-header">
+            <strong>@Model.Username @(Model.Sex == Sex.Male ? "♂" : "♀")</strong>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>@Model.Username 举办的比赛</h2>
+                @if (User.Identity.IsAuthenticated && Model.ID == ViewBag.CurrentUser.ID)
+                {
+                    @using (Html.BeginForm("Create", "Contest", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <p><input type="submit" class="button button-def" value="创建新比赛" /></p>
+                    }
+                }
+                <div class="tyvj-status-info">
+                    <table class="tyvj-list" style="border:1px solid #ccc">
+                        <thead class="tyvj-list-head">
+                            <tr>
+                                <th class="tyvj-list-th">比赛名称</th>
+                                <th class="tyvj-list-th">赛制</th>
+                                <th class="tyvj-list-th">开始时间</th>
+                                <th class="tyvj-list-th">时长</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Tyvj.DataModels.Contest contest in ViewBag.Contests)
+                            {
+                                <tr>
+                                    <td><a href="/Contest/@contest.ID">@contest.Title</a></td>
+                                    <td>@contest.Format.ToString()</td>
+                                    <td>@contest.Begin.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@Html.ToTimeLength(contest.Begin, contest.End)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>Rating @(Model.Ratings.Sum(x => x.Credit) + 1500)</h2>
+                <div id="chart" style="width:100%;height:300px;"></div>
+            </div>
+            <div class="tyvj-content" style="padding-top:10px;">
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>签名</h2>
+                    <p>@Model.Motto</p>
+                </div>
+            </div>
+            <div class="tyvj-content" style="padding-top:10px;">
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>联系</h2>
+                    <div class="tyvj-status-info">
+                        <table>
+                            <tbody>
+                                <tr><td class="tyvj-status-info-left">Email</td><td>@Model.Email.Replace("@", "#")</td></tr>
+                                <tr><td class="tyvj-status-info-left">QQ</td><td>@Model.QQ</td></tr>
+                                <tr><td class="tyvj-status-info-left">学校</td><td>@Model.School</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tyvj-content" style="padding-top:10px;">
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>通过题目</h2>
+                    @foreach (var id in ViewBag.AcceptedList)
+                    {
+                        <a href="/p/@id"><span class="label blue label-ac">P@(id)</span></a>
+                    }
+                    <div class="tyvj-clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
+        <p><a href="/User/@Model.ID">@Model.Username</a></p>
+        <p>@Html.Gravatar(Model.Gravatar, 80)</p>
+        <p>@Model.Role.ToString()</p>
+    </div>
+    <div class="tyvj-border-top-gray tyvj-side-content">
+        <h3>操作</h3>
+    </div>
+    <ul class="section" id="actions" style="margin-left:10px">
+        <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
+        <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>
+        <li><a class="action" href="/User/@Model.ID/Statuses">Ta的评测记录</a></li>
+        @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.ID == ViewBag.CurrentUser.ID))
+        {
+            <li><a class="action" href="/User/@Model.ID/Settings">个人设置</a></li>
+        }
+    </ul>
+</div>

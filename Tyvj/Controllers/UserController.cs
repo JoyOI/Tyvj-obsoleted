@@ -116,5 +116,11 @@ namespace Tyvj.Controllers
             var user = DbContext.Users.Find(id);
             return View(user);
         }
+
+        public ActionResult Contests(int id)
+        {
+            var user = DbContext.Users.Find(id);
+            return View(user);
+        }
     }
 }
