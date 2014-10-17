@@ -50,6 +50,17 @@ namespace Tyvj.Controllers
         public ActionResult Standings(int id)
         {
             var contest = DbContext.Contests.Find(id);
+            var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
+            if (!Helpers.Contest.UserInContest(user.ID,id))
+                return RedirectToAction("Register", "Contest", new { id = id });
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+                return RedirectToAction("Message", "Shared", new { msg = "目前不提供比赛排名显示。" });
+            ViewBag.AllowHack = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                if (contest.Format == ContestFormat.Codeforces && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
+                    ViewBag.AllowHack = true;
+            }
             return View(contest);
         }
 
