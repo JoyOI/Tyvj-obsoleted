@@ -16,14 +16,15 @@
                         {
                             if (reply.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
                             {
-                        <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(reply.ID)').serialize(),function(){$('#reply_@(reply.ID)').hide()});">删除</a>
+                                <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(reply.ID)').serialize(),function(){$('#reply_@(reply.ID)').hide()});">删除</a>
                                 using (Html.BeginForm("Delete", "Reply", FormMethod.Post, new { id = "frmDeleteReply" + reply.ID, style = "display:none;" }))
                                 {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" value="@reply.ID" name="id" />
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" value="@reply.ID" name="id" />
                                 }
                             }
-                        <a href="javascript:CKEDITOR.instances.content.destroy();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#NewReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+
+                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                         }
                     </span>
                     &nbsp;&nbsp;
@@ -31,6 +32,12 @@
                 </div>
                 <div class="content">
                     @Html.Sanitized(reply.Content)
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div id="NewReply@(reply.ID)">
+                        </div>
+                    }
+
                 </div>
 
                 @if (reply.Replies.Count() > 0 || User.Identity.IsAuthenticated)
@@ -61,7 +68,7 @@
                                                     <input type="hidden" value="@replyinreply.ID" name="id" />
                                                 }
                                             }
-                                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#NewReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                                         }
                                     </div>
                                     <div class="content">

@@ -91,30 +91,39 @@
 
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <tr class="dl">
-                                    <td class="dll">
-                                        <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
-                                        <div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div>
-                                    </td>
-                                    <td class="dlr">
-                                        <div class="head">
-                                             发表评论
-                                        </div>
-                                        <div class="content">
-                                            @using (Html.BeginForm("Create", "Reply", new { id = Model.ID }, FormMethod.Post, new { id = "frmPostReply" }))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <textarea id="content" name="content"></textarea>
-                                                <input type="hidden" value="" name="father_id" id="father_id" />
-                                                <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"></div>
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
+                                   <tr class="dl">
+                                            <td class="dll">
+                                                <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
+                                                <div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div>
+                                            </td>
+                                            <td class="dlr">
+                                                <div class="head" id="headWarning">
+                                                    发表评论
+                                                </div>
 
+                                                <div id="NewReplyOut">
+                                                    <div class="content" id="NewReplyContent">
+                                                        @using (Html.BeginForm("Create", "Reply", new { id = Model.ID }, FormMethod.Post, new { id = "frmPostReply" }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <textarea id="content" name="content"></textarea>
+                                                            <input type="hidden" value="" name="father_id" id="father_id" />
+                                                            <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="post-comment" id="NewPost0" style="">
+                                                    <div class="comment-item">
+                                                        <div class="comment-body">
+                                                            <div class="comment-content">
+                                                                <a href="javascript:$('#NewPost0').hide();$('#headWarning').show();CKEDITOR.instances.content.destroy();$('#father_id').val('');$('#NewReplyContent').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000); ">发表回复</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                             }
-                            
-
                         </table>
                     </div>
                 </div>
@@ -129,6 +138,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <script>
+        $('#NewPost0').hide();
         CKEDITOR.replace('content',
         {
             toolbar: 'Basic',
@@ -138,15 +148,28 @@
         function PostReplyBinding()
         {
             $("#btnSubmit").unbind().click(function(){
+                var demo=$(this).parent("div").parent("form");
                 $("#content").val(CKEDITOR.instances.content.getData());
+                var content=CKEDITOR.instances.content.getData();
                 var father_id = $("#father_id").val();
                 $.post("/Reply/Create/"+id,$("#frmPostReply").serialize(),function(){
-                    $('#NewPost0').hide();
-                    $("#NewReply"+(father_id==""?"Out":father_id)).prepend('<div class="comment-item"><div class="comment-body"><div class="comment-info">@ViewBag.CurrentUser.Username @@刚刚</div><div class="comment-content">'+$("#content").val()+'</div></div><div class="comment-face">{Gravatar}</div></div>'.replace("{Gravatar}","@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "")"));
+                    if(father_id==""){
+                        var str="<tr class='dl'><td class='dll'><div><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a></div><div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div></td><td class='dlr'>"
+                             + "<div class='head'><span class='time'>@@刚刚</span></div><div class='content'>"+content+"</div></td></tr>";
+                        var reply_list_before= $("#discuss_detail_list tr:eq(1)");
+                        reply_list_before.after(str);
+                    }else{
+                        var str="<div class='rwrap tyvj-clear' id='reply_@ViewBag.CurrentUser.ID'><div class='rl'>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face1")</div>"
+                            +"<div class='rr'><div class='info'><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a>@@刚刚</div><div class='content'><div class='comment-content'>"+content+"</div></div></div></div>";
+                        var reply_list_before= $("#reply_"+father_id).children(".dlr").children(".replies");
+                        alert(reply_list_before.text());
+                        reply_list_before.prepend(str);
+                    }
+                   
+                  //  $("#NewReply"+(father_id==""?"Out":father_id)).prepend('<div class="comment-item"><div class="comment-body"><div class="comment-info">@ViewBag.CurrentUser.Username @@刚刚</div><div class="comment-content">'+$("#content").val()+'</div></div><div class="comment-face">{Gravatar}</div></div>'.replace("{Gravatar}","@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "")"));
                     CKEDITOR.instances.content.destroy();
                     $("#content").val("");
-                    $('#father_id').val("");
-                    $('#NewReplyOut').prepend($('#NewReply'));
+                    //$('#father_id').val("");
                     CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});
                     $("html,body").animate({scrollTop:$("#NewReply"+(father_id==""?"Out":father_id)).offset().top - 50},300);
                     PostReplyBinding();
