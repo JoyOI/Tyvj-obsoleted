@@ -1,0 +1,163 @@
+﻿@model Tyvj.DataModels.Contest
+@{
+    ViewBag.Title = "比赛排名";
+}
+<div class="grid_12">
+    <div class="tyvj-shadow">
+            <div style="background-color:white">
+                <table class="tyvj-list">
+                    <thead>
+                        <tr>
+                            <th style="width:35px;">排名</th>
+                            <th style="width:40px;">头像</th>
+                            <th style="width:120px;">昵称</th>
+                            @if (Model.Format == ContestFormat.ACM)
+                            {
+                                <th style="width:35px;">AC</th>
+                                <th style="width:80px;">总罚时</th>
+                            }
+                            else if (Model.Format == ContestFormat.OI)
+                            {
+                                <th style="width:45px;">分数</th>
+                                <th style="width:55px;">耗时</th>
+                            }
+                            @*else if (Model.Format == ContestFormat.OPJOI)
+                    {
+                        <th style="width:45px;">分数</th>
+                        <th style="width:55px;">次数</th>
+                    }*@
+                                @*else if (Model.Format == ContestFormat.Codeforces || Model.Format == ContestFormat.TopCoder)
+                        {
+                            <th style="width:45px;">分数</th>
+                            <th style="width:55px;">Hacks</th>
+                        }*@
+                                @for (char i = 'A'; i < Model.ContestProblems.Count + 'A'; i++)
+                                {
+                                    <th>@i</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="lstStandings"></tbody>
+                    </table>
+                </div>
+            </div><div class="clear"></div>
+        </div>
+    </div>
+@if (ViewBag.AllowHack)
+{
+    <div style="display:none;">
+        <div id="HackStatus" style="width:700px;">
+            <h2>Hack</h2>
+            <p><a href="javascript:void(0)" id="btnCodeView">查看代码</a> <a href="javascript:void(0)" id="btnHackDataView">上传数据</a> <a href="javascript:void(0)" id="btnDataMakerView">上传数据产生器</a></p>
+            <div id="hackStatusCode">
+                <pre style="width:680px;height:360px;overflow:auto" id="Code"></pre>
+            </div>
+            <div id="hackData">
+                <textarea id="txtHackData" class="textbox" style="width:680px;height:360px;"></textarea>
+                <p><input type="button" class="button button-def" value="提交" id="btnHackDataSubmit" /> <input type="button" id="btnClearHackData" class="button" value="清空" /></p>
+            </div>
+            <div id="hackDataMaker">
+                <textarea id="editor" name="code" style="width:680px;height:360px;font-size:12px;"></textarea>
+                <p>
+                    <select id="lstLanguages" name="language_id">
+                        @{
+    var i = 0;
+    foreach (var name in CommonEnums.LanguageDisplay)
+    {
+        if (((CodeComb.Entity.User)ViewBag.CurrentUser).CommonLanguageAsInt == i)
+        {
+            <option value="@(i++)" selected>@name</option>
+        }
+        else
+        {
+            <option value="@(i++)">@name</option>
+        }
+    }
+                        }
+                    </select>
+                    <input type="button" id="btnSubmitDataMaker" class="button button-def" value="提交" />
+                    <input type="button" id="btnClearCodeBox" class="button" value="清空" />
+                </p>
+            </div>
+    </div>
+    <script>
+        function Hack(sid)
+        {
+            status_id = sid;
+            $.getJSON("/Status/GetCode/"+status_id,{},function(code){
+                if(code.Available == false)
+                    CastMsg(code.Error);
+                else{
+                    $("#Code").html(code.Code);
+                    $("#hackData").hide();
+                    $("#hackDataMaker").hide();
+                    $.colorbox({ inline:true, width:'auto', href:'#HackStatus' });
+                }
+            });
+        }
+        $("#hackData").hide();
+        $("#hackDataMaker").hide();
+        $("#btnClearHackData").click(function(){
+            $("#txtHackData").val("");
+        });
+        $("#btnCodeView").click(function(){
+            $("#hackStatusCode").show();
+            $("#hackData").hide();
+            $("#hackDataMaker").hide();
+            $.colorbox.resize('Height:auto');
+        });
+        $("#btnHackDataView").click(function(){
+            $("#hackStatusCode").hide();
+            $("#hackData").show();
+            $("#hackDataMaker").hide();
+            $.colorbox.resize('Height:auto');
+        });
+        $("#btnDataMakerView").click(function(){
+            $("#hackStatusCode").hide();
+            $("#hackData").hide();
+            $("#hackDataMaker").show();
+            $.colorbox.resize('Height:auto');
+        });
+        $("#btnSubmitDataMaker").click(function(){
+            $.post("/Status/Hack/"+status_id,{
+                data:"",
+                data_maker: editor.getValue(),
+                data_maker_language: $("#lstLanguages").val()
+            },function(result){
+                if(result == "err")
+                    CastMsg("您无法进行Hack");
+                else
+                {
+                    hack_id = parseInt(result);
+                    $.colorbox({ html: '<h3>评测结果</h3><p>正在等待系统验证及分配评测资源...</p>', width: '700px' });
+                }
+            });
+        });
+        $("#btnHackDataSubmit").click(function(){
+            $.post("/Status/Hack/"+status_id,{
+                data:$("#txtHackData").val(),
+                data_maker: "",
+                data_maker_language: null
+            },function(result){
+                if(result == "err")
+                    CastMsg("您无法进行Hack");
+                else
+                {
+                    hack_id = parseInt(result);
+                    $.colorbox({ html: '<h3>评测结果</h3><p>正在等待系统验证及分配评测资源...</p>', width: '700px' });
+                }
+            });
+        });
+    </script>
+}
+<script>
+        id = @Model.ID;
+    @if (Model.Format == ContestFormat.Codeforces)
+   {
+    @:key2desc = true;
+       }
+    @if(ViewBag.AllowHack)
+    {
+        @:allowhack = true;
+        }
+</script>

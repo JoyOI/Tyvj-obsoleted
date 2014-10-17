@@ -46,5 +46,11 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             return View(contest);
         }
+
+        public ActionResult Standings(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            return View(contest);
+        }
     }
 }
