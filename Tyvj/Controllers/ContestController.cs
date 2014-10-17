@@ -224,5 +224,25 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return RedirectToAction("Problem", "Contest", new { id = id });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Create()
+        {
+            var contest = new Contest 
+            { 
+                Begin = Convert.ToDateTime("2099-1-1 12:00"),
+                End = Convert.ToDateTime("2099-1-1 18:00"),
+                Title = CurrentUser.Username + "创建的比赛",
+                Description = "请在此处填写比赛描述",
+                Format = ContestFormat.OI,
+                Password = "",
+                UserID = CurrentUser.ID
+            };
+            DbContext.Contests.Add(contest);
+            DbContext.SaveChanges();
+            return RedirectToAction("Edit", "Contest", new { id=contest.ID});
+        }
     }
 }
