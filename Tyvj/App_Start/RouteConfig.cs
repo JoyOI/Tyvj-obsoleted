@@ -24,7 +24,7 @@ namespace Tyvj
                 name: "ContestStatuses",
                 url: "Contest/{cid}/Statuses",
                 defaults: new { controller = "Status", action = "Index" },
-                constraints: new { uid = @"\d+" }
+                constraints: new { cid = @"\d+" }
             );
 
             routes.MapRoute(
