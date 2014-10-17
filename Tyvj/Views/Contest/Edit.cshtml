@@ -21,7 +21,8 @@
                 <h2>基本信息设置</h2>
                 @using (Html.BeginForm("Edit", "Contest", new { id = Model.ID }, FormMethod.Post, null))
                 {
-                    @Html.AntiForgeryToken()<div class="tyvj-status-info">
+                    @Html.AntiForgeryToken()
+                <div class="tyvj-status-info">
                         <table>
                             <tbody>
                                 <tr><td class="tyvj-status-info-left">比赛名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>

@@ -178,5 +178,14 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return RedirectToAction("Edit", "Contest", new { id = id });
         }
+
+        [Authorize]
+        public ActionResult Problem(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Message("您无权执行本操作");
+            return View(contest);
+        }
     }
 }
