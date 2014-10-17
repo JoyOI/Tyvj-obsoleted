@@ -24,7 +24,7 @@ namespace Tyvj
                name: "ContestProblem",
                url: "p/contest/{cpid}",
                defaults: new { controller = "Problem", action = "Show" },
-               constraints: new { id = @"\d+", cpid=@"\d+" }
+               constraints: new { cpid=@"\d+" }
            );
 
             routes.MapRoute(

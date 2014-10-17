@@ -86,16 +86,19 @@ namespace Tyvj.Controllers
         {
             Problem problem;
             Contest contest;
+            int pid;
             ViewBag.ContestID = null;
             if (id != null)
             {
-                problem = DbContext.Problems.Find(id);
+                problem = DbContext.Problems.Find(id.Value);
+                pid = problem.ID;
             }
             else
             {
-                var cp = DbContext.ContestProblems.Find(id);
+                var cp = DbContext.ContestProblems.Find(cpid.Value);
                 problem = cp.Problem;
                 contest = cp.Contest;
+                pid = problem.ID;
                 if (DateTime.Now >= contest.End)
                     return RedirectToAction("Show", "Problem", new { id = problem.ID });
                 ViewBag.ContestID = cp.ContestID;
@@ -108,7 +111,7 @@ namespace Tyvj.Controllers
                 uid = ViewBag.CurrentUser.ID;
             }
             var _statuses = (from s in DbContext.Statuses
-                             where s.ProblemID == id
+                             where s.ProblemID == pid
                              && s.UserID == uid
                              orderby s.Time descending
                              select s).Take(20).ToList();
