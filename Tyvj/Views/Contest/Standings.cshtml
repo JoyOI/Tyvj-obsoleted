@@ -21,16 +21,6 @@
                                 <th style="width:45px;">分数</th>
                                 <th style="width:55px;">耗时</th>
                             }
-                            @*else if (Model.Format == ContestFormat.OPJOI)
-                    {
-                        <th style="width:45px;">分数</th>
-                        <th style="width:55px;">次数</th>
-                    }*@
-                                @*else if (Model.Format == ContestFormat.Codeforces || Model.Format == ContestFormat.TopCoder)
-                        {
-                            <th style="width:45px;">分数</th>
-                            <th style="width:55px;">Hacks</th>
-                        }*@
                                 @for (char i = 'A'; i < Model.ContestProblems.Count + 'A'; i++)
                                 {
                                     <th>@i</th>
@@ -42,7 +32,6 @@
                 </div>
             </div><div class="clear"></div>
         </div>
-    </div>
 @if (ViewBag.AllowHack)
 {
     <div style="display:none;">
@@ -64,7 +53,7 @@
     var i = 0;
     foreach (var name in CommonEnums.LanguageDisplay)
     {
-        if (((CodeComb.Entity.User)ViewBag.CurrentUser).CommonLanguageAsInt == i)
+        if (((User)ViewBag.CurrentUser).CommonLanguageAsInt == i)
         {
             <option value="@(i++)" selected>@name</option>
         }
@@ -79,6 +68,7 @@
                     <input type="button" id="btnClearCodeBox" class="button" value="清空" />
                 </p>
             </div>
+        </div>
     </div>
     <script>
         function Hack(sid)

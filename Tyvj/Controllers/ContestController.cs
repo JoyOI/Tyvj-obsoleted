@@ -52,5 +52,18 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             return View(contest);
         }
+
+        [HttpGet]
+        public ActionResult GetStandings(int id)
+        {
+            var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
+            var contest = DbContext.Contests.Find(id);
+            if (!Helpers.Contest.UserInContest(user.ID, id))
+                return RedirectToAction("Register", "Contest", new { id = id });
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            var standings = Helpers.Standings.Build(id);
+            return Json(standings, JsonRequestBehavior.AllowGet);
+        }
     }
 }
