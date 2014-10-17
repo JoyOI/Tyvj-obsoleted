@@ -1028,14 +1028,12 @@ a.highlight {
 
 .tyvj-status-info-left {
     width:100px;
+    font-weight:bold;
 }
 
 .tyvj-status-info-middle {
     width:200px;
 }
-
-
-
 
 #page_discuss_detail .reply_root {
     line-height: 30px;

@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = Model.Username + " - 用户资料";
 }
+<style>
+    .tyvj-content, .tyvj-content-inner {
+        padding-bottom:0!important;
+    }
+</style>
 <script type="text/javascript" src="~/Scripts/jquery.flot.js"></script>
 <script type="text/javascript" src="~/Scripts/jquery.flot.time.js"></script>
 <div class="tyvj-left" style="width:755px;">
@@ -94,36 +99,37 @@
                                 });
                 </script>
             </div>
-            <div class="tyvj-content" style="padding-top:10px;">
-                <div class="tyvj-boder-top tyvj-content-inner">
-                    <h2>签名</h2>
-                    <p>@Model.Motto</p>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>签名</h2>
+                <p>@Model.Motto</p>
+            </div>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>联系</h2>
+                <div class="tyvj-status-info">
+                    <table>
+                        <tbody>
+                            <tr><td class="tyvj-status-info-left">Email</td><td>@Model.Email.Replace("@","#")</td></tr>
+                            <tr><td class="tyvj-status-info-left">QQ</td><td>@Model.QQ</td></tr>
+                            <tr><td class="tyvj-status-info-left">学校</td><td>@Model.School</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="tyvj-content" style="padding-top:10px;">
-                <div class="tyvj-boder-top tyvj-content-inner">
-                    <h2>联系</h2>
-                    <div class="tyvj-status-info">
-                        <table>
-                            <tbody>
-                                <tr><td class="tyvj-status-info-left">Email</td><td>@Model.Email.Replace("@","#")</td></tr>
-                                <tr><td class="tyvj-status-info-left">QQ</td><td>@Model.QQ</td></tr>
-                                <tr><td class="tyvj-status-info-left">学校</td><td>@Model.School</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner" style="padding-bottom:20px!important;">
+                <h2 style="margin-bottom: 10px;">通过题目</h2>
+                @foreach (var id in ViewBag.AcceptedList)
+                {
+                    <a href="/p/@id"><span class="label blue label-ac">P@(id)</span></a>
+                }
+                <div class="tyvj-clear"></div>
             </div>
-            <div class="tyvj-content" style="padding-top:10px;">
-                <div class="tyvj-boder-top tyvj-content-inner">
-                    <h2 style="margin-bottom: 10px;">通过题目</h2>
-                    @foreach (var id in ViewBag.AcceptedList)
-                    {
-                        <a href="/p/@id"><span class="label blue label-ac">P@(id)</span></a>
-                    }
-                    <div class="tyvj-clear"></div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
