@@ -15,6 +15,14 @@ namespace Tyvj.Controllers
         public ActionResult Index(int id)
         {
             var user = DbContext.Users.Find(id);
+            var ac_list = (from s in DbContext.Statuses
+                           where s.UserID == id
+                           && s.Problem.Hide == false
+                           && s.ResultAsInt == (int)JudgeResult.Accepted
+                           orderby s.ProblemID ascending
+                           select s.ProblemID).Distinct().ToList();
+            ac_list.Sort((a, b) => { return a - b; });
+            ViewBag.AcceptedList = ac_list;
             return View(user);
         }
 

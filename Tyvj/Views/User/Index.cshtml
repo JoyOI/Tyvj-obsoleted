@@ -117,7 +117,11 @@
             <div class="tyvj-content" style="padding-top:10px;">
                 <div class="tyvj-boder-top tyvj-content-inner">
                     <h2>通过题目</h2>
-                    
+                    @foreach (var id in ViewBag.AcceptedList)
+                    {
+                        <a href="/p/@id"><span class="label blue label-ac">P@(id)</span></a>
+                    }
+                    <div class="tyvj-clear"></div>
                 </div>
             </div>
         </div>
