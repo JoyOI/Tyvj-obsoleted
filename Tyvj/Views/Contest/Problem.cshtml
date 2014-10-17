@@ -64,3 +64,11 @@
         <li><a class="action" href="/Contest/@Model.ID/Problem">比赛题目设置</a></li>
     </ul>
 </div>
+<script>
+    $("#txtNewPID").change(function () {
+        var pid = $("#txtNewPID").val();
+        $.get("/Problem/GetTitle/" + pid, {}, function (title) {
+            $("#lbNewTitle").html(title);
+        });
+    });
+</script>

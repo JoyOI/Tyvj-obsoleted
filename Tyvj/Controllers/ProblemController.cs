@@ -118,5 +118,12 @@ namespace Tyvj.Controllers
             ViewBag.Statuses = statuses;
             return View(problem);
         }
+
+        [HttpGet]
+        public ActionResult GetTitle(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            return Content(problem.Title);
+        }
     }
 }
