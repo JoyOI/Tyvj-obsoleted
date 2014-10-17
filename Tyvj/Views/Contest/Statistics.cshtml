@@ -83,7 +83,7 @@
         }
         @if (User.Identity.IsAuthenticated && (Model.UserID == ViewBag.CurrentUser.ID || ViewBag.CurrentUser.Role >= UserRole.Master))
         {
-            <li><a class="action" href="/Contest/@Model.ID/Manage">管理比赛</a></li>
+            <li><a class="action" href="/Contest/@Model.ID/Edit">管理比赛</a></li>
         }
     </ul>
 </div>
