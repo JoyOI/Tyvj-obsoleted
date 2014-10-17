@@ -11,6 +11,11 @@ namespace Tyvj.Helpers
         public static bool UserInContest(int UserID, int ContestID)
         { 
             var DbContext = new DB();
+            var contest = DbContext.Contests.Find(ContestID);
+            if (string.IsNullOrEmpty(contest.Password))
+            {
+                return true;
+            }
             return (from cr in DbContext.ContestRegisters
                     where cr.UserID == UserID
                     && cr.ContestID == ContestID

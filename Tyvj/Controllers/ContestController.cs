@@ -76,5 +76,34 @@ namespace Tyvj.Controllers
             var standings = Helpers.Standings.Build(id);
             return Json(standings, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult Register(int id)
+        {
+            var contest = DbContext.Contests.Find(id);
+            return View(contest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Register(int id, string Password)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (string.IsNullOrEmpty(contest.Password) || contest.Password == Password)
+            {
+                DbContext.ContestRegisters.Add(new ContestRegister
+                {
+                    ContestID = id,
+                    UserID = ViewBag.CurrentUser.ID
+                });
+                DbContext.SaveChanges();
+                return RedirectToAction("Show", "Contest", new { id = id });
+            }
+            else
+            {
+                return RedirectToAction("Message", "Shared", new { msg="参赛密码不正确！" });
+            }
+        }
     }
 }
