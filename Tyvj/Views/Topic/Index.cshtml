@@ -5,76 +5,102 @@
 <div class="post-detail-body">
     <div class="cont-wrap">
         <div class="grid_12">
-            <div class="post-detail-wrap-outer">
-                <div class="post-detail-wrap">
-                    <div class="post-action">@Html.ActionLink("← " + Model.Forum.Title, "Index", "Forum", new { id = Model.ForumID }, null)</div>
-                    <div class="post-title"><h2>@Model.Title</h2></div>
-                    <div class="post-info">
-                        @Html.Gravatar(Model.User.Gravatar, 180, "post-face") <a href="/User/@Model.UserID">@Html.Nickname(Model.User.Username, Model.User.Ratings.Sum(x => x.Credit) + 1500, "post-info")</a> @@@Html.ToTimeTip(Model.Time)
-                        @if (User.Identity.IsAuthenticated && (((Tyvj.DataModels.User)ViewBag.CurrentUser).ID == Model.UserID || ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master))
-                        {
-                            <a class="post-info" href="javascript:$('#DisplayArea').hide();$('#EditArea').fadeIn();CKEDITOR.replace('EditTopic',{toolbar: 'Basic',width:'100%',height:'170px'});" id="btnTopicEdit" class="post-info">编辑</a>
-                            <a class="post-info" href="javascript:$('#frmDeleteTopic').submit();" id="btnDeleteTopic" class="post-info">删除</a>
-                            using (Html.BeginForm("Delete", "Topic", FormMethod.Post, new { id = "frmDeleteTopic", style = "display:none;" }))
+            <div id="page_discuss_detail">
+                <div class="block">
+                    <div class="block-content">
+                        <div class="post-action">@Html.ActionLink("← " + Model.Forum.Title, "Index", "Forum", new { id = Model.ForumID }, null)</div>
+
+                        <table id="discuss_detail_list">
+                            <colgroup>
+                                <col class="dll" />
+                                <col class="dlr" />
+                            </colgroup>
+                            <tr class="dl owner">
+                                <td class="dll">
+                                    <div>
+                                        <a href="/User/@Model.UserID">@Html.Nickname(Model.User.Username, Model.User.Ratings.Sum(x => x.Credit) + 1500, "post-info")</a>
+                                    </div>
+                                    <div>@Html.Gravatar(Model.User.Gravatar, 180, "face")</div>
+                                </td>
+                                <td class="dlr">
+                                    <div class="head">
+                                        <span class="title">@Model.Title</span>
+                                        &nbsp;&nbsp;
+                                        <span class="time">@@@Html.ToTimeTip(Model.Time)</span>
+                                        <span class="action">
+                                            @if (User.Identity.IsAuthenticated && (((Tyvj.DataModels.User)ViewBag.CurrentUser).ID == Model.UserID || ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master))
+                                            {
+                                                <a class="post-info" href="javascript:$('#DisplayArea').hide();$('#EditArea').fadeIn();CKEDITOR.replace('EditTopic',{toolbar: 'Basic',width:'100%',height:'170px'});" id="btnTopicEdit" class="post-info">编辑</a>
+                                                <a class="post-info" href="javascript:$('#frmDeleteTopic').submit();" id="btnDeleteTopic" class="post-info">删除</a>
+                                                using (Html.BeginForm("Delete", "Topic", FormMethod.Post, new { id = "frmDeleteTopic", style = "display:none;" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" value="@Model.ID" name="id" />
+                                                }
+                                                if (((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master)
+                                                {
+                                                    if (Model.Top)
+                                                    {
+                                                        <a class="post-info" href="javascript:$.post('/Topic/UnSetTop',$('#frmUnSetTop').serialize(),function(){CastMsg('已经取消置顶');})">取消置顶</a>
+                                                        using (Html.BeginForm("UnSetTop", "Topic", FormMethod.Post, new { id = "frmUnSetTop", style = "display:none" }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" value="@Model.ID" name="id" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="post-info" href="javascript:$.post('/Topic/SetTop',$('#frmSetTop').serialize(),function(){CastMsg('已经设置置顶');})">置顶</a>
+                                                        using (Html.BeginForm("SetTop", "Topic", FormMethod.Post, new { id = "frmSetTop", style = "display:none" }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" value="@Model.ID" name="id" />
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            @if (User.Identity.IsAuthenticated && ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master)
+                                            {
+                                                <div class="post-content" id="EditArea" style="display:none">
+                                                    @using (Html.BeginForm("Edit", "Topic", FormMethod.Post, new { id = "frmEditTopic" }))
+                                                    {
+                                                        @Html.AntiForgeryToken();
+                                                        <input type="hidden" value="@Model.ID" name="id" />
+                                                        <p><textarea id="EditTopic" name="content">@Html.Sanitized(Model.Content)</textarea></p>
+                                                        <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" /></p>
+                                                    }
+                                                </div>
+                                                <script>
+                                                    $("#btnEditSubmit").click(function(){
+                                                        $("#EditTopic").val(CKEDITOR.instances.EditTopic.getData());
+                                                        $.post("/Topic/Edit/@(Model.ID)",$("#frmEditTopic").serialize(),function(){
+                                                            javascript:CKEDITOR.instances.EditTopic.destroy();
+                                                            $("#DisplayArea").html($("#EditTopic").val());
+                                                            $("#EditArea").hide();
+                                                            $("#DisplayArea").fadeIn();
+                                                        });
+                                                    });
+                                                </script>
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="content" id="DisplayArea">@Html.Sanitized(Model.Content)</div>
+                                </td>
+                            </tr>
+
+                            @if (User.Identity.IsAuthenticated)
                             {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" value="@Model.ID" name="id" />
-                            }
-                            if (((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master)
-                            {
-                                if (Model.Top)
-                                {
-                                    <a class="post-info" href="javascript:$.post('/Topic/UnSetTop',$('#frmUnSetTop').serialize(),function(){CastMsg('已经取消置顶');})">取消置顶</a>
-                                    using (Html.BeginForm("UnSetTop", "Topic", FormMethod.Post, new { id = "frmUnSetTop", style = "display:none" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" value="@Model.ID" name="id" />
-                                    }
-                                }
-                                else
-                                {
-                                    <a class="post-info" href="javascript:$.post('/Topic/SetTop',$('#frmSetTop').serialize(),function(){CastMsg('已经设置置顶');})">置顶</a>
-                                    using (Html.BeginForm("SetTop", "Topic", FormMethod.Post, new { id = "frmSetTop", style = "display:none" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" value="@Model.ID" name="id" />
-                                    }
-                                }
-                            }
-                        }
-                    </div>
-                    <div class="post-content" id="DisplayArea">@Html.Sanitized(Model.Content)</div>
-                    @if (User.Identity.IsAuthenticated && ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master)
-                    {
-                        <div class="post-content" id="EditArea" style="display:none">
-                            @using (Html.BeginForm("Edit", "Topic", FormMethod.Post, new { id = "frmEditTopic" }))
-                            {
-                                @Html.AntiForgeryToken();
-                                <input type="hidden" value="@Model.ID" name="id" />
-                                <p><textarea id="EditTopic" name="content">@Html.Sanitized(Model.Content)</textarea></p>
-                                <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" /></p>
-                            }
-                        </div>
-                        <script>
-                            $("#btnEditSubmit").click(function(){
-                                $("#EditTopic").val(CKEDITOR.instances.EditTopic.getData());
-                                $.post("/Topic/Edit/@(Model.ID)",$("#frmEditTopic").serialize(),function(){
-                                    javascript:CKEDITOR.instances.EditTopic.destroy();
-                                    $("#DisplayArea").html($("#EditTopic").val());
-                                    $("#EditArea").hide();
-                                    $("#DisplayArea").fadeIn();
-                                });
-                            });
-                        </script>
-                    }
-                    <div id="lstReplies">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <div class="post-comment" id="NewReplyOut">
-                                <div class="comment-item" id="NewReply">
-                                    <div class="comment-body">
-                                        <div class="comment-info">@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
-                                        <div class="comment-content">
+                                <tr class="dl">
+                                    <td class="dll">
+                                        <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
+                                        <div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div>
+                                    </td>
+                                    <td class="dlr">
+                                        <div class="head">
+                                             发表评论
+                                        </div>
+                                        <div class="content">
                                             @using (Html.BeginForm("Create", "Reply", new { id = Model.ID }, FormMethod.Post, new { id = "frmPostReply" }))
                                             {
                                                 @Html.AntiForgeryToken()
@@ -83,25 +109,16 @@
                                                 <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"></div>
                                             }
                                         </div>
-                                    </div>
-                                    <div class="comment-face">@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "")</div>
-                                </div>
-                            </div>
-                            <div class="post-comment" id="NewPost0" style="display:none">
-                                <div class="comment-item">
-                                    <div class="comment-body">
-                                        <div class="comment-info">@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
-                                        <div class="comment-content">
-                                            <a href="javascript:$('#NewPost0').hide();CKEDITOR.instances.content.destroy();$('#father_id').val('');$('#NewReplyOut').prepend($('#NewReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000); ">发表回复</a>
-                                        </div>
-                                    </div>
-                                    <div class="comment-face">@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "")</div>
-                                </div>
-                            </div>
-                        }
+                                    </td>
+                                </tr>
+
+                            }
+                            
+
+                        </table>
                     </div>
-                    <div><div class="loading" id="iconLoading"></div></div>
                 </div>
+
             </div>
         </div>
     </div><div class="clear"></div>
@@ -133,7 +150,7 @@
                     CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});
                     $("html,body").animate({scrollTop:$("#NewReply"+(father_id==""?"Out":father_id)).offset().top - 50},300);
                     PostReplyBinding();
-                }).complete(function() { 
+                }).complete(function() {
                     // CKEditor高亮
                     $('.ckeditor-code').each(function () {
                         $(this).html('<code>' + $(this).html() + '</code>');

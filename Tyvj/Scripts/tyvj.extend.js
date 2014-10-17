@@ -169,14 +169,14 @@ function LoadTopics() {
 
 
 function LoadReplies() {
-    if ($("#lstReplies").length > 0) {
+    if ($("#discuss_detail_list").length > 0) {
         $.post("/Reply/GetReplies/", {
             id:id,
             page: page,
             rnd: Math.random()
         }, function (replies) {
-            if (replies.length < 20) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
-            $("#lstReplies").append(replies);
+            if (replies.length < 20) { lock = true; return; }//尾页锁定
+            $("#discuss_detail_list").append(replies);
 
             // CKEditor高亮
             $('.ckeditor-code').each(function () {
@@ -186,8 +186,7 @@ function LoadReplies() {
 
             PostReplyBinding();
             lock = false;
-            page++;
-            $("#iconLoading").hide();
+            page++
             if (window.location.hash != null && $(window.location.hash).length > 0)
                 $('html,body').scrollTop($(window.location.hash).offset().top + 170);
         }).complete(function () {

@@ -463,6 +463,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Styles\codemirror.css" />
     <Content Include="Styles\colorbox.css" />
+    <Content Include="Styles\de.css" />
     <Content Include="Styles\PIE.htc" />
     <Content Include="Styles\tyvj.base.css" />
     <Content Include="Styles\tyvj.extend.css" />
