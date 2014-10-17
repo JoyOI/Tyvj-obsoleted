@@ -20,7 +20,7 @@ namespace Tyvj.DataModels
 
         [Column("father_id")]
         [ForeignKey("Father")]
-        public int FatherID { get; set; }
+        public int? FatherID { get; set; }
 
         public virtual Forum Father { get; set; }
 
