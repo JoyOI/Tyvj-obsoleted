@@ -43,12 +43,18 @@
     </div>
     <ul class="section" id="actions" style="margin-left:10px">
         <li><a class="action" href="/Contest/@Model.ID">比赛首页</a></li>
-        <li><a class="action" href="/Contest/@Model.ID/Standings">比赛排名</a></li>
-        <li><a class="action" href="/Contest/@Model.ID/Statistics">数据统计</a></li>
-        <li><a class="action" href="/Contest/@Model.ID/Statuses">提交记录</a></li>
-        <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
-        <li><a class="action" href="/Contest/@Model.ID/Clarification">答疑平台</a></li>
-        @if (User.Identity.IsAuthenticated)
+        @if (Model.Begin <= DateTime.Now)
+        {
+            if (Model.Format == ContestFormat.OI && DateTime.Now >= Model.End || Model.Format != ContestFormat.OI)
+            {
+                <li><a class="action" href="/Contest/@Model.ID/Standings">比赛排名</a></li>
+                <li><a class="action" href="/Contest/@Model.ID/Statistics">数据统计</a></li>
+                <li><a class="action" href="/Contest/@Model.ID/Statuses">提交记录</a></li>
+                <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
+            }
+            <li><a class="action" href="/Contest/@Model.ID/Clarification">答疑平台</a></li>
+        }
+        @if (User.Identity.IsAuthenticated && (Model.UserID == ViewBag.CurrentUser.ID || ViewBag.CurrentUser.Role >= UserRole.Master))
         {
             <li><a class="action" href="/Contest/@Model.ID/Manage">管理比赛</a></li>
         }
