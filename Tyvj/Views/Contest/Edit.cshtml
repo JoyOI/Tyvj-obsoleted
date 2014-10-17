@@ -2,7 +2,15 @@
 @{
     ViewBag.Title = Model.Title + " - 比赛设置";
 }
+<style>
+    .tyvj-status-info {
+        line-height: 40px;
+    }
 
+    .select {
+        width: 120px;
+    }
+</style>
 <div class="tyvj-left" style="width:755px;">
     <div class="tyvj-shadow">
         <div class="tyvj-content-header">
@@ -13,29 +21,29 @@
                 <h2>基本信息设置</h2>
                 @using (Html.BeginForm("Edit", "Contest", new { id = Model.ID }, FormMethod.Post, null))
                 {
-                    @Html.AntiForgeryToken()
-                    <table>
-                        <tbody>
-                            <tr><td class="tyvj-status-info-left">比赛名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>
-                            <tr>
-                                <td class="tyvj-status-info-left">比赛赛制</td>
-                                <td>
-                                    <select class="select" id="lstFormat">
-                                        <option value="0" @(Model.Format == ContestFormat.OI ? "selected" : "")>OI</option>
-                                        <option value="1" @(Model.Format == ContestFormat.ACM ? "selected" : "")>ACM</option>
-                                        <option value="2" @(Model.Format == ContestFormat.Codeforces ? "selected" : "")>Codeforces</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr><td class="tyvj-status-info-left">开始时间</td><td>@Html.TextBox("Begin", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
-                            <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
-                            <tr><td class="tyvj-status-info-left">比赛密码</td><td>@Html.Password("Password", "", new { @class = "textbox" }) (留空为公开赛)</td></tr>
-                            <tr><td class="tyvj-status-info-left">比赛介绍</td><td><textarea class="ckeditor" name="Description"></textarea></td></tr>
-                            <tr><td class="tyvj-status-info-left"></td><td><input type="submit" value="保存" id="btnSave" class="button" /></td></tr>
-                        </tbody>
-                    </table>
-                }
-            </div>
+                    @Html.AntiForgeryToken()<div class="tyvj-status-info">
+                        <table>
+                            <tbody>
+                                <tr><td class="tyvj-status-info-left">比赛名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>
+                                <tr>
+                                    <td class="tyvj-status-info-left">比赛赛制</td>
+                                    <td>
+                                        <select class="select" id="lstFormat">
+                                            <option value="0" @(Model.Format == ContestFormat.OI ? "selected" : "")>OI</option>
+                                            <option value="1" @(Model.Format == ContestFormat.ACM ? "selected" : "")>ACM</option>
+                                            <option value="2" @(Model.Format == ContestFormat.Codeforces ? "selected" : "")>Codeforces</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr><td class="tyvj-status-info-left">开始时间</td><td>@Html.TextBox("Begin", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">比赛密码</td><td>@Html.Password("Password", "", new { @class = "textbox" }) (留空为公开赛)</td></tr>
+                                <tr><td class="tyvj-status-info-left">比赛介绍</td><td><textarea class="ckeditor" name="Description"></textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left"></td><td><input type="submit" value="保存" id="btnSave" class="button button-def" /></td></tr>
+                            </tbody>
+                        </table></div>
+                        }
+                    </div>
         </div>
     </div>
 </div>
