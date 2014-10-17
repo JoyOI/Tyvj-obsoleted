@@ -56,7 +56,7 @@ namespace Tyvj.SignalR
                 return null;
             return DbContext.TestCases.Find(ID).Hash;
         }
-        public bool Auth(string Username, string Password, int MaxThreads)
+        public void Auth(string Username, string Password, int MaxThreads)
         {
             var pwd = Helpers.Security.SHA1(Password);
             var user = (from u in DbContext.Users
@@ -107,9 +107,7 @@ namespace Tyvj.SignalR
                     DbContext.SaveChanges();
                     SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
                 }
-                return true;
             }
-            return false;
         }
         public void JudgeFeedBack(JudgeFeedback jfb)
         {
@@ -127,7 +125,7 @@ namespace Tyvj.SignalR
                 jt.Status.ResultAsInt = jt.Status.JudgeTasks.Max(x => x.ResultAsInt);
                 DbContext.SaveChanges();
                 var contest = jt.Status.Contest;
-                if (DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
+                if (contest!=null && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                 {
                     SignalR.UserHub.context.Clients.All.onStandingsChanged(contest.ID, new vStanding(jt.Status.User, contest));
                 }

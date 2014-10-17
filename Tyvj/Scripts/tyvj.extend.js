@@ -364,7 +364,7 @@ $(document).ready(function () {
     UserHub = $.connection.userHub;
     UserHub.client.onStatusChanged = function (status) {
         if ($("#lstStatuses").length > 0) {
-            if ($("#s-" + status.ID) > 0) {
+            if ($("#s-" + status.ID).length > 0) {
                 $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
