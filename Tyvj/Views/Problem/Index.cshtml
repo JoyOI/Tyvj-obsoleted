@@ -44,10 +44,10 @@
 </div>
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
-        <h2>检索</h2>
+        <h3>检索</h3>
         <p><input type="text" placeholder="题目名称" class="textbox" id="txtTitle" /></p>
         <p><input type="button" value="检索" class="button button-def" id="btnSearch" /></p>
-        <h2>分类</h2>
+        <h3>分类</h3>
         @foreach (AlgorithmTag father in ViewBag.Tags)
         { 
             <h3>@father.Title</h3>
@@ -56,7 +56,7 @@
                 
             }
         }
-        <h2>检索</h2>
+        <h3>操作</h3>
         <p><a href="/Problem/Create">我来上传题目</a></p>
     </div>
 
