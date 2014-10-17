@@ -14,7 +14,7 @@
     <div class="tyvj-shadow tyvj-content-narrow">
         <div class="tyvj-content-narrow-header">创建题目</div>
         <div class="tyvj-content" style="margin-top:40px;">
-            @using (Html.BeginForm("Register", "User", null, FormMethod.Post, null))
+            @using (Html.BeginForm("Create", "Problem", null, FormMethod.Post, null))
             {
                 @Html.AntiForgeryToken()
                 <p>为了保证题库质量，请不要重复创建题库中已有的题目。</p>

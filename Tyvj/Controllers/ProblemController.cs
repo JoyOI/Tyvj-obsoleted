@@ -148,5 +148,31 @@ namespace Tyvj.Controllers
                 problems.Add(new vExistedProblem(p));
             return Json(problems, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Create(string ProblemTitle)
+        {
+            var problem = new Problem 
+            { 
+                UserID = CurrentUser.ID,
+                RangeValidator = "",
+                SpecialJudge = "",
+                StandardProgram = "",
+                Official = false,
+                MemoryLimit = 65536,
+                TimeLimit = 1000,
+                Title = ProblemTitle,
+                Hide = true,
+                Background = "",
+                Description="请在此填写题目描述",
+                Input = "请在此填写输入格式",
+                Output = "请在此填写输出格式"
+            };
+            DbContext.Problems.Add(problem);
+            DbContext.SaveChanges();
+            return RedirectToAction("Edit", "Problem", new { id = problem.ID });
+        }
     }
 }
