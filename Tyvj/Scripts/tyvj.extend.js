@@ -178,9 +178,11 @@ function LoadStatuses() {
             }
             for (var i = 0; i < statuses.length; i++) {
                 if (statuses[i] == null) continue;
+                var ac = "";
+                if (statuses[i].Score == 100) ac = "ac";
                 $("#lstStatuses").append('<tr id="s-' + statuses[i].ID + '" class="tyvj-list-body-tr">'
                                                  + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState' + statuses[i].ResultAsInt + '">' + statuses[i].Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + statuses[i].Score + '%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + statuses[i].Score + '%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + statuses[i].TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + statuses[i].MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + statuses[i].ProblemID + '" target="_self">P' + statuses[i].ProblemID + '&nbsp;' + statuses[i].ProblemTitle + '</a></span></div></td>'
@@ -397,9 +399,11 @@ $(document).ready(function () {
     UserHub = $.connection.userHub;
     UserHub.client.onStatusChanged = function (status) {
         if ($("#lstStatuses").length > 0) {
+            var ac = "";
+            if (status.Score == 100) ac = "ac";
             if ($("#s-" + status.ID).length > 0) {
                 $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg '+ac+'"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
@@ -410,7 +414,7 @@ $(document).ready(function () {
             else {
                 $("#lstStatuses").prepend('<tr id="s-' + status.ID + '" class="tyvj-list-body-tr">'
                                                  + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' +ac+'"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'

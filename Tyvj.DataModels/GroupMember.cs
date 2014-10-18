@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tyvj.DataModels
 {
-    [Table("news")]
-    public class News
+    [Table("group_members")]
+    public class GroupMember
     {
         [Column("id")]
         public int ID { get; set; }
 
-        [Column("title")]
-        public string Title { get; set; }
+        [Column("group_id")]
+        [ForeignKey("Group")]
+        public int GroupID { get; set; }
 
-        [Column("time")]
-        public DateTime Time { get; set; }
+        public virtual Group Group { get; set; }
 
-        [Column("content")]
-        public string Content { get; set; }
+        [Column("user_id")]
+        [ForeignKey("User")]
+        public int UserID { get; set; }
+
+        public virtual User User { get; set; }
 
         public override bool Equals(object obj)
         {
-            var data = obj as News;
+            var data = obj as GroupMember;
             if (data.ID == this.ID) return true;
             return false;
         }
