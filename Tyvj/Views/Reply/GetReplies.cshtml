@@ -23,7 +23,7 @@
                                     <input type="hidden" value="@reply.ID" name="id" />
                                 }
                             }
-                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('#btnCancle').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');$('div[id^=NewReply]').removeClass('rwrap');$('#NewReply@(reply.ID)').addClass('rwrap');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('#btnCancle').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                         }
                     </span>
                     &nbsp;&nbsp;
@@ -31,20 +31,18 @@
                 </div>
                 <div class="content">
                     @Html.Sanitized(reply.Content)
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div id="NewReply@(reply.ID)" class="content temp">
-                            @*<div>@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
-                                <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>*@
-                        </div>
-                    }
-
                 </div>
 
                 @if (reply.Replies.Count() > 0 || User.Identity.IsAuthenticated)
                 {
-
                     <div class="replies">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div id="NewReply@(reply.ID)" class="content  tyvj-clear" >
+                                @*<div>@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
+                                    <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>*@
+                            </div>
+                        }
                         @foreach (var replyinreply in reply.Replies.OrderByDescending(x => x.Time))
                         {
                             <div class="rwrap tyvj-clear" id="reply_@(replyinreply.ID)">
@@ -66,52 +64,15 @@
                                                     <input type="hidden" value="@replyinreply.ID" name="id" />
                                                 }
                                             }
-                                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@replyinreply.ID');$('#btnCancle').show();$('#NewReply@(replyinreply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');$('div[id^=NewReply]').removeClass('rwrap');$('#NewReply@(reply.ID)').addClass('rwrap');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                                         }
                                     </div>
                                     <div class="content">
                                         <div class="comment-content">@Html.Sanitized(replyinreply.Content)</div>
                                     </div>
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <div id="NewReply@(replyinreply.ID)">
-                                        </div>
-                                    }
+
                                 </div>
                             </div>
-
-                            if (replyinreply.Replies.Count() > 0 || User.Identity.IsAuthenticated)
-                            {
-
-                                foreach (var replyinnreply in replyinreply.Replies.OrderByDescending(x => x.Time))
-                                {
-                                    <div class="rwrap tyvj-clear" id="reply_@(replyinnreply.ID)">
-                                        <div class="rl">
-                                            @Html.Gravatar(replyinnreply.User.Gravatar, 180, "face1")
-                                        </div>
-                                        <div class="rr">
-                                            <div class="info">
-                                                <a href="/User/@replyinnreply.UserID">@Html.Nickname(replyinnreply.User.Username, replyinnreply.User.Ratings.Sum(x => x.Credit) + 1500, "comment-info")</a> @@@Html.ToTimeTip(replyinnreply.Time)
-                                                @if (User.Identity.IsAuthenticated)
-                                                {
-                                                    if (replyinnreply.UserID == ViewBag.CurrentUser.ID || replyinnreply.Father.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
-                                                    {
-                                                        <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(replyinnreply.ID)').serialize(),function(){$('#reply_@(replyinnreply.ID)').hide()});">删除</a>
-                                                        using (Html.BeginForm("Delete", "Reply", FormMethod.Post, new { id = "frmDeleteReply" + replyinreply.ID, style = "display:none;" }))
-                                                        {
-                                                            @Html.AntiForgeryToken()
-                                                            <input type="hidden" value="@replyinnreply.ID" name="id" />
-                                                        }
-                                                    }
-                                                }
-                                            </div>
-                                            <div class="content">
-                                                <div class="comment-content">@Html.Sanitized(replyinnreply.Content)</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
                         }
                     </div>
                 }
