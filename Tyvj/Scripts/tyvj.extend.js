@@ -305,7 +305,7 @@ function LoadRanks_Ratings() {
                 if (ranks[i].Motto.length > 0)
                     html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
                 html += '     </div>'
-                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '     <div class="footer">Rating: ' + ranks[i].Credit + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
                                         + '<td class="c3">#1</td>'
                                         + '</tr>';
@@ -340,7 +340,7 @@ function LoadRanks_AC() {
                 if (ranks[i].Motto.length>0)
                     html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
                 html += '     </div>'
-                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '     <div class="footer">Rating: ' + ranks[i].Credit + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
                                         + '<td class="c3">#1</td>'
                                         + '</tr>';

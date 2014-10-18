@@ -31,13 +31,14 @@ namespace Tyvj.Controllers
         public ActionResult GetRanksByAC(int page)
         {
             var users = (from u in DbContext.Users
-                         orderby (from s in DbContext.Statuses
+                            let ac = (from s in DbContext.Statuses
+                                          where s.UserID == u.ID
+                                          && s.ResultAsInt == 0
+                                          select s.ProblemID).Distinct().Count()
+                         let count = (from s in DbContext.Statuses
                                       where s.UserID == u.ID
-                                      && s.ResultAsInt == (int)JudgeResult.Accepted
-                                      select s.ProblemID).Distinct().Count() descending,
-                                      (from s in DbContext.Statuses
-                                           where s.UserID == u.ID
-                                           select s).Count() ascending
+                                      select s.ProblemID).Count()
+                                      orderby ac descending, count ascending
                          select u).Skip(10 * page).Take(10).ToList();
             List<vRank> ratings = new List<vRank>();
             for (int i = 0; i < users.Count(); i++)
