@@ -25,7 +25,7 @@ namespace Tyvj.Controllers
             if (ForumID == null)
             {
                 _topics = (from t in DbContext.Topics
-                           orderby t.LastReply descending
+                           orderby t.LastReply descending 
                            select t).Skip(page * 10).Take(10).ToList();
             }
             else

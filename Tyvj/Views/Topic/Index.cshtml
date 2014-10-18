@@ -7,7 +7,7 @@
         <div class="grid_12">
             <div id="page_discuss_detail">
                 <div class="block">
-                    <div class="block-content">
+                    <div class="block-content tyvj-shadow">
                         <table id="discuss_detail_list">
                             <colgroup>
                                 <col class="dll" />
@@ -66,8 +66,7 @@
                                                         @Html.AntiForgeryToken();
                                                         <input type="hidden" value="@Model.ID" name="id" />
                                                         <p><textarea id="EditTopic" name="content">@Html.Sanitized(Model.Content)</textarea></p>
-                                                        <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" />
-                                                            <a id="btnEditCancle" href="javascript:$('#DisplayArea').fadeIn();$('#EditArea').hide();" class="button button-def">取消</a></p>
+                                                        <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" /></p>
                                                     }
                                                 </div>
                                                 <script>
@@ -107,7 +106,7 @@
                                                             @Html.AntiForgeryToken()
                                                             <textarea id="content" name="content"></textarea>
                                                             <input type="hidden" value="" name="father_id" id="father_id" />
-                                                            <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"><a id="btnCancle" class="button button-def">取消</a></div>
+                                                            <div class="form-line"><p><input id="btnSubmit" class="button button-def" value="回复" type="button"></p></div>
                                                         }
                                                     </div>
                                                 </div>

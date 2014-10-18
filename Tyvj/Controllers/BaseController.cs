@@ -47,5 +47,6 @@ namespace Tyvj.Controllers
         {
             return RedirectToAction("Message", "Shared", new { msg = msg });
         }
+
     }
 }

@@ -189,6 +189,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -512,6 +513,7 @@
     <Content Include="Views\Problem\Spj.cshtml" />
     <Content Include="Views\Problem\Std.cshtml" />
     <Content Include="Views\Problem\Range.cshtml" />
+    <Content Include="Views\Share\Message.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
