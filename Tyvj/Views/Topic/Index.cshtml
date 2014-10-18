@@ -8,8 +8,6 @@
             <div id="page_discuss_detail">
                 <div class="block">
                     <div class="block-content">
-                        <div class="post-action">@Html.ActionLink("← " + Model.Forum.Title, "Index", "Forum", new { id = Model.ForumID }, null)</div>
-
                         <table id="discuss_detail_list">
                             <colgroup>
                                 <col class="dll" />
@@ -60,7 +58,7 @@
                                                 }
                                             }
 
-                                            @if (User.Identity.IsAuthenticated && ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master)
+                                            @if (User.Identity.IsAuthenticated && (((Tyvj.DataModels.User)ViewBag.CurrentUser).ID == Model.UserID || ((Tyvj.DataModels.User)ViewBag.CurrentUser).Role >= UserRole.Master))
                                             {
                                                 <div class="post-content" id="EditArea" style="display:none">
                                                     @using (Html.BeginForm("Edit", "Topic", FormMethod.Post, new { id = "frmEditTopic" }))
@@ -68,7 +66,8 @@
                                                         @Html.AntiForgeryToken();
                                                         <input type="hidden" value="@Model.ID" name="id" />
                                                         <p><textarea id="EditTopic" name="content">@Html.Sanitized(Model.Content)</textarea></p>
-                                                        <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" /></p>
+                                                        <p><input id="btnEditSubmit" class="button button-def" value="提交" type="button" />
+                                                            <a id="btnEditCancle" href="javascript:$('#DisplayArea').fadeIn();$('#EditArea').hide();" class="button button-def">取消</a></p>
                                                     }
                                                 </div>
                                                 <script>
@@ -108,7 +107,7 @@
                                                             @Html.AntiForgeryToken()
                                                             <textarea id="content" name="content"></textarea>
                                                             <input type="hidden" value="" name="father_id" id="father_id" />
-                                                            <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"></div>
+                                                            <div class="form-line"><input id="btnSubmit" class="button button-def" value="回复" type="button"><a id="btnCancle" class="button button-def">取消</a></div>
                                                         }
                                                     </div>
                                                 </div>
@@ -116,7 +115,7 @@
                                                     <div class="comment-item">
                                                         <div class="comment-body">
                                                             <div class="comment-content">
-                                                                <a href="javascript:$('#NewPost0').hide();$('#headWarning').show();CKEDITOR.instances.content.destroy();$('#father_id').val('');$('#NewReplyContent').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000); ">发表回复</a>
+                                                                <a href="javascript:$('#NewPost0').hide();$('#headWarning').show();$('#btnCancle').hide();CKEDITOR.instances.content.destroy();$('#father_id').val('');$('#NewReplyContent').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000); ">发表回复</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,6 +124,11 @@
                                         </tr>
                             }
                         </table>
+                    </div>
+                    <div>
+                        <a href="javascript:Load()">
+                            <div class="block-more enabled" id="btnMore">点击加载更多</div>
+                        </a>
                     </div>
                 </div>
 
@@ -139,6 +143,9 @@
 {
     <script>
         $('#NewPost0').hide();
+        if($("#father_id").val()==""){
+            $("#btnCancle").hide();
+        }
         CKEDITOR.replace('content',
         {
             toolbar: 'Basic',
@@ -147,8 +154,8 @@
         });
         function PostReplyBinding()
         {
+
             $("#btnSubmit").unbind().click(function(){
-                var demo=$(this).parent("div").parent("form");
                 $("#content").val(CKEDITOR.instances.content.getData());
                 var content=CKEDITOR.instances.content.getData();
                 var father_id = $("#father_id").val();
@@ -162,14 +169,17 @@
                         var str="<div class='rwrap tyvj-clear' id='reply_@ViewBag.CurrentUser.ID'><div class='rl'>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face1")</div>"
                             +"<div class='rr'><div class='info'><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a>@@刚刚</div><div class='content'><div class='comment-content'>"+content+"</div></div></div></div>";
                         var reply_list_before= $("#reply_"+father_id).children(".dlr").children(".replies");
-                        alert(reply_list_before.text());
-                        reply_list_before.prepend(str);
+                       
+                        if(reply_list_before.text()==""){
+                            reply_list_before=$("#reply_"+father_id);
+                            reply_list_before.after(str);
+                        }else{
+                            reply_list_before.prepend(str);
+                        }
                     }
                    
-                  //  $("#NewReply"+(father_id==""?"Out":father_id)).prepend('<div class="comment-item"><div class="comment-body"><div class="comment-info">@ViewBag.CurrentUser.Username @@刚刚</div><div class="comment-content">'+$("#content").val()+'</div></div><div class="comment-face">{Gravatar}</div></div>'.replace("{Gravatar}","@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "")"));
                     CKEDITOR.instances.content.destroy();
                     $("#content").val("");
-                    //$('#father_id').val("");
                     CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});
                     $("html,body").animate({scrollTop:$("#NewReply"+(father_id==""?"Out":father_id)).offset().top - 50},300);
                     PostReplyBinding();
@@ -184,6 +194,15 @@
                         hljs.highlightBlock(block);
                     });
                 });
+            });
+
+            $("#btnCancle").unbind().click(function(){
+                $('#NewPost0').hide();
+                $('#headWarning').show();
+                CKEDITOR.instances.content.destroy();
+                $('#father_id').val('');$('#NewReplyContent').prepend($('#frmPostReply'));
+                CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});
+                $('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000);
             });
         }
         PostReplyBinding();

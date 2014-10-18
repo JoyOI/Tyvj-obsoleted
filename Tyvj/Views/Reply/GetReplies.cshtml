@@ -24,7 +24,7 @@
                                 }
                             }
 
-                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('#btnCancle').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                         }
                     </span>
                     &nbsp;&nbsp;
@@ -42,15 +42,12 @@
 
                 @if (reply.Replies.Count() > 0 || User.Identity.IsAuthenticated)
                 {
-                    if (User.Identity.IsAuthenticated)
-                    {
-                        <div id="NewReply@(reply.ID)">
-                        </div>
-                    }
+
                     <div class="replies">
                         @foreach (var replyinreply in reply.Replies.OrderByDescending(x => x.Time))
                         {
                             <div class="rwrap tyvj-clear" id="reply_@(replyinreply.ID)">
+
                                 <div class="rl">
                                     @Html.Gravatar(replyinreply.User.Gravatar, 180, "face1")
                                 </div>
@@ -61,21 +58,59 @@
                                         {
                                             if (reply.UserID == ViewBag.CurrentUser.ID || reply.Father.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
                                             {
-                                                <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(reply.ID)').serialize(),function(){$('#reply_@(reply.ID)').hide()});">删除</a>
+                                                <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(replyinreply.ID)').serialize(),function(){$('#reply_@(replyinreply.ID)').hide()});">删除</a>
                                                 using (Html.BeginForm("Delete", "Reply", FormMethod.Post, new { id = "frmDeleteReply" + replyinreply.ID, style = "display:none;" }))
                                                 {
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" value="@replyinreply.ID" name="id" />
                                                 }
                                             }
-                                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@replyinreply.ID');$('#btnCancle').show();$('#NewReply@(replyinreply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                                         }
                                     </div>
                                     <div class="content">
                                         <div class="comment-content">@Html.Sanitized(replyinreply.Content)</div>
                                     </div>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <div id="NewReply@(replyinreply.ID)">
+                                        </div>
+                                    }
                                 </div>
                             </div>
+
+                            if (replyinreply.Replies.Count() > 0 || User.Identity.IsAuthenticated)
+                            {
+
+                                foreach (var replyinnreply in replyinreply.Replies.OrderByDescending(x => x.Time))
+                                {
+                                    <div class="rwrap tyvj-clear" id="reply_@(replyinnreply.ID)">
+                                        <div class="rl">
+                                            @Html.Gravatar(replyinnreply.User.Gravatar, 180, "face1")
+                                        </div>
+                                        <div class="rr">
+                                            <div class="info">
+                                                <a href="/User/@replyinnreply.UserID">@Html.Nickname(replyinnreply.User.Username, replyinnreply.User.Ratings.Sum(x => x.Credit) + 1500, "comment-info")</a> @@@Html.ToTimeTip(replyinnreply.Time)
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+                                                    if (replyinnreply.UserID == ViewBag.CurrentUser.ID || replyinnreply.Father.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
+                                                    {
+                                                        <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(replyinnreply.ID)').serialize(),function(){$('#reply_@(replyinnreply.ID)').hide()});">删除</a>
+                                                        using (Html.BeginForm("Delete", "Reply", FormMethod.Post, new { id = "frmDeleteReply" + replyinreply.ID, style = "display:none;" }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" value="@replyinnreply.ID" name="id" />
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="content">
+                                                <div class="comment-content">@Html.Sanitized(replyinnreply.Content)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
                         }
                     </div>
                 }
