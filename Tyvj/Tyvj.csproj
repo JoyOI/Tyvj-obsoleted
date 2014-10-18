@@ -220,6 +220,7 @@
     <Compile Include="ViewModels\vExistedProblem.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
     <Compile Include="ViewModels\vRank.cs" />
+    <Compile Include="ViewModels\vRegister.cs" />
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />
@@ -529,6 +530,7 @@
     <Content Include="Views\Problem\Std.cshtml" />
     <Content Include="Views\Problem\Range.cshtml" />
     <Content Include="Views\Share\Message.cshtml" />
+    <Content Include="Views\User\RegisterDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

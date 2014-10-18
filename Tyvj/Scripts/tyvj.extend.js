@@ -282,19 +282,30 @@ function LoadRanks() {
             page: page,
             rnd: Math.random()
         }, function (ranks) {
-            if (ranks.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
+            $("#btnMore").html("点击加载更多");
+            if (ranks.length < 10) {
+                Lock();
+                if (ranks.length == 0)
+                    return;
+            }
             for (var i = 0; i < ranks.length; i++) {
                 if (ranks[i] == null) continue;
-                $("#lstranks").append('<a class="rank-item" href="/User/' + ranks[i].UserID + '">'
-                                                 + '    <div class="rank-face float-left"><img src="' + ranks[i].Gravatar + '"></div>'
-                                                 + '    <div class="rank-cont float-right"><div class="rank-name"><h2>' + ranks[i].Nickname + '</h2></div><div class="rank-value">Credit: ' + ranks[i].Credit + '</div></div>'
-                                                 + '    <div class="clear"></div>'
-                                                 + '    <div class="rank-rank">#' + ranks[i].Rank + '</div>'
-                                                 + '</a>');
+                $("#lstRanks").append('<tr>'
+                                        + '<td class="c1">'
+                                        + '    <img class="face" src="' + ranks[i].Gravatar + '">'
+                                        + '</td>'
+                                        + '<td class="c2">'
+                                        + '     <div class="title">'
+                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>'
+                                        + '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>'
+                                        + '     </div>'
+                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '</td>'
+                                        + '<td class="c3">#1</td>'
+                                        + '</tr>');
             }
             lock = false;
             page++;
-            $("#iconLoading").hide();
         });
     }
 }
