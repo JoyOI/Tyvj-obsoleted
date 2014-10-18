@@ -296,7 +296,7 @@ function LoadRanks() {
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/bbs/Discuss_Show.aspx?id=30435">' + ranks[i].Nickname + '</a>'
+                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>'
                                         + '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>'
                                         + '     </div>'
                                         + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].TOTAL + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
