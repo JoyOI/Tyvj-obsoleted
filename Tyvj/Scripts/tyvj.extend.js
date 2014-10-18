@@ -493,11 +493,11 @@ $(document).ready(function () {
     $.connection.hub.start();
 
     // 代码高亮插件初始化
-    /* $('.ckeditor-code').unbind().each(function () {
+    $('.ckeditor-code').unbind().each(function () {
         if (isIE678) return;
         $(this).html('<code>' + $(this).html() + '</code>');
         $(this).removeClass('ckeditor-code');
-    }); */
+    });
 
     if (!(isIE6 || isIE7 || isIE8)) {
         hljs.initHighlightingOnLoad();
