@@ -529,7 +529,6 @@
     <Content Include="Views\Problem\Spj.cshtml" />
     <Content Include="Views\Problem\Std.cshtml" />
     <Content Include="Views\Problem\Range.cshtml" />
-    <Content Include="Views\Share\Message.cshtml" />
     <Content Include="Views\User\RegisterDetail.cshtml" />
     <Content Include="Views\Problem\Solution.cshtml" />
   </ItemGroup>

@@ -276,9 +276,14 @@ function LoadReplies() {
     }
 }
 
-function LoadRanks() {
+function LoadRanks()
+{
+    if (mode == 0) LoadRanks_Ratings();
+    else LoadRanks_AC();
+}
+function LoadRanks_Ratings() {
     if ($("#lstRanks").length > 0) {
-        $.getJSON("/Rank/GetRanks", {
+        $.getJSON("/Rank/GetRanksByRating", {
             page: page,
             rnd: Math.random()
         }, function (ranks) {
@@ -290,19 +295,56 @@ function LoadRanks() {
             }
             for (var i = 0; i < ranks.length; i++) {
                 if (ranks[i] == null) continue;
-                $("#lstRanks").append('<tr>'
+                var html = '<tr>'
                                         + '<td class="c1">'
                                         + '    <img class="face" src="' + ranks[i].Gravatar + '">'
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>'
-                                        + '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>'
-                                        + '     </div>'
+                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>';
+                if (ranks[i].Motto.length > 0)
+                    html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
+                html += '     </div>'
                                         + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
                                         + '<td class="c3">#1</td>'
-                                        + '</tr>');
+                                        + '</tr>';
+                $("#lstRanks").append(html);
+            }
+            lock = false;
+            page++;
+        });
+    }
+}
+function LoadRanks_AC() {
+    if ($("#lstRanks").length > 0) {
+        $.getJSON("/Rank/GetRanksByAC", {
+            page: page,
+            rnd: Math.random()
+        }, function (ranks) {
+            $("#btnMore").html("点击加载更多");
+            if (ranks.length < 10) {
+                Lock();
+                if (ranks.length == 0)
+                    return;
+            }
+            for (var i = 0; i < ranks.length; i++) {
+                if (ranks[i] == null) continue;
+                var html = '<tr>'
+                                        + '<td class="c1">'
+                                        + '    <img class="face" src="' + ranks[i].Gravatar + '">'
+                                        + '</td>'
+                                        + '<td class="c2">'
+                                        + '     <div class="title">'
+                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>';
+                if (ranks[i].Motto.length>0)
+                    html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
+                html += '     </div>'
+                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '</td>'
+                                        + '<td class="c3">#1</td>'
+                                        + '</tr>';
+                $("#lstRanks").append(html);
             }
             lock = false;
             page++;

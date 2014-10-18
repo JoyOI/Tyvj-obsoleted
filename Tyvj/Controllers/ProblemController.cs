@@ -416,5 +416,11 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return Content("True");
         }
+
+        public ActionResult Solution(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            return View(problem);
+        }
     }
 }

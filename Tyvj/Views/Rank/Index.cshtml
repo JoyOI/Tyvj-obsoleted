@@ -7,19 +7,6 @@
     <div class="cont-wrap">
         <table class="tyvj-list-discuss">
             <tbody id="lstRanks">
-                <!--<tr>
-                    <td class="c1">
-                        <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">
-                    </td>
-                    <td class="c2">
-                        <div class="title">
-                            <a href="/bbs/Discuss_Show.aspx?id=30435">Yuno</a>
-                            <span style="font-size: 13px; color: #BBB;">（我是大神！）</span>
-                        </div>
-                        <div class="footer">Rating: 0 / 提交：100 / 通过：0 / 通过率：0%</div>
-                    </td>
-                    <td class="c3">#1</td>
-                </tr>-->
             </tbody>
         </table>
         <div>
@@ -34,8 +21,27 @@
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
         <h2>排序方式</h2>
         <ul>
-            <li><a href="http://www.qbxt.cn">按Rating排名</a></li>
-            <li><a href="http://www.codeforces.com">按通过数排名</a></li>
+            <li><a href="javascript:GetRating()">按Rating排名</a></li>
+            <li><a href="javascript:GetAC()">按通过数排名</a></li>
         </ul>
     </div>
 </div>
+
+<script>
+    var mode = 0;
+    function GetRating()
+    {
+        mode = 0;
+        page = 0;
+        $("#lstRanks").html("");
+        lock = false;
+        Load();
+    }
+    function GetAC() {
+        mode = 1;
+        page = 0;
+        $("#lstRanks").html("");
+        lock = false;
+        Load();
+    }
+</script>

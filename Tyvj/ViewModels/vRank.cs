@@ -17,6 +17,8 @@ namespace Tyvj.ViewModels
             Rank = rank;
             Gravatar = Helpers.Gravatar.GetAvatarURL(user.Gravatar, 200);
             Motto = user.Motto;
+            if (Motto == null)
+                Motto = "";
             var DbContext = new DB();
             var ACCount = (from s in DbContext.Statuses where s.ResultAsInt == (int)JudgeResult.Accepted && s.UserID == UserID select s.ProblemID).Distinct().Count();
             var TotalCount = (from s in DbContext.Statuses where s.UserID == UserID select s.ProblemID).Count();

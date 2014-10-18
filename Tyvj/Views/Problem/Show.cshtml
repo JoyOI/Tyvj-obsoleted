@@ -95,7 +95,7 @@
         }
         @if (ViewBag.ContestID == null)
         {
-            <li><a class="action" href="/p/@Model.ID/solution">查看题解</a></li>
+            <li><a class="action" href="/Problem/@Model.ID/solution">查看题解</a></li>
         }
         <li><a class="action" href="/p/@Model.ID/statuses" target="_self">查看本题提交记录</a></li>
         @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.UserID == ViewBag.CurrentUser.ID))

@@ -2,3 +2,32 @@
 @{
     ViewBag.Title = Model.Title + " - 题解";
 }
+<style>
+    .tyvj-status-info {
+        line-height: 40px;
+    }
+
+    .select {
+        width: 120px;
+    }
+</style>
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow tyvj-boder-top">
+        <table class="tyvj-list-discuss" id="lstSolutions">
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <ul class="section" id="actions">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li><a class="highlight action" href="/Problem/@Model.ID/newsolution">编写题解</a></li>
+        }
+        <li><a class="action" href="/p/@Model.ID">返回题目</a></li>
+    </ul>
+</div>
