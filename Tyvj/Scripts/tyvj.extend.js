@@ -491,5 +491,10 @@ $(document).ready(function () {
         }
     }
     $.connection.hub.start();
+
+    // 代码高亮插件初始化
+    if (!(isIE678)) {
+        hljs.initHighlightingOnLoad();
+    }
 });
 
