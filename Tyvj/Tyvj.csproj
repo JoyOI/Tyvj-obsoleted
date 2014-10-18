@@ -533,6 +533,8 @@
     <Content Include="Views\User\RegisterDetail.cshtml" />
     <Content Include="Views\Problem\Solution.cshtml" />
     <Content Include="Views\Solution\Index.cshtml" />
+    <Content Include="Views\Solution\Create.cshtml" />
+    <Content Include="Views\Solution\EditTags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

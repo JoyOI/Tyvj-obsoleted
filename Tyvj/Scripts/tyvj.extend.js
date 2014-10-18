@@ -278,8 +278,11 @@ function LoadReplies() {
 
 function LoadRanks()
 {
-    if (mode == 0) LoadRanks_Ratings();
-    else LoadRanks_AC();
+    if ($("#lstRanks").length > 0)
+    {
+        if (mode == 0) LoadRanks_Ratings();
+        else LoadRanks_AC();
+    }
 }
 function LoadRanks_Ratings() {
     if ($("#lstRanks").length > 0) {

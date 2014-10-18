@@ -40,7 +40,9 @@
             </div>
             <div class="tyvj-boder-top tyvj-content-inner">
                 <h2>代码</h2>
-                <pre>@Model.Code</pre>
+                <div class="tyvj-content-inner">
+                    <pre>@Model.Code</pre>
+                </div>
             </div>
         </div>
     </div>
@@ -61,7 +63,7 @@
         {
             <li><a class="action highlight" href="/Solution/@Model.ID/Edit" target="_self">编辑题解</a></li>
         }
-        <li><a class="action" href="/p/@Model.ProblemID/solution">返回题解列表</a></li>
-        <li><a class="action" href="/p/@Model.ProblemID/statuses" target="_self">跳转到题目</a></li>
+        <li><a class="action" href="/Problem/@Model.ProblemID/solution">返回题解列表</a></li>
+        <li><a class="action" href="/p/@Model.ProblemID" target="_self">跳转到题目</a></li>
     </ul>
 </div>

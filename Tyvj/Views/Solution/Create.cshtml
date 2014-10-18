@@ -1,0 +1,63 @@
+﻿@model Problem
+@{
+    ViewBag.Title = "编写题解 - " + Model.Title;
+}
+
+<style>
+    .tyvj-left h1, h2, h3 {
+        margin: 20px 0;
+    }
+
+    .tyvj-content-inner {
+        font-size: 14px;
+        padding-bottom: 15px;
+    }
+</style>
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow">
+        <div class="tyvj-content-header">
+            <strong>P@(Model.ID)</strong> @Model.Title 题解
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            @using (Html.BeginForm("Create", "Solution", new { id = Model.ID }, FormMethod.Post, null))
+            {
+                @Html.AntiForgeryToken()
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>解题思路</h2>
+                    <div class="tyvj-content-inner">
+                        <textarea name="Content" class="ckeditor"></textarea>
+                    </div>
+                    <h2>代码</h2>
+                    <div class="tyvj-content-inner">
+                        <textarea name="Code" id="editor"></textarea>
+                        <p>
+                            <select id="lstLanguages" name="language_id" class="select" style="width:100px;">
+                                @{
+                var i = 0;
+                foreach (var name in CommonEnums.LanguageDisplay)
+                {
+                    if (((User)ViewBag.CurrentUser).CommonLanguageAsInt == i)
+                    {
+                        <option value="@(i++)" selected>@name</option>
+                    }
+                    else
+                    {
+                        <option value="@(i++)">@name</option>
+                    }
+                }
+                                }
+                            </select>
+                        </p>
+                        <p><input type="submit" class="button button-def" value="保存" /></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <ul class="section" id="actions">
+        <li><a class="action" href="/Problem/@Model.ID/solution">返回题解列表</a></li>
+        <li><a class="action" href="/p/@Model.ID" target="_self">跳转到题目</a></li>
+    </ul>
+</div>

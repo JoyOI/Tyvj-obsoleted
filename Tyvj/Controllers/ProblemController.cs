@@ -194,6 +194,7 @@ namespace Tyvj.Controllers
             if (!IsMaster() && problem.UserID != CurrentUser.ID)
                 return Content("False");
             problem.Title = Title;
+            problem.Background = Background;
             problem.Description = Description;
             problem.Input = Input;
             problem.Output = Output;
