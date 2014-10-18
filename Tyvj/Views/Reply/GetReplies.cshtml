@@ -34,6 +34,8 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div id="NewReply@(reply.ID)">
+                            @*<div>@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
+                            <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>*@
                         </div>
                     }
 

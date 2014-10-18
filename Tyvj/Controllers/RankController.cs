@@ -14,6 +14,7 @@ namespace Tyvj.Controllers
         public ActionResult Index()
         {
             return View();
+<<<<<<< HEAD
         }
 
         [HttpGet]
@@ -26,6 +27,37 @@ namespace Tyvj.Controllers
             for (int i = 0; i < users.Count(); i++)
                 ratings.Add(new vRank(users[i], page * 10 + i + 1));
             return Json(ratings, JsonRequestBehavior.AllowGet);
+=======
+        }
+
+        [HttpGet]
+        public ActionResult GetRanksByRating(int page)
+        {
+            var users = (from u in DbContext.Users
+                         orderby u.Ratings.Sum(x => x.Credit) descending
+                         select u).Skip(10 * page).Take(10).ToList();
+            List<vRank> ratings = new List<vRank>();
+            for (int i = 0; i < users.Count(); i++)
+                ratings.Add(new vRank(users[i], page * 10 + i + 1));
+            return Json(ratings, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetRanksByAC(int page)
+        {
+            var users = (from u in DbContext.Users
+                         orderby (from s in DbContext.Statuses
+                                      where s.UserID == u.ID
+                                      && s.ResultAsInt == (int)JudgeResult.Accepted
+                                      select s.ProblemID).Distinct().Count() descending,
+                                      (from s in DbContext.Statuses
+                                           where s.UserID == u.ID
+                                           select s).Count() ascending
+                         select u).Skip(10 * page).Take(10).ToList();
+            List<vRank> ratings = new List<vRank>();
+            for (int i = 0; i < users.Count(); i++)
+                ratings.Add(new vRank(users[i], page * 10 + i + 1));
+            return Json(ratings, JsonRequestBehavior.AllowGet);
+>>>>>>> 9ec6de7a47263dc6bf4b125ae374a452bd5fc119
         }
     }
 }
