@@ -11,12 +11,14 @@ namespace Tyvj.ViewModels
         public vGroup() { }
         public vGroup(Group group)
         {
-            Name = group.Name;
+            ID = group.ID;
+            Title = group.Title;
             Description = group.Description;
             Gravatar = Helpers.Gravatar.GetAvatarURL(group.Gravatar, 200);
         }
 
-        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public string Gravatar { get; set; }
     }

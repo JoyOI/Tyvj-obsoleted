@@ -386,11 +386,11 @@ function LoadGroups() {
                 if (groups[i] == null) continue;
                 var html = '<tr>'
                                 + '<td class="c1">'
-                                + '    <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">'
+                                + '    <img class="face" src="' + groups[i].Gravatar + '">'
                                 + '</td>'
                                 + '<td class="c2">'
-                                + '    <div class="title"><a href="/Group/1">测试团队</a></div>'
-                                + '    <div class="footer">我们是一个团队。</div>'
+                                + '    <div class="title"><a href="/Group/' + groups[i].ID + '">' + groups[i].Title + '</a></div>'
+                                + '    <div class="footer">' + group[i].Description + '</div>'
                                 + '</td>'
                                 + '</tr>';
                 $("#lstgroups").append(html);
