@@ -1,4 +1,5 @@
-@model Problem
+
+﻿@model Problem
 @{
     ViewBag.Title = Model.Title + " - 数据范围校验器";
 }
@@ -27,7 +28,7 @@
                         <p><textarea name="range" id="editor">@Model.RangeValidator</textarea></p>
                         <p>
                             语言：<select id="lstLanguages" name="language" class="select">
-                                @{
+    @{
                     var i = 0;
                     foreach (var name in CommonEnums.LanguageDisplay)
                     {
@@ -40,8 +41,8 @@
                             <option value="@(i++)">@name</option>
                         }
                     }
-                                }
-                            </select>
+    }
+</select>
                         </p>
                         <p><input type="button" class="button button-def" value="保存" id="btnSave" /> 注:Java类名应为"Range"。@Html.ActionLink("帮助", "FAQ", "Home", null, null)</p>
                     </div>

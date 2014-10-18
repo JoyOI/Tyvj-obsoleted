@@ -100,9 +100,7 @@
                                         </div>
 
                                         <div id="NewReplyOut">
-
                                             <div class="content rwrap temp" id="NewReplyContent">
-
                                                 @using (Html.BeginForm("Create", "Reply", new { id = Model.ID }, FormMethod.Post, new { id = "frmPostReply" }))
                                                 {
                                                     <div id="replyGravatar" class="rl">
@@ -115,7 +113,6 @@
                                                         <input type="hidden" value="" name="father_id" id="father_id" />
                                                         <div class="form-line"><p><input id="btnSubmit" class="button button-def" value="回复" type="button"></p></div>
                                                     </div>
-
                                                 }
                                             </div>
                                         </div>
@@ -123,7 +120,7 @@
                                             <div class="comment-item">
                                                 <div class="comment-body">
                                                     <div class="comment-content">
-                                                        <a href="javascript:$('#NewPost0').hide();$('#headWarning').show();$('#btnCancle').hide();CKEDITOR.instances.content.destroy();$('#father_id').val('');$('#NewReplyContent').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('html,body').animate({scrollTop:$('#NewReplyOut').offset().top-50},1000); ">发表回复</a>
+                                                        <a href="javascript:$('#NewPost0').hide(); $('#replygravatar').hide();$('#replyname').hide();$('#headwarning').show();$('#btncancle').hide();ckeditor.instances.content.destroy();$('#father_id').val('');$('#newreplycontent').prepend($('#frmpostreply'));ckeditor.replace('content',{toolbar:'basic',width:'100%',height:'60px'});$('html,body').animate({scrolltop:$('#newreplyout').offset().top-50},1000); ">发表回复</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,14 +129,13 @@
                                 </tr>
                             }
                         </table>
-                    </div>
-                    <div>
                         <a href="javascript:Load()">
                             <div class="block-more enabled" id="btnMore">点击加载更多</div>
                         </a>
                     </div>
+                    <div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div><div class="clear"></div>
@@ -150,6 +146,8 @@
 @if (User.Identity.IsAuthenticated)
 {
     <script>
+        $("#replyGravatar").hide();$("#replyName").hide();
+        $("#NewReplyContent1").hide();
         $('#NewPost0').hide();
         if($("#father_id").val()==""){
             $("#btnCancle").hide();

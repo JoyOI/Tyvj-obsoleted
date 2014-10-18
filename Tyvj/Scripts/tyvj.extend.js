@@ -350,6 +350,12 @@ function LoadRanks_AC() {
             page++;
         });
     }
+    
+}
+
+function GetRanksByRating() {
+    rank_type = 0;
+    page = 0;
 }
 
 $(document).ready(function () {
