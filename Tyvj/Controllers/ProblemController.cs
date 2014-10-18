@@ -174,5 +174,49 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return RedirectToAction("Edit", "Problem", new { id = problem.ID });
         }
+
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            return View(problem);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Content("False");
+            problem.Title = Title;
+            problem.Description = Description;
+            problem.Input = Input;
+            problem.Output = Output;
+            problem.Hint = Hint;
+            if (TimeLimit <= 2000 || IsMaster())
+                problem.TimeLimit = TimeLimit;
+            else
+                problem.TimeLimit = 2000;
+            if (MemoryLimit <= 131072 || IsMaster())
+                problem.MemoryLimit = MemoryLimit;
+            else
+                problem.MemoryLimit = 131072;
+            DbContext.SaveChanges();
+            return Content("True");
+        }
+
+        [Authorize]
+        public ActionResult TestCase(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            return View(problem);
+        }
     }
 }

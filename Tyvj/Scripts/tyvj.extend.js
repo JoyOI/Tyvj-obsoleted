@@ -389,3 +389,4 @@ $(document).ready(function () {
     }
     $.connection.hub.start();
 });
+
