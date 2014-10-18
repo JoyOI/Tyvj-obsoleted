@@ -218,6 +218,7 @@
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />
+    <Compile Include="ViewModels\vTestCase.cs" />
     <Compile Include="ViewModels\vTopic.cs" />
     <Compile Include="ViewModels\vContest.cs" />
     <Compile Include="ViewModels\vLogin.cs" />

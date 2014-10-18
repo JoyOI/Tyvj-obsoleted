@@ -15,6 +15,9 @@
     .select {
         width: 120px;
     }
+    td{
+        text-align:left;
+    }
 </style>
 <div class="tyvj-left" style="width:755px;">
     <div class="tyvj-shadow">
@@ -36,18 +39,37 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var p in Model.ContestProblems)
+                            @{var num = 0;}
+                            @foreach (var tc in Model.TestCases)
                             {
                                 <tr>
-                                    <td id="cp-number-@p.ID">@p.Number</td>
-                                    <td id="cp-pid-@p.ID">@p.ProblemID</td>
-                                    <td id="cp-title-@p.ID">@p.Problem.Title</td>
-                                    <td id="cp-point-@p.ID">@p.Point</td>
-                                    <td id="cp-control-@p.ID"><input type="button" class="btnDeleteProblem button button-def" value="删除" cpid="@p.ID" /></td>
+                                    <td class="tyvj-list-td">@(num++)</td>
+                                    <td class="tyvj-list-td">@(tc.Input.Length / 1024) KiB</td>
+                                    <td class="tyvj-list-td">@(tc.Output.Length / 1024) KiB</td>
+                                    <td class="tyvj-list-td">
+                                        <select class="lstTestCaseType select" tid="@tc.ID">
+                                            @{
+                                var names = Enum.GetNames(typeof(TestCaseType));
+                                            }
+                                            @for (var i = 0; i < names.Count(); i++)
+                                            {
+                                                if (tc.TypeAsInt == i)
+                                                {
+                                                    <option value="@i" selected>@names[i]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">@names[i]</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="tyvj-list-td"><a href="javascript:EditTestCase(@tc.ID)">编辑</a> <a href="javascript:$('#DeleteID').val(@tc.ID);$('#frmDeleteTestCase').submit();">删除</a></td>
                                 </tr>
                             }
                         </tbody>
                     </table>
+                    <p><a href="javascript:$.colorbox({ inline: true, width: 'auto', href: '#TestCaseUpload'});">上传打包数据</a> <a href="javascript:$.colorbox({ inline: true, width: 'auto', href: '#TestCaseTextUpload'});">上传手打数据</a></p>
                 </div>
             </div>
         </div>
@@ -61,3 +83,92 @@
         <li><a class="action" href="/Problem/@Model.ID/More">高级设置</a></li>
     </ul>
 </div>
+@using (Html.BeginForm("DeleteTestCase", "Problem", null, FormMethod.Post, new { id = "frmDeleteTestCase" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="DeleteID" name="id" />
+}
+@using (Html.BeginForm("ChangeTestCaseType", "Problem", null, FormMethod.Post, new { id = "frmChangeType" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="tid" id="TestCaseID" />
+    <input type="hidden" name="type" id="TestCaseType" />
+}
+<div style="display:none">
+    <div id="TestCaseUpload">
+        @using (Html.BeginForm("TestCaseUpload", "Problem", new { id = Model.ID }, FormMethod.Post, new { id = "frmTestCaseUpload", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>上传打包测试数据</h3>
+            <p><input type="file" name="file" accept="application/x-zip-compressed" /></p>
+            <p>服务器将自动匹配压缩文档中的.in/.out/.ans文件，支持格式：*.zip, *.tar</p>
+            <p><input type="submit" value="上传" class="button button-def" /></p>
+        }
+    </div>
+
+    <div id="TestCaseTextUpload">
+        @using (Html.BeginForm("TestCaseTextUpload", "Problem", new { id = Model.ID }, FormMethod.Post, new { id = "frmTestCaseUpload" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>上传数据</h3>
+            <table style="width:700px">
+                <thead>
+                    <tr>
+                        <th style="width:50%">输入</th>
+                        <th style="width:50%">输出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><textarea name="input" style="width: 100%; height: 220px; border: none;"></textarea></td>
+                        <td><textarea name="output" style="width: 100%; height: 220px; border: none;"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><input type="submit" value="上传" class="button button-def" /></p>
+        }
+    </div>
+    <div id="TestCaseEdit">
+        @using (Html.BeginForm("TestCaseEdit", "Problem", null, FormMethod.Post, new { id = "frmTestCaseUpload" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="EditID" name="id" />
+            <h3>编辑数据</h3>
+            <table style="width:700px">
+                <thead>
+                    <tr>
+                        <th style="width:50%">输入</th>
+                        <th style="width:50%">输出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><textarea name="input" id="txtInput" style="width: 100%; height: 220px; border: none;"></textarea></td>
+                        <td><textarea name="output" id="txtOutput" style="width: 100%; height: 220px; border: none;"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><input type="submit" value="提交" class="button button-def" /></p>
+        }
+    </div>
+</div>
+
+<script>
+    $(".lstTestCaseType").change(function () {
+        var tid = $(this).attr("tid");
+        $("#TestCaseID").val(tid);
+        $("#TestCaseType").val($(this).val());
+        $.post("/Problem/ChangeTestCaseType/", $("#frmChangeType").serialize(), function () {
+            CastMsg("测试数据类型已修改！");
+        });
+    });
+    function EditTestCase(id) {
+        $.getJSON("/Problem/GetTestCase/" + id, { rnd: Math.random() }, function (testcase) {
+            $("#txtInput").val(testcase.Input);
+            $("#txtOutput").val(testcase.Output);
+            $("#EditID").val(testcase.ID);
+            $.colorbox({ inline: true, width: 'auto', href: '#TestCaseEdit' });
+        });
+    }
+
+</script>

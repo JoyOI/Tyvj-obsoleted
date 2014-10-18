@@ -218,5 +218,131 @@ namespace Tyvj.Controllers
                 return Message("您无权执行本操作");
             return View(problem);
         }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult DeleteTestCase(int id)
+        {
+            var testcase = DbContext.TestCases.Find(id);
+            var problem_id = testcase.ProblemID;
+            var problem = testcase.Problem;
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            DbContext.TestCases.Remove(testcase);
+            DbContext.SaveChanges();
+            return RedirectToAction("TestCase", "Problem", new { id = problem_id });
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult ChangeTestCaseType(int tid, int type)
+        {
+            var testcase = DbContext.TestCases.Find(tid);
+            var problem = testcase.Problem;
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            testcase.TypeAsInt = type;
+            DbContext.SaveChanges();
+            return RedirectToAction("TestCase", "Problem", new { id = testcase.ProblemID });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult TestCaseEdit(int id, string input, string output)
+        {
+            var testcase = DbContext.TestCases.Find(id);
+            var problem = testcase.Problem;
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            testcase.Input = input;
+            testcase.Output = output;
+            DbContext.SaveChanges();
+            return RedirectToAction("TestCase", "Problem", new { id = testcase.ProblemID });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult TestCaseTextUpload(int id, string input, string output)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            DbContext.TestCases.Add(new TestCase
+            {
+                Input = input,
+                Output = output,
+                ProblemID = id,
+                Type = TestCaseType.Overall,
+                Hash = Helpers.Security.SHA1(input)
+            });
+            DbContext.SaveChanges();
+            return RedirectToAction("TestCase", "Problem", new { id = problem.ID });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult TestCaseUpload(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
+            var file = Request.Files[0];
+            var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
+            var filename = timestamp + ".zip";
+            var dir = Server.MapPath("~") + @"\Temp\";
+            file.SaveAs(dir + filename);
+            Helpers.Zip.UnZip(dir + filename, dir + timestamp);
+            System.IO.File.Delete(dir + filename);
+            var files = System.IO.Directory.GetFiles(dir + timestamp);
+            foreach (var f in files)
+            {
+                if (System.IO.Path.GetExtension(f) == ".in")
+                {
+                    var testcase = new TestCase();
+                    testcase.Input = System.IO.File.ReadAllText(f);
+                    var outfile = f.Substring(0, f.Length - 3) + ".out";
+                    var exist = false;
+                    if (System.IO.File.Exists(outfile))
+                    {
+                        testcase.Output = System.IO.File.ReadAllText(outfile);
+                        exist = true;
+                    }
+                    outfile = f.Substring(0, f.Length - 3) + ".ans";
+                    if (System.IO.File.Exists(outfile))
+                    {
+                        testcase.Output = System.IO.File.ReadAllText(outfile);
+                        exist = true;
+                    }
+                    if (!exist) continue;
+                    testcase.ProblemID = id;
+                    testcase.Type = TestCaseType.Overall;
+                    testcase.Hash = Helpers.Security.SHA1(testcase.Input);
+                    DbContext.TestCases.Add(testcase);
+                }
+            }
+            DbContext.SaveChanges();
+            System.IO.Directory.Delete(dir + timestamp, true);
+            return RedirectToAction("TestCase", "Problem", new { id = problem.ID });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult GetTestCase(int id)
+        {
+            var testcase = DbContext.TestCases.Find(id);
+            var problem = testcase.Problem;
+            if (!IsMaster() && problem.UserID != CurrentUser.ID)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            return Json(new vTestCase(testcase), JsonRequestBehavior.AllowGet);
+        }
     }
 }

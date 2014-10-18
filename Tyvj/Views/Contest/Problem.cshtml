@@ -36,19 +36,19 @@
                             @foreach (var p in Model.ContestProblems)
                             {
                                 <tr>
-                                    <td id="cp-number-@p.ID">@p.Number</td>
-                                    <td id="cp-pid-@p.ID">@p.ProblemID</td>
-                                    <td id="cp-title-@p.ID">@p.Problem.Title</td>
-                                    <td id="cp-point-@p.ID">@p.Point</td>
-                                    <td id="cp-control-@p.ID"><input type="button" class="btnDeleteProblem button button-def" value="删除" cpid="@p.ID" /></td>
+                                    <td class="tyvj-list-td" id="cp-number-@p.ID">@p.Number</td>
+                                    <td class="tyvj-list-td" id="cp-pid-@p.ID">@p.ProblemID</td>
+                                    <td class="tyvj-list-td" id="cp-title-@p.ID">@p.Problem.Title</td>
+                                    <td class="tyvj-list-td" id="cp-point-@p.ID">@p.Point</td>
+                                    <td class="tyvj-list-td" id="cp-control-@p.ID"><input type="button" class="btnDeleteProblem button button-def" value="删除" cpid="@p.ID" /></td>
                                 </tr>
                             }
                             <tr>
-                                <td><input type="text" class="textbox" style="width:50px" id="txtNewNumber" /></td>
-                                <td><input type="text" class="textbox" style="width:50px" id="txtNewPID" placeholder="不要加P" /></td>
-                                <td id="lbNewTitle"></td>
-                                <td><input type="text" class="textbox" style="width:50px" id="txtNewPoint" /></td>
-                                <td><input type="button" class="button button-def" id="btnAddProblem" value="添加" /></td>
+                                <td class="tyvj-list-td"><input type="text" class="textbox" style="width:50px" id="txtNewNumber" /></td>
+                                <td class="tyvj-list-td"><input type="text" class="textbox" style="width:50px" id="txtNewPID" placeholder="不要加P" /></td>
+                                <td class="tyvj-list-td" id="lbNewTitle"></td>
+                                <td class="tyvj-list-td"><input type="text" class="textbox" style="width:50px" id="txtNewPoint" /></td>
+                                <td class="tyvj-list-td"><input type="button" class="button button-def" id="btnAddProblem" value="添加" /></td>
                             </tr>
                         </tbody>
                     </table>
