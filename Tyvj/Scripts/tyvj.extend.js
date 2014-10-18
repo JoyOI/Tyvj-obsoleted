@@ -299,7 +299,7 @@ function LoadRanks() {
                                         + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>'
                                         + '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>'
                                         + '     </div>'
-                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].TOTAL + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '     <div class="footer">Rating: ' + ranks[i].Rating + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
                                         + '<td class="c3">#1</td>'
                                         + '</tr>');

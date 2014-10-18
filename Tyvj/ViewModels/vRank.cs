@@ -19,10 +19,17 @@ namespace Tyvj.ViewModels
             Motto = user.Motto;
             var DbContext = new DB();
             var ACCount = (from s in DbContext.Statuses where s.ResultAsInt == (int)JudgeResult.Accepted && s.UserID == UserID select s.ProblemID).Distinct().Count();
-            var TOTALCount = (from s in DbContext.Statuses where s.UserID == UserID select s.ProblemID).Count();
-            AC = ACCount.ToString();
-            TOTAL = TOTALCount.ToString();
-            ACRate = (Convert.ToDouble(AC) / Convert.ToDouble(TOTAL)).ToString("0.00") + "%";
+            var TotalCount = (from s in DbContext.Statuses where s.UserID == UserID select s.ProblemID).Count();
+            AC = ACCount;
+            Total = TotalCount;
+            if(Total == 0)
+            {
+                ACRate = "0.00%";
+            }
+            else
+            {
+                ACRate = (Convert.ToDouble(AC) / Convert.ToDouble(Total)).ToString("0.00") + "%";
+            }
         }
         public int UserID { get; set; }
         public string Nickname { get; set; }
@@ -30,8 +37,8 @@ namespace Tyvj.ViewModels
         public int Rank { get; set; }
         public string Gravatar { get; set; }
         public string Motto { get; set; }
-        public string AC { get; set; }
+        public int AC { get; set; }
         public string ACRate { get; set; }
-        public string TOTAL { get; set; }
+        public int Total { get; set; }
     }
 }
