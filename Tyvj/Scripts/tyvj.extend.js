@@ -7,7 +7,6 @@ var isIE7 = isIE && !isIE6 && !isIE8;
 var isIE678 = isIE6 || isIE7 || isIE8;
 var id = null;
 
-
 function Load() {
     if (lock) return;
     lock = true;
@@ -115,10 +114,13 @@ function LoadContests() {
             if (contests.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
             for (var i = 0; i < contests.length; i++) {
                 if (contests[i] == null) continue;
+                var official = "";
+                if (contests[i].Official)
+                    official = " / 官方举办";
                 var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
                 $("#lstContests").append('<tr><td class="c1">'
                                                  + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
-                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + '</span></div></td>'
+                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration +official+ '</span></div></td>'
                                                  + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
             }
             lock = false;
@@ -145,14 +147,15 @@ function LoadProblems() {
 
             for (var i = 0; i < problems.length; i++) {
                 if (problems[i] == null) continue;
-                var contest_label = "";
-                if (problems[i].ContestTitle != null && problems[i].ContestTitle != "") {
-                    contest_label = '<span class="label ' + css[problems[i].ContestID % 5] + '">' + problems[i].ContestTitle + '</span>';
-                }
+                var problem_tags = "";
+                if (problems[i].Official)
+                    problem_tags += '<a style="float:right" href="javascript:;"><span class="label orange">官方题目</span></a>';
+                if (problems[i].Hide)
+                    problem_tags += '<a style="float:right" href="javascript:;"><span class="label gray">隐藏</span></a>';
                 if (!Signed)
                     $("#lstProblems").append('<tr data-id="' + problems[i].ID + '" class="tyvj-list-body-tr even"><td class="tyvj-list-td vjlc3" style="text-align:left"><div class="wrap"><div class="title">'
                                                  + '<a href="/p/' + problems[i].ID + '" target="_self" class="pid">P' + problems[i].ID + '</a> '
-                                                 + '<a href="/p/' + problems[i].ID + '" target="_self">' + problems[i].Title + '</a></div></div></td>'
+                                                 + '<a href="/p/' + problems[i].ID + '" target="_self">' + problems[i].Title + '</a>' + problem_tags + '</div></div></td>'
                                                  + '<td class="tyvj-list-td vjlc4">' + problems[i].Accepted + '</td><td class="tyvj-list-td vjlc5">' + problems[i].Submitted + '</td><td class="tyvj-list-td vjlc6">' + problems[i].Ratio + '%</td></tr>');
                 else {
                     var flag = '<td class="tyvj-list-td vjlc1"></td>';
@@ -164,7 +167,7 @@ function LoadProblems() {
                     }
                     $("#lstProblems").append('<tr data-id="' + problems[i].ID + '" class="tyvj-list-body-tr even">' + flag + '<td class="tyvj-list-td vjlc3" style="text-align:left"><div class="wrap"><div class="title">'
                                                  + '<a href="/p/' + problems[i].ID + '" target="_self" class="pid">P' + problems[i].ID + '</a> '
-                                                 + '<a href="/p/' + problems[i].ID + '" target="_self">' + problems[i].Title + '</a></div></div></td>'
+                                                 + '<a href="/p/' + problems[i].ID + '" target="_self">' + problems[i].Title + '</a>' + problem_tags + '</div></div></td>'
                                                  + '<td class="tyvj-list-td vjlc4">' + problems[i].Accepted + '</td><td class="tyvj-list-td vjlc5">' + problems[i].Submitted + '</td><td class="tyvj-list-td vjlc6">' + problems[i].Ratio + '%</td></tr>');
                 }
             }

@@ -164,7 +164,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, string Description, DateTime Begin, DateTime End, int Format, string Password)
+        public ActionResult Edit(int id, string Title, string Description, DateTime Begin, DateTime End, int Format, string Password, bool? Official)
         {
             var contest = DbContext.Contests.Find(id);
             if (!IsMaster() && CurrentUser.ID != contest.UserID)
@@ -175,6 +175,10 @@ namespace Tyvj.Controllers
             contest.End = End;
             contest.Password = Password;
             contest.FormatAsInt = Format;
+            if (CurrentUser.Role >= UserRole.Master)
+            {
+                contest.Official = Official.Value;
+            }
             DbContext.SaveChanges();
             return RedirectToAction("Edit", "Contest", new { id = id });
         }

@@ -31,10 +31,13 @@ namespace Tyvj.DataModels
         [ForeignKey("User")]
         public int UserID { get; set; }
 
+        public virtual User User { get; set; }
+
         [Column("password")]
         public string Password { get; set; }
-
-        public virtual User User { get; set; }
+        
+        [Column("official")]
+        public bool Official { get; set; }
 
         [NotMapped]
         public ContestFormat Format

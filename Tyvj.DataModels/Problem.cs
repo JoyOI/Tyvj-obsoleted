@@ -39,6 +39,8 @@ namespace Tyvj.DataModels
         [Column("memory_limit")]
         public int MemoryLimit { get; set; }
 
+        [Column("official")]
+        public bool Official { get; set; }
 
         [Column("hide")]
         public bool Hide { get; set; }
@@ -84,9 +86,6 @@ namespace Tyvj.DataModels
             get { return (Language)RangeValidatorLanguageAsInt; }
             set { RangeValidatorLanguageAsInt = (int)value; }
         }
-
-        [Column("official")]
-        public bool Official { get; set; }
 
         public virtual ICollection<TestCase> TestCases { get; set; }
 

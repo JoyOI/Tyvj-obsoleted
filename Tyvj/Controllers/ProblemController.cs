@@ -56,6 +56,8 @@ namespace Tyvj.Controllers
             IEnumerable<Problem> _problems = (from p in DbContext.Problems
                                                      where (p.Title.Contains(Title))
                                                      select p);
+            if (!IsMaster())
+                _problems = _problems.Where(x => x.Hide == false || x.UserID == CurrentUser.ID);
             if (tags.Count > 0)
             {
                 var __problems = (from p in DbContext.SolutionTags
@@ -92,6 +94,8 @@ namespace Tyvj.Controllers
             {
                 problem = DbContext.Problems.Find(id.Value);
                 pid = problem.ID;
+                if (CurrentUser == null || !IsMaster() && CurrentUser.ID != problem.UserID)
+                    return Message("没有找到题目");
             }
             else
             {
@@ -188,7 +192,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint)
+        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide)
         {
             var problem = DbContext.Problems.Find(id);
             if (!IsMaster() && problem.UserID != CurrentUser.ID)
@@ -199,6 +203,7 @@ namespace Tyvj.Controllers
             problem.Input = Input;
             problem.Output = Output;
             problem.Hint = Hint;
+            problem.Hide = Hide;
             if (TimeLimit <= 2000 || IsMaster())
                 problem.TimeLimit = TimeLimit;
             else
@@ -207,6 +212,8 @@ namespace Tyvj.Controllers
                 problem.MemoryLimit = MemoryLimit;
             else
                 problem.MemoryLimit = 131072;
+            if (IsMaster())
+                problem.Official = Official.Value;
             DbContext.SaveChanges();
             return Content("True");
         }
