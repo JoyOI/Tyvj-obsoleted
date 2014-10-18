@@ -85,11 +85,11 @@ namespace Tyvj.Helpers
         
         //}
 
-        //public static MvcHtmlString GetLanguageClass<TModel>(this HtmlHelper<TModel> self, Entity.Language Language)
-        //{
-        //    string[] LanguageDisplay = { "c", "cpp", "cpp", "java", "pascal", "python", "python", "ruby", "csharp", "vbnet" };
-        //    var ret = LanguageDisplay[(int)Language];
-        //    return new MvcHtmlString(ret);
-        //}
+        public static MvcHtmlString GetLanguageClass<TModel>(this HtmlHelper<TModel> self, Language Language)
+        {
+            string[] LanguageDisplay = { "c", "cpp", "cpp", "java", "pascal", "python", "python", "ruby", "csharp", "vbnet" };
+            var ret = LanguageDisplay[(int)Language];
+            return new MvcHtmlString(ret);
+        }
     }
 }
