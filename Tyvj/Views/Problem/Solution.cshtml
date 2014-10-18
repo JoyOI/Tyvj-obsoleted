@@ -1,4 +1,4 @@
-@model Problem
+﻿@model Problem
 @{
     ViewBag.Title = Model.Title + " - 题解";
 }
@@ -14,6 +14,15 @@
 <div class="tyvj-left" style="width:755px;">
     <div class="tyvj-shadow tyvj-boder-top">
         <table class="tyvj-list-discuss" id="lstSolutions">
+            <tr class="">
+                <td class="c1">
+                    <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">
+                </td>
+                <td class="c2">
+                    <div class="title"><a href="/Solution/1">P1064旧版题解</a></div>
+                    <div class="footer">作者：<a href="/User/1" target="_blank" class="user usergroup3">admin</a> / 标签 <a href="/bbs/Discuss.aspx?districtid=2" class="node" target="_self">题解区</a></div>
+                </td>
+            </tr>
         </table>
         <div>
             <a href="javascript:Load()">
@@ -26,7 +35,7 @@
     <ul class="section" id="actions">
         @if (User.Identity.IsAuthenticated)
         {
-            <li><a class="highlight action" href="/Problem/@Model.ID/newsolution">编写题解</a></li>
+            <li><a class="highlight action" href="/Solution/Create/@Model.ID">编写题解</a></li>
         }
         <li><a class="action" href="/p/@Model.ID">返回题目</a></li>
     </ul>
