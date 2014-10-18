@@ -210,15 +210,19 @@ function LoadTopics() {
             }
             for (var i = 0; i < topics.length; i++) {
                 if (topics[i] == null) continue;
-                if (topics[i].Top == 1){
-                    topics[i].Title = "[置顶]" + topics[i].Title;
+                if (topics[i].Top == 1) {
+                    var str='<tr class="highlight">;'
+                } else{
+                    var str='<tr class="">;'
                 }
-                $("#lstTopics").append('<tr class=""><td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
-                                                 + '</td><td class="c2">'
-                                                 + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
-                                                 + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a> / ' + topics[i].Time + ' 发表在 <a href="/Forum/' + topics[i].ForumID + '">' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? '最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
-                                                 + '</td>'
-                                                 + '<td class="c3">' + topics[i].ForumID + '</td></tr>');
+                str =str+ '<td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
+                                                  + '</td><td class="c2">'
+                                                  + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
+                                                  + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a> / ' + topics[i].Time + ' 发表在 <a href="/Forum/' + topics[i].ForumID + '">' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? '最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
+                                                  + '</td>'
+                                                  + '<td class="c3">' + topics[i].ForumID + '</td></tr>';
+               $("#lstTopics").append(str);
+               
             }
             lock = false;
             page++;

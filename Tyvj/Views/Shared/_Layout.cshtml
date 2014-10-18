@@ -98,6 +98,12 @@
             <div class="tyvj-footer-info grid_12">
                 <div class="tyvj-footer-item">
                     <h2>评测机</h2>
+                    <ul>
+                        @foreach (vJudger j in ViewBag.Judgers)
+                        {
+                            <li>@j.Nickname</li>
+                        }
+                    </ul>
                 </div>
                 <div class="tyvj-footer-item">
                     <h2>新闻</h2>
