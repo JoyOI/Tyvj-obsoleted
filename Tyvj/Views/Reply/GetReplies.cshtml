@@ -23,7 +23,7 @@
                                     <input type="hidden" value="@reply.ID" name="id" />
                                 }
                             }
-                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#replyname').show();$('#replyname').show();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply')); $('#replygravatar').show();$('#replygravatar').show();CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('#btnCancle').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@reply.ID');$('#NewReply@(reply.ID)').prepend($('#frmPostReply'));CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('#btnCancle').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                         }
                     </span>
                     &nbsp;&nbsp;
@@ -33,9 +33,9 @@
                     @Html.Sanitized(reply.Content)
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <div id="NewReply@(reply.ID)">
+                        <div id="NewReply@(reply.ID)" class="content temp">
                             @*<div>@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
-                            <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>*@
+                                <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>*@
                         </div>
                     }
 
@@ -66,7 +66,7 @@
                                                     <input type="hidden" value="@replyinreply.ID" name="id" />
                                                 }
                                             }
-                                            <a href="javascript:CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@replyinreply.ID');$('#btnCancle').show();$('#NewReply@(replyinreply.ID)').prepend($('#frmPostReply'));$('#replygravatar').show();$('#replygravatar').show(); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
+                                            <a href="javascript:$('#replyName').show();$('#replyGravatar').show();$('#replyForm').addClass('rr');CKEDITOR.instances.content.destroy();$('#headWarning').hide();$('#father_id').val('@replyinreply.ID');$('#btnCancle').show();$('#NewReply@(replyinreply.ID)').prepend($('#frmPostReply')); CKEDITOR.replace('content',{toolbar:'Basic',width:'100%',height:'60px'});$('#NewPost0').show();$('html,body').animate({scrollTop:$('#NewReply@(reply.ID)').offset().top-50},300);">回复</a>
                                         }
                                     </div>
                                     <div class="content">
