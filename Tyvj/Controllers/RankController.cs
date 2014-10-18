@@ -14,7 +14,6 @@ namespace Tyvj.Controllers
         public ActionResult Index()
         {
             return View();
-<<<<<<< HEAD
         }
 
         [HttpGet]
@@ -27,7 +26,6 @@ namespace Tyvj.Controllers
             for (int i = 0; i < users.Count(); i++)
                 ratings.Add(new vRank(users[i], page * 10 + i + 1));
             return Json(ratings, JsonRequestBehavior.AllowGet);
-=======
         }
 
         [HttpGet]
@@ -57,7 +55,6 @@ namespace Tyvj.Controllers
             for (int i = 0; i < users.Count(); i++)
                 ratings.Add(new vRank(users[i], page * 10 + i + 1));
             return Json(ratings, JsonRequestBehavior.AllowGet);
->>>>>>> 9ec6de7a47263dc6bf4b125ae374a452bd5fc119
         }
     }
 }
