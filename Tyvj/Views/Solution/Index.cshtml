@@ -56,7 +56,7 @@
     </div>
 
     <div class="tyvj-border-top-gray tyvj-side-content">
-        <h3>题目操作</h3>
+        <h3>操作</h3>
     </div>
     <ul class="section" id="actions" style="margin-left:10px">
         @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || ViewBag.CurrentUser.ID == Model.UserID || ViewBag.CurrentUser.ID == Model.Problem.UserID))

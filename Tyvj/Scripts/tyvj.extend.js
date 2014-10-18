@@ -76,6 +76,18 @@ function StandingsUpdate(data) {
     standings.sort(cmp);
     StandingsDisplay();
 }
+function SetSolutionTag(tid) {
+    $.post("/Solution/SetTag/" + id, { tid: tid, rnd: Math.random() }, function (data) {
+        if (data == "Added") {
+            $("#t_" + tid).removeClass("gray");
+            $("#t_" + tid).addClass("orange");
+        }
+        else if (data == "Deleted") {
+            $("#t_" + tid).removeClass("orange");
+            $("#t_" + tid).addClass("gray");
+        }
+    });
+}
 
 function Lock() {
     lock = true;
@@ -237,7 +249,6 @@ function LoadStandings() {
         });
     }
 }
-
 function LoadReplies() {
     if ($("#discuss_detail_list").length > 0) {
         $.post("/Reply/GetReplies/", {
@@ -275,7 +286,6 @@ function LoadReplies() {
         });
     }
 }
-
 function LoadRanks()
 {
     if ($("#lstRanks").length > 0)
