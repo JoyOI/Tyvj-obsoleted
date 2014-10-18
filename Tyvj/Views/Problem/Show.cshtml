@@ -93,7 +93,10 @@
         {
             <li><a class="highlight action" href="javascript:void(0);" id="btnLoadCodeEditBox">提交评测</a></li>
         }
-        <li><a class="action" href="/p/@Model.ID/solution">查看题解</a></li>
+        @if (ViewBag.ContestID == null)
+        {
+            <li><a class="action" href="/p/@Model.ID/solution">查看题解</a></li>
+        }
         <li><a class="action" href="/p/@Model.ID/statuses" target="_self">查看本题提交记录</a></li>
         @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.UserID == ViewBag.CurrentUser.ID))
         {

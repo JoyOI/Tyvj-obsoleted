@@ -186,13 +186,16 @@
     <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\ContestController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
+    <Compile Include="Controllers\RankController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VerifyController.cs" />
     <Compile Include="DataModels\DB.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -216,6 +219,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\vExistedProblem.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
+    <Compile Include="ViewModels\vRank.cs" />
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />
@@ -231,11 +235,21 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\alpha50.png" />
+    <Content Include="Images\alphacolorbox-dark.png" />
+    <Content Include="Images\alphacolorbox.png" />
+    <Content Include="Images\banner.jpg" />
     <Content Include="Images\banner.png" />
     <Content Include="Images\bg.jpg" />
     <Content Include="Images\body.jpg" />
+    <Content Include="Images\border1-dark.png" />
+    <Content Include="Images\border1.png" />
+    <Content Include="Images\border2-dark.png" />
+    <Content Include="Images\border2.png" />
     <Content Include="Images\button_bg.png" />
     <Content Include="Images\checkbox_bg.png" />
+    <Content Include="Images\detail_layout_action_icon.png" />
+    <Content Include="Images\discuss_hl.png" />
     <Content Include="Images\ft.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
@@ -510,6 +524,7 @@
     <Content Include="Views\Problem\Create.cshtml" />
     <Content Include="Views\Problem\Edit.cshtml" />
     <Content Include="Views\Problem\TestCase.cshtml" />
+    <Content Include="Views\Rank\Index.cshtml" />
     <Content Include="Views\Problem\Spj.cshtml" />
     <Content Include="Views\Problem\Std.cshtml" />
     <Content Include="Views\Problem\Range.cshtml" />
@@ -519,6 +534,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
     <Folder Include="Views\CKEditor\" />
+    <Folder Include="Views\Group\" />
+    <Folder Include="Views\Verify\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -57,7 +57,12 @@
     <Compile Include="Contest.cs" />
     <Compile Include="ContestProblem.cs" />
     <Compile Include="ContestRegister.cs" />
+    <Compile Include="EmailVerification.cs" />
     <Compile Include="Forum.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="GroupContest.cs" />
+    <Compile Include="GroupJoin.cs" />
+    <Compile Include="GroupMember.cs" />
     <Compile Include="Hack.cs" />
     <Compile Include="JudgeTask.cs" />
     <Compile Include="Lock.cs" />

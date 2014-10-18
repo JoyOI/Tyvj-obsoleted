@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Tyvj.DataModels;
+using Tyvj.ViewModels;
 
 namespace Tyvj.Controllers
 {
@@ -17,6 +18,16 @@ namespace Tyvj.Controllers
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
+            ViewBag.Judgers = null;
+            var judgers = new List<vJudger>();
+            foreach (var c in SignalR.JudgeHub.Online)
+            {
+                var user = (from u in DbContext.Users
+                                where u.Username == c.Username
+                                select u).Single();
+                judgers.Add(new vJudger(user,c));
+            }
+            ViewBag.Judgers = judgers;
             if (requestContext.HttpContext.User != null && requestContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 ViewBag.CurrentUser = (from u in DbContext.Users

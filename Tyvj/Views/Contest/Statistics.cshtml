@@ -79,7 +79,6 @@
                     <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
                 }
             }
-            <li><a class="action" href="/Contest/@Model.ID/Clarification">答疑平台</a></li>
         }
         @if (User.Identity.IsAuthenticated && (Model.UserID == ViewBag.CurrentUser.ID || ViewBag.CurrentUser.Role >= UserRole.Master))
         {
