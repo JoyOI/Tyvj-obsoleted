@@ -80,7 +80,9 @@
         <li><a class="action" href="/p/@Model.ID">返回题目</a></li>
         <li><a class="action" href="/Problem/@Model.ID/Edit">题面设置</a></li>
         <li><a class="action" href="/Problem/@Model.ID/TestCase">测试数据</a></li>
-        <li><a class="action" href="/Problem/@Model.ID/More">高级设置</a></li>
+        <li><a class="action" href="/Problem/@Model.ID/Spj">特殊比较器</a></li>
+        <li><a class="action" href="/Problem/@Model.ID/Std">标程</a></li>
+        <li><a class="action" href="/Problem/@Model.ID/Range">数据范围校验器</a></li>
     </ul>
 </div>
 @using (Html.BeginForm("DeleteTestCase", "Problem", null, FormMethod.Post, new { id = "frmDeleteTestCase" }))

@@ -208,6 +208,9 @@ function LoadTopics() {
             }
             for (var i = 0; i < topics.length; i++) {
                 if (topics[i] == null) continue;
+                if (topics[i].Top == 1){
+                    topics[i].Title = "[置顶]" + topics[i].Title;
+                }
                 $("#lstTopics").append('<tr class=""><td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
                                                  + '</td><td class="c2">'
                                                  + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
@@ -236,7 +239,13 @@ function LoadReplies() {
             page: page,
             rnd: Math.random()
         }, function (replies) {
-            if (replies.length < 20) { lock = true; return; }//尾页锁定
+            $("#btnMore").html("点击加载更多");
+            if (replies.length < 20) {
+                Lock();
+                lock = true;
+                if (replies.length == 0)
+                    return;
+            }//尾页锁定
             $("#discuss_detail_list").append(replies);
 
             // CKEditor高亮
