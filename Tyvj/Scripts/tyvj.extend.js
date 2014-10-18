@@ -278,7 +278,7 @@ function LoadReplies() {
 
 function LoadRanks() {
     if ($("#lstRanks").length > 0) {
-        $.getJSON("/Rank/GetRanks", {
+        $.getJSON("/Rank/GetRanksByRating", {
             page: page,
             rnd: Math.random()
         }, function (ranks) {
@@ -308,6 +308,12 @@ function LoadRanks() {
             page++;
         });
     }
+    
+}
+
+function GetRanksByRating() {
+    rank_type = 0;
+    page = 0;
 }
 
 $(document).ready(function () {
