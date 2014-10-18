@@ -13,6 +13,9 @@ namespace Tyvj.DataModels
         [Column("id")]
         public int ID { get; set; }
 
+        [Column("title")]
+        public string Title { get; set; }
+
         [Column("gravatar")]
         public string Gravatar { get; set; }
 

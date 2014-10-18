@@ -46,7 +46,67 @@ namespace Tyvj.Controllers
                 UserID = CurrentUser.ID,
                 Content = Content
             };
-            return View(problem);
+            DbContext.Solutions.Add(solution);
+            DbContext.SaveChanges();
+            return RedirectToAction("EditTags","Solution",new{id=solution.ID});
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SetTag(int id, int tid)
+        {
+            var solution = DbContext.Solutions.Find(id);
+            if (solution.Problem.Hide && (CurrentUser == null || (CurrentUser.ID != solution.UserID && CurrentUser.ID != solution.Problem.UserID && !IsMaster())))
+                return Content("Failed");
+            var tags = solution.SolutionTags.Where(x => x.AlgorithmTagID == tid).ToList();
+            if (tags.Count == 0)
+            {
+                var tag = new SolutionTag
+                {
+                    AlgorithmTagID = tid,
+                    SolutionID = id
+                };
+                DbContext.SolutionTags.Add(tag);
+                DbContext.SaveChanges();
+                return Content("Added");
+            }
+            else
+            {
+                foreach (var tag in tags)
+                    DbContext.SolutionTags.Remove(tag);
+                DbContext.SaveChanges();
+                return Content("Deleted");
+            }
+        }
+
+        [Authorize]
+        public ActionResult EditTags(int id)
+        {
+            var solution = DbContext.Solutions.Find(id);
+            if (CurrentUser == null || (CurrentUser.ID != solution.UserID && CurrentUser.ID != solution.Problem.UserID && !IsMaster()))
+                return Message("您无权执行本操作");
+            ViewBag.Tags = (from at in DbContext.AlgorithmTags
+                            where at.FatherID == null
+                            orderby at.ID ascending
+                            select at).ToList();
+            return View(solution);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult Edit(int id, string Title, string Content, string Code, int language_id)
+        {
+            var solution = DbContext.Solutions.Find(id);
+            if (CurrentUser == null || (CurrentUser.ID != solution.UserID && CurrentUser.ID != solution.Problem.UserID && !IsMaster()))
+                return Message("您无权执行本操作");
+            solution.Title = Title;
+            solution.Content = Content;
+            solution.Code = Code;
+            solution.LanguageAsInt = language_id;
+            DbContext.SaveChanges();
+            return RedirectToAction("EditTags", "Solution", new { id = solution.ID });
         }
     }
 }
