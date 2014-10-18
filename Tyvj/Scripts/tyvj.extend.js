@@ -22,6 +22,7 @@ function Load() {
     LoadReplies();
     LoadStandings();
     LoadRanks();
+    LoadGroups();
 }
 
 function BuildStandings(rank, data) {
@@ -229,6 +230,7 @@ function LoadTopics() {
         });
     }
 }
+
 function LoadStandings() {
     if ($("#lstStandings").length > 0) {
         $.getJSON("/Contest/GetStandings/" + id, { rnd: Math.random() }, function (data) {
@@ -354,6 +356,39 @@ function LoadRanks_AC() {
         });
     }
     
+}
+
+
+
+function LoadGroups() {
+    if ($("#lstGroups").length > 0) {
+        $.getJSON("/Group/GetGroups", {
+            page: page,
+            rnd: Math.random()
+        }, function (groups) {
+            $("#btnMore").html("点击加载更多");
+            if (groups.length < 10) {
+                Lock();
+                if (groups.length == 0)
+                    return;
+            }
+            for (var i = 0; i < groups.length; i++) {
+                if (groups[i] == null) continue;
+                var html = '<tr>'
+                                + '<td class="c1">'
+                                + '    <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">'
+                                + '</td>'
+                                + '<td class="c2">'
+                                + '    <div class="title"><a href="/Group/1">测试团队</a></div>'
+                                + '    <div class="footer">我们是一个团队。</div>'
+                                + '</td>'
+                                + '</tr>';
+                $("#lstgroups").append(html);
+            }
+            lock = false;
+            page++;
+        });
+    }
 }
 
 function GetRanksByRating() {

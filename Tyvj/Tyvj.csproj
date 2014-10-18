@@ -535,12 +535,12 @@
     <Content Include="Views\Solution\Index.cshtml" />
     <Content Include="Views\Solution\Create.cshtml" />
     <Content Include="Views\Solution\EditTags.cshtml" />
+    <Content Include="Views\Group\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
     <Folder Include="Views\CKEditor\" />
-    <Folder Include="Views\Group\" />
     <Folder Include="Views\Verify\" />
   </ItemGroup>
   <ItemGroup>
