@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Text.RegularExpressions;
 using Tyvj.DataModels;
 using Tyvj.ViewModels;
 
@@ -128,6 +129,7 @@ namespace Tyvj.Controllers
             return View(user);
         }
 
+        [HttpPost]
         public ActionResult Register(string Email)
         {
             if ((from u in DbContext.Users where u.Email == Email select u).Count() > 0)
@@ -161,6 +163,49 @@ namespace Tyvj.Controllers
 
             Helpers.SMTP.Send(email_verification.Email, "Code Comb 用户注册邮箱验证", strEmail);
             return RedirectToAction("Message", "Shared", new { msg = "我们已经向" + email_verification.Email + "中发送了一封包含验证链接的电子邮件，请根据电子邮件中的提示进行下一步的注册。" });
+        }
+
+        public ActionResult RegisterDetail()
+        {
+            if (Session["Email"] == null)
+                return Message("非法访问");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterDetail(vRegister model)
+        {
+            if (Session["Email"] == null)
+                return RedirectToAction("Message", "Shared", new { msg = "非法访问。" });
+            if (!Regex.IsMatch(model.Username, @"^\w+$") || Helpers.String.StringLen(model.Username) < 4 || Helpers.String.StringLen(model.Username) > 16)
+                return RedirectToAction("Message", "Shared", new { msg = "用户名不合法，用户名长度必须为4~16个字符，同时只允许使用英文字母、数字和下划线" });
+            var user = (from u in DbContext.Users
+                        where u.Username == model.Username
+                        select u).SingleOrDefault();
+            var email = Session["Email"].ToString();
+            if (user != null) return Message("用户名已经存在，请返回更换用户名再试！" );
+            DbContext.Users.Add(new User
+            {
+                Username = model.Username,
+                Password = Helpers.Security.SHA1(model.Password),
+                Email = email,
+                LastLoginTime = DateTime.Now,
+                RegisterTime = DateTime.Now,
+                Role = UserRole.Member,
+                Motto = "",
+                CommonLanguage = Language.C,
+                Gravatar = email,
+                QQ = model.QQ,
+                School = model.School
+            });
+            DbContext.SaveChanges();
+            var email_verification = (from ev in DbContext.EmailVerifications
+                                      where ev.Email == email
+                                      select ev).Single();
+            DbContext.EmailVerifications.Remove(email_verification);
+            DbContext.SaveChanges();
+            return Message("注册成功，您可以通过右上方登录按钮进行登录操作");
         }
     }
 }

@@ -28,6 +28,12 @@ namespace Tyvj
             );
 
             routes.MapRoute(
+               name: "Verifying",
+               url: "{controller}/{action}/{id}/{token}",
+               defaults: new { controller = "Verify", action = "Register" }
+           );
+
+            routes.MapRoute(
                 name: "Problem",
                 url: "p/{id}",
                 defaults: new { controller = "Problem", action = "Show" },
