@@ -29,11 +29,11 @@
                                 <tr><td class="tyvj-status-info-left">题目名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>
                                 <tr><td class="tyvj-status-info-left">时间限制</td><td>@Html.TextBox("TimeLimit", Model.TimeLimit, new { @class = "textbox" }) ms (非管理员上限2s)</td></tr>
                                 <tr><td class="tyvj-status-info-left">空间限制</td><td>@Html.TextBox("MemoryLimit", Model.MemoryLimit, new { @class = "textbox" }) KiB (非管理员上限128MiB)</td></tr>
-                                <tr><td class="tyvj-status-info-left">题目背景</td><td><textarea class="ckeditor" name="Background">@Model.Background</textarea></td></tr>
-                                <tr><td class="tyvj-status-info-left">题目描述</td><td><textarea class="ckeditor" name="Description">@Model.Description</textarea></td></tr>
-                                <tr><td class="tyvj-status-info-left">输入格式</td><td><textarea class="ckeditor" name="Input">@Model.Input</textarea></td></tr>
-                                <tr><td class="tyvj-status-info-left">输出格式</td><td><textarea class="ckeditor" name="Output">@Model.Output</textarea></td></tr>
-                                <tr><td class="tyvj-status-info-left">备注</td><td><textarea class="ckeditor" name="Hint">@Model.Hint</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">题目背景</td><td><textarea class="ckeditor" id="txtBackground" name="Background">@Model.Background</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">题目描述</td><td><textarea class="ckeditor" id="txtDescription" name="Description">@Model.Description</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">输入格式</td><td><textarea class="ckeditor" id="txtInput" name="Input">@Model.Input</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">输出格式</td><td><textarea class="ckeditor" id="txtOutput" name="Output">@Model.Output</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">备注</td><td><textarea class="ckeditor" id="txtHint" name="Hint">@Model.Hint</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnSave" class="button button-def" /></td></tr>
                             </tbody>
                         </table>
@@ -55,6 +55,11 @@
 </div>
 <script>
     $("#btnSave").click(function () {
+        $("#txtBackground").val(CKEDITOR.instances.txtBackground.getData());
+        $("#txtDescription").val(CKEDITOR.instances.txtDescription.getData());
+        $("#txtInput").val(CKEDITOR.instances.txtInput.getData());
+        $("#txtOutput").val(CKEDITOR.instances.txtOutput.getData());
+        $("#txtHint").val(CKEDITOR.instances.txtHint.getData());
         $.post("/Problem/@(Model.ID)/Edit", $("#frmEditProblem").serialize(), function () {
             CastMsg("题目修改成功！");
         });
