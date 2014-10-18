@@ -216,6 +216,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\vExistedProblem.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
+    <Compile Include="ViewModels\vRank.cs" />
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />
@@ -514,7 +515,6 @@
     <Content Include="Views\Problem\Spj.cshtml" />
     <Content Include="Views\Problem\Std.cshtml" />
     <Content Include="Views\Problem\Range.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
