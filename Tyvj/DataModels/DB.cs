@@ -26,6 +26,7 @@ namespace Tyvj.DataModels
         public DbSet<ContestRegister> ContestRegisters { get; set; }
         public DbSet<Lock> Locks { get; set; }
         public DbSet<Hack> Hacks { get; set; }
+        public DbSet<EmailVerification> EmailVerifications { get; set; }
         public DB()
             : base("mysqldb")
         { 
