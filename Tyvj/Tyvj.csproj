@@ -509,6 +509,9 @@
     <Content Include="Views\Problem\Create.cshtml" />
     <Content Include="Views\Problem\Edit.cshtml" />
     <Content Include="Views\Problem\TestCase.cshtml" />
+    <Content Include="Views\Problem\Spj.cshtml" />
+    <Content Include="Views\Problem\Std.cshtml" />
+    <Content Include="Views\Problem\Range.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -344,5 +344,77 @@ namespace Tyvj.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             return Json(new vTestCase(testcase), JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult Spj(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Message("您无权执行本操作");
+            return View(problem);
+        }
+
+        [Authorize]
+        public ActionResult Std(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Message("您无权执行本操作");
+            return View(problem);
+        }
+
+        [Authorize]
+        public ActionResult Range(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Message("您无权执行本操作");
+            return View(problem);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult Spj(int id, int language, string spj)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Content("False");
+            problem.SpecialJudge = spj;
+            problem.SpecialJudgeLanguageAsInt = language;
+            DbContext.SaveChanges();
+            return Content("True");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult Std(int id, int language, string std)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Content("False");
+            problem.StandardProgram = std;
+            problem.StandardProgramLanguageAsInt = language;
+            DbContext.SaveChanges();
+            return Content("True");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult Range(int id, int language, string range)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!IsMaster() && CurrentUser.ID != problem.ID)
+                return Content("False");
+            problem.RangeValidator = range;
+            problem.RangeValidatorLanguageAsInt = language;
+            DbContext.SaveChanges();
+            return Content("True");
+        }
     }
 }
