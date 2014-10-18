@@ -9,27 +9,26 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin-bottom:0px;
+    margin-bottom: 0px;
 }
 
 h2 {
     font-size: 21px;
     line-height: 30px;
-    *font-size:21px;
-    _font-size:21px;
-    *line-height:26px;
-    _line-height:26px;
+    *font-size: 21px;
+    _font-size: 21px;
+    *line-height: 26px;
+    _line-height: 26px;
     font-weight: normal;
 }
 
 h3 {
     font-size: 18px;
     line-height: 22px;
-    
-    *font-size:18px;
-    _font-size:18px;
-    *line-height:20px;
-    _line-height:20px;
+    *font-size: 18px;
+    _font-size: 18px;
+    *line-height: 20px;
+    _line-height: 20px;
     font-weight: normal;
 }
 
@@ -272,10 +271,11 @@ textarea.textbox {
         *background-color: white;
         _background-color: white;
     }
-    .tyvj-nav-item-hover {
-        color: #333;
-        background-color: white;
-    }
+
+.tyvj-nav-item-hover {
+    color: #333;
+    background-color: white;
+}
 
 #tyvj-footer {
     background-image: url(/Images/ft.jpg);
@@ -835,7 +835,7 @@ table {
         color: #0d498c;
         text-shadow: 1px 1px 2px #FFF;
         font-weight: bold;
-        behavior:url(/Styles/PIE.htc);
+        behavior: url(/Styles/PIE.htc);
     }
 
     .tyvjlc2 .pg.ac .pglt {
@@ -879,8 +879,8 @@ table {
 }
 
 .tyvj-content-subtitle {
-    margin-bottom:10px;
-    font-size:14px;
+    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .tyvj-content-inner {
@@ -890,62 +890,62 @@ table {
 }
 
 a.action {
-    display:block;
-    background:url(/Images/detail_layout_action_icon.png) no-repeat left center;
-    transition:background-color .2s linear,border-color .2s linear;
-    -webkit-transition:background-color .2s linear,border-color .2s linear;
-    -moz-transition:background-color .2s linear,border-color .2s linear;
-    -o-transition:background-color .2s linear,border-color .2s linear;
-    -ie-transition:background-color .2s linear,border-color .2s linear;
-    border:1px solid transparent;
-    padding:5px 10px 5px 15px;
+    display: block;
+    background: url(/Images/detail_layout_action_icon.png) no-repeat left center;
+    transition: background-color .2s linear,border-color .2s linear;
+    -webkit-transition: background-color .2s linear,border-color .2s linear;
+    -moz-transition: background-color .2s linear,border-color .2s linear;
+    -o-transition: background-color .2s linear,border-color .2s linear;
+    -ie-transition: background-color .2s linear,border-color .2s linear;
+    border: 1px solid transparent;
+    padding: 5px 10px 5px 15px;
 }
 
-a.action:hover {
-    background-color:#FFF;
-    text-decoration:none;
-    border:1px solid #DDD;
-}
+    a.action:hover {
+        background-color: #FFF;
+        text-decoration: none;
+        border: 1px solid #DDD;
+    }
 
 .section {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-.section h4 {
-    border-top:3px solid #dbdbdb;
-    margin:0;
-    padding:7px 5px;
-}
+    .section h4 {
+        border-top: 3px solid #dbdbdb;
+        margin: 0;
+        padding: 7px 5px;
+    }
 
-.section .scontent {
-    padding:0 5px;
-}
+    .section .scontent {
+        padding: 0 5px;
+    }
 
-#actions, #actions li,#actions ul {
-    list-style:none;
-    margin:0;
-    padding:0;
+#actions, #actions li, #actions ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 #actions {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 .tyvj-side-content {
-    margin:0;
+    margin: 0;
     padding: 0 10px;
     line-height: 12px;
 }
 
-.tyvj-side-content h3{
-    font-size:16px;
-    line-height:16px;
-    margin-top:7px;
-    margin-bottom:14px;
-}
+    .tyvj-side-content h3 {
+        font-size: 16px;
+        line-height: 16px;
+        margin-top: 7px;
+        margin-bottom: 14px;
+    }
 
 a.highlight {
-    color:rgb(255, 77, 77);
+    color: rgb(255, 77, 77);
 }
 
 .tyvj-border-top-gray {
@@ -953,35 +953,35 @@ a.highlight {
 }
 
 .tyvj-content-narrow {
-    overflow:hidden;
-    width:500px;
-    margin:0 auto;
-    margin:0 auto!important;
-    min-height:250px;
-    background-color:rgba(255,255,255,0.3);
+    overflow: hidden;
+    width: 500px;
+    margin: 0 auto;
+    margin: 0 auto !important;
+    min-height: 250px;
+    background-color: rgba(255,255,255,0.3);
     *background-image: url(/Images/alpha50.png);
     _background-image: url(/Images/alpha50.png);
     *background-repeat: repeat;
     _background-repeat: repeat;
-    behavior:url(/Styles/PIE.htc);
+    behavior: url(/Styles/PIE.htc);
 }
 
 .tyvj-content-narrow-header {
-    height:60px;
-    font-size:20px;
-    line-height:60px;
-    text-align:center;
-    background-color:rgba(255,255,255,0.5);
+    height: 60px;
+    font-size: 20px;
+    line-height: 60px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.5);
     *background-image: url(/Images/alpha50.png);
     _background-image: url(/Images/alpha50.png);
     *background-repeat: repeat;
     _background-repeat: repeat;
-    behavior:url(/Styles/PIE.htc);
+    behavior: url(/Styles/PIE.htc);
 }
 
 .tyvj-width-300 {
-    width:300px;
-    width:300px!important;
+    width: 300px;
+    width: 300px !important;
 }
 
 .tyvj-nav-face-container {
@@ -992,18 +992,18 @@ a.highlight {
 .tyvj-nav-face {
     border-radius: 50%;
     width: 24px;
-    behavior:url(/Styles/PIE.htc);
+    behavior: url(/Styles/PIE.htc);
 }
 
 .tyvj-nav-face-name {
-    margin-left:5px;
-    float:left;
+    margin-left: 5px;
+    float: left;
 }
 
 .login-form {
     position: fixed;
-    *position:absolute;
-    _position:absolute;
+    *position: absolute;
+    _position: absolute;
     left: 100px;
     top: 43px;
     background: #fff;
@@ -1011,7 +1011,7 @@ a.highlight {
     box-shadow: 0 0 10px rgba(0,0,0,.3);
     padding: 10px;
     font-size: .9em;
-    behavior:url(/Styles/PIE.htc);
+    behavior: url(/Styles/PIE.htc);
 }
 
     .login-form label {
@@ -1019,21 +1019,21 @@ a.highlight {
     }
 
 .tyvj-status-info {
-    padding:10px;
-    font-size:14px;
+    padding: 10px;
+    font-size: 14px;
 }
 
-.tyvj-status-info td {
-    height:28px;
-}
+    .tyvj-status-info td {
+        height: 28px;
+    }
 
 .tyvj-status-info-left {
-    width:100px;
-    font-weight:bold;
+    width: 100px;
+    font-weight: bold;
 }
 
 .tyvj-status-info-middle {
-    width:200px;
+    width: 200px;
 }
 
 #page_discuss_detail .reply_root {
@@ -1122,7 +1122,8 @@ a.highlight {
     float: left;
     width: 80px;
     text-align: center;
-    padding: 10px 0;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
     #page_discuss_detail .rl img {
@@ -1181,6 +1182,7 @@ a.highlight {
     height: 80px;
     border-radius: 4px;
 }
+
 #page_discuss_detail img.face1 {
     width: 65px;
     height: 65px;
@@ -1269,10 +1271,10 @@ a.highlight {
 
 .label {
     padding: 3px 5px 3px 5px;
-    font-size:14px;
-    color:black!important;
-    text-decoration:none!important;
-    white-space:nowrap;
+    font-size: 14px;
+    color: black !important;
+    text-decoration: none !important;
+    white-space: nowrap;
 }
 
 .label-big {
@@ -1282,12 +1284,12 @@ a.highlight {
 .blue {
     background-color: rgba(206, 239, 255, 0.65);
     background-color: rgb(206, 239, 255)\9;
-   * background-color: rgb(206, 239, 255);
+    * background-color: rgb(206, 239, 255);
     _background-color: rgb(206, 239, 255);
 }
 
     .blue:hover {
-         background-color: rgb(220, 237, 255);
+        background-color: rgb(220, 237, 255);
     }
 
 .gray {
@@ -1296,9 +1298,10 @@ a.highlight {
     *background-color: rgb(224, 224, 224);
     _background-color: rgb(224, 224, 224);
 }
+
     .gray:hover {
-             background-color: rgb(244, 244, 244);
-        }
+        background-color: rgb(244, 244, 244);
+    }
 
 .red {
     background-color: rgba(255,215,215,0.65);
@@ -1306,17 +1309,18 @@ a.highlight {
     *background-color: rgb(255,215,215);
     _background-color: rgb(255,215,215);
 }
+
     .red:hover {
         background-color: rgb(255, 235, 235);
     }
 
 .green {
-    
     background-color: rgba(204, 255, 202, 0.65);
     background-color: rgb(204, 255, 202)\9;
     *background-color: rgb(204, 255, 202);
     _background-color: rgb(204, 255, 202);
 }
+
     .green:hover {
         background-color: #e2ffe1;
     }
@@ -1327,6 +1331,7 @@ a.highlight {
     *background-color: rgb(255, 210, 176);
     _background-color: rgb(255, 210, 176);
 }
+
     .orange:hover {
         background-color: rgb(255, 232, 215);
     }
@@ -1337,6 +1342,7 @@ a.highlight {
     *background-color: rgb(204, 174, 255);
     _background-color: rgb(204, 174, 255);
 }
+
     .purple:hover {
         background-color: rgb(224, 194, 255);
     }
@@ -1351,33 +1357,35 @@ a.highlight {
     .black:hover {
         background-color: #EEE;
     }
+
 .rank-avatar {
-    height:40px;
-    width:40px;
-    margin-top:5px;
-    border-radius:5px;
-    behavior:url(/Styles/PIE.htc);
+    height: 40px;
+    width: 40px;
+    margin-top: 5px;
+    border-radius: 5px;
+    behavior: url(/Styles/PIE.htc);
 }
+
 .rank-red {
-    background-color:#f2dede;
+    background-color: #f2dede;
 }
 
 .rank-green {
-     background-color:#dff0d8;
+    background-color: #dff0d8;
 }
 
 .rank-orange {
-    background-color:rgb(255, 233, 201);
+    background-color: rgb(255, 233, 201);
 }
 
 .label-ac {
-    float:left;
-    margin-right:5px;
-    margin-bottom:5px;
-    width:60px;
-    text-align:center;
-    border-radius:25px;
-    behavior:url(/Styles/PIE.htc);
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: 60px;
+    text-align: center;
+    border-radius: 25px;
+    behavior: url(/Styles/PIE.htc);
 }
 
 .show_public_tips {
