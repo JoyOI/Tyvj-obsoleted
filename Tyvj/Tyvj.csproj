@@ -531,6 +531,7 @@
     <Content Include="Views\Problem\Range.cshtml" />
     <Content Include="Views\Share\Message.cshtml" />
     <Content Include="Views\User\RegisterDetail.cshtml" />
+    <Content Include="Views\Problem\Solution.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
