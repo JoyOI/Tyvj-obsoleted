@@ -1421,3 +1421,37 @@ a.highlight {
     background-color: white;
     behavior: url(/Styles/PIE.htc);
 }
+
+.item-wrap {
+    padding: 20px 20px 20px 20px;
+    border-bottom: 1px dotted #CCC;
+}
+
+.rank-face img {
+    width: 64px;
+    height: 64px;
+    border-radius: 9999px;
+    border: 3px solid #3AAAE1;
+    float: left;
+}
+
+.rank-face h2 {
+    float: left;
+    margin-left: 20px;
+}
+
+.rank-cont {
+    float: right;
+}
+
+.rank-value {
+    font-size: 32px;
+    text-align: right;
+}
+
+.rank-rank {
+    font-size: 24px;
+    text-align: right;
+    padding-top: 24px;
+    padding-bottom: 6px;
+}
