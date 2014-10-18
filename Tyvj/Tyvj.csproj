@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
+    <Compile Include="Controllers\RankController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
@@ -509,6 +510,7 @@
     <Content Include="Views\Problem\Create.cshtml" />
     <Content Include="Views\Problem\Edit.cshtml" />
     <Content Include="Views\Problem\TestCase.cshtml" />
+    <Content Include="Views\Rank\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

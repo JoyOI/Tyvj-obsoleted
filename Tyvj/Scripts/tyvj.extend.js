@@ -21,6 +21,7 @@ function Load() {
     LoadTopics();
     LoadReplies();
     LoadStandings();
+    LoadRanks();
 }
 
 function BuildStandings(rank, data) {
@@ -256,6 +257,29 @@ function LoadReplies() {
                     hljs.highlightBlock(block);
                 }
             });
+        });
+    }
+}
+
+function LoadRanks() {
+    if ($("#lstRanks").length > 0) {
+        $.getJSON("/Rank/GetRanks", {
+            page: page,
+            rnd: Math.random()
+        }, function (ranks) {
+            if (ranks.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
+            for (var i = 0; i < ranks.length; i++) {
+                if (ranks[i] == null) continue;
+                $("#lstranks").append('<a class="rank-item" href="/User/' + ranks[i].UserID + '">'
+                                                 + '    <div class="rank-face float-left"><img src="' + ranks[i].Gravatar + '"></div>'
+                                                 + '    <div class="rank-cont float-right"><div class="rank-name"><h2>' + ranks[i].Nickname + '</h2></div><div class="rank-value">Credit: ' + ranks[i].Credit + '</div></div>'
+                                                 + '    <div class="clear"></div>'
+                                                 + '    <div class="rank-rank">#' + ranks[i].Rank + '</div>'
+                                                 + '</a>');
+            }
+            lock = false;
+            page++;
+            $("#iconLoading").hide();
         });
     }
 }

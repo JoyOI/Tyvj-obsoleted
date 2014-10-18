@@ -1406,3 +1406,10 @@ a.highlight {
 .show_public_tips_text {
     color: #fff;
 }
+
+.tyvj-rank-body {
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    background-color: white;
+    behavior: url(/Styles/PIE.htc);
+}
