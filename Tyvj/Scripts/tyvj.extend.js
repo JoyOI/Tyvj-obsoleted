@@ -370,7 +370,7 @@ function LoadRanks_Ratings() {
                 html += '     </div>'
                                         + '     <div class="footer">Rating: ' + ranks[i].Credit + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
-                                        + '<td class="c3">#1</td>'
+                                        + '<td class="c3">#' + ranks[i].Rank + '</td>'
                                         + '</tr>';
                 $("#lstRanks").append(html);
             }
@@ -405,7 +405,7 @@ function LoadRanks_AC() {
                 html += '     </div>'
                                         + '     <div class="footer">Rating: ' + ranks[i].Credit + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
                                         + '</td>'
-                                        + '<td class="c3">#1</td>'
+                                        + '<td class="c3">#' + ranks[i].Rank + '</td>'
                                         + '</tr>';
                 $("#lstRanks").append(html);
             }
@@ -421,30 +421,29 @@ function LoadGroupMembers() {
         $.getJSON("/Group/GetMembers", {
             page: page,
             rnd: Math.random()
-        }, function (ranks) {
+        }, function (members) {
             $("#btnMore").html("点击加载更多");
-            if (ranks.length < 10) {
+            if (members.length < 10) {
                 Lock();
-                if (ranks.length == 0)
+                if (members.length == 0)
                     return;
             }
-            for (var i = 0; i < ranks.length; i++) {
-                if (ranks[i] == null) continue;
+            for (var i = 0; i < members.length; i++) {
+                if (members[i] == null) continue;
                 var html = '<tr>'
                                         + '<td class="c1">'
-                                        + '    <img class="face" src="' + ranks[i].Gravatar + '">'
+                                        + '    <img class="face" src="' + members[i].Gravatar + '">'
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>';
-                if (ranks[i].Motto.length > 0)
-                    html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
+                                        + '         <a href="/User/' + members[i].ID + '">' + members[i].Nickname + '</a>';
+                if (members[i].Motto.length > 0)
+                    html += '         <span style="font-size: 13px; color: #BBB;">（' + members[i].Motto + '）</span>';
                 html += '     </div>'
-                                        + '     <div class="footer">Rating: ' + ranks[i].Credit + ' / 提交：' + ranks[i].Total + ' / 通过：' + ranks[i].AC + ' / 通过率：' + ranks[i].ACRate + '</div>'
+                                        + '     <div class="footer">Rating: ' + members[i].Credit + ' / 提交：' + members[i].Total + ' / 通过：' + members[i].AC + ' / 通过率：' + members[i].ACRate + '</div>'
                                         + '</td>'
-                                        + '<td class="c3">#1</td>'
                                         + '</tr>';
-                $("#lstRanks").append(html);
+                $("#lstGroupMembers").append(html);
             }
             lock = false;
             page++;

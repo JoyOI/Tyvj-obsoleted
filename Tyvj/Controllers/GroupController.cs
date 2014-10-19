@@ -36,9 +36,9 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetMembers(int Page, int GroupID)
+        public ActionResult GetMembers(int? Page, int GroupID)
         {
-            /* if (Page == null) Page = 0;
+            if (Page == null) Page = 0;
             var _members = (from m in DbContext.GroupMembers
                               where m.GroupID == GroupID
                               orderby m.ID descending
@@ -46,7 +46,7 @@ namespace Tyvj.Controllers
             var members = new List<vGroupMember>();
             foreach (var m in members)
                 members.Add(new vGroupMember(m));
-            return Json(members, JsonRequestBehavior.AllowGet); */
+            return Json(members, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Join(int id)
