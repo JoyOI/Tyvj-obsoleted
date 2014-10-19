@@ -143,5 +143,28 @@ namespace Tyvj.Controllers
             }
             return Message("对不起，你所在的用户组没有操作权限。");
         }
+
+        [HttpPost]
+        public ActionResult AddContest(int ID, int id)
+        {
+            var group = DbContext.Contests.Find(id);
+            var contest = DbContext.Contests.Find(ID);
+            DbContext.GroupContest.Add(new GroupContest 
+            { 
+                ContestID = ID,
+                GroupID = id
+            });
+            DbContext.SaveChanges();
+            return RedirectToAction("Group", "Show");
+        }
+
+        [Authorize]
+        public ActionResult AddContest(int ID, int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            if (!IsMaster() && CurrentUser.ID != group.UserID)
+                return Message("对不起，你所在的用户组没有操作权限。");
+            return View(group);
+        }
     }
 }
