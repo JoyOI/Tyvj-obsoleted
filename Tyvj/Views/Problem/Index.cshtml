@@ -1,12 +1,11 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "题目列表";
 }
 <div class="tyvj-left grid_12">
     <div class="tyvj-shadow tyvj-block tyvj-border-side tyvj-toolbar">
         快速换页：
         @foreach (vPager p in ViewBag.Pager)
-        { 
+        {
             <a href="javascript:Jump(@p.Begin, @p.End)">@p.Display</a>
         }
     </div>
@@ -31,9 +30,7 @@
                     <th class="tyvj-list-th tyvjlc6" style="width:10%">通过率</th>
                 </tr>
             </thead>
-            <tbody id="lstProblems">
-
-            </tbody>
+            <tbody id="lstProblems"></tbody>
         </table>
         <div>
             <a href="javascript:Load()">
@@ -47,13 +44,13 @@
         <h3>检索</h3>
         <p><input type="text" placeholder="题目名称" class="textbox" id="txtTitle" /></p>
         <p><input type="button" value="检索" class="button button-def" id="btnSearch" /></p>
-        <h3>分类</h3>
+        <h2 style="font-weight:bold;">分类</h2>
         @foreach (AlgorithmTag father in ViewBag.Tags)
-        { 
+        {
             <h3>@father.Title</h3>
             foreach (var child in father.Children)
-            { 
-                
+            {
+                <a href="javascript:SetTag(@child.ID)" class="ProblemTag label" id="tag_@child.ID">@child.Title</a>
             }
         }
         <h3>操作</h3>

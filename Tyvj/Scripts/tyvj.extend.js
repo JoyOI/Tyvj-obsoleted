@@ -90,6 +90,24 @@ function SetSolutionTag(tid) {
     });
 }
 
+function SetTag(id) {
+    if (tags.indexOf(id + ",") >= 0) {
+        tags = tags.replace(id + ",", "");
+        $("#tag_" + id).removeClass("orange");
+    }
+    else {
+        tags += id + ",";
+        $("#tag_" + id).addClass("orange");
+    }
+    morethan = null;
+    lessthan = null;
+    page = 0;
+    lock = false;
+    $("#txtProblemTitle").val("");
+    $("#lstProblems").html("");
+    Load();
+}
+
 function Lock() {
     lock = true;
     if ($("#btnMore").length > 0) {

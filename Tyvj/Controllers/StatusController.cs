@@ -11,10 +11,11 @@ namespace Tyvj.Controllers
     public class StatusController : BaseController
     {
         // GET: Status
-        public ActionResult Index(int? uid, int? cid)
+        public ActionResult Index(int? uid, int? cid, int?pid)
         {
             ViewBag.DestUsername = null;
             ViewBag.DestContestID = null;
+            ViewBag.DestProblemID = null;
             if (uid != null)
             {
                 ViewBag.DestUsername = DbContext.Users.Find(uid).Username;
@@ -22,6 +23,10 @@ namespace Tyvj.Controllers
             if (cid != null)
             {
                 ViewBag.DestContestID = cid;
+            }
+            if (pid != null)
+            {
+                ViewBag.DestProblemID = pid;
             }
             return View();
         }

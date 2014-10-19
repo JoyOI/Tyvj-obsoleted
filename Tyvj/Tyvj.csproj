@@ -535,6 +535,10 @@
     <Content Include="Views\Solution\Index.cshtml" />
     <Content Include="Views\Solution\Create.cshtml" />
     <Content Include="Views\Solution\EditTags.cshtml" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Solution\Edit.cshtml" />
   </ItemGroup>
