@@ -151,7 +151,7 @@ function LoadSolutions() {
     if ($("#lstSolutions").length > 0) {
         $.getJSON("/Solution/GetSolutions", {
             page: page,
-            id: id,
+            ProblemID: id,
             rnd: Math.random()
         }, function (solutions) {
             $("#btnMore").html("点击加载更多");

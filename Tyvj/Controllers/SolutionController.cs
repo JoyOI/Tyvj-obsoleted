@@ -122,5 +122,14 @@ namespace Tyvj.Controllers
                 solutions.Add(new vSolution(s));
             return Json(solutions, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var solution = DbContext.Solutions.Find(id);
+            if (CurrentUser == null || (CurrentUser.ID != solution.UserID && CurrentUser.ID != solution.Problem.UserID && !IsMaster()))
+                return Message("您无权执行本操作");
+            return View(solution);
+        }
     }
 }

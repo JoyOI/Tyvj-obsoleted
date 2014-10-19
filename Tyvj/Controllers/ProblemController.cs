@@ -57,6 +57,8 @@ namespace Tyvj.Controllers
                                                      where (p.Title.Contains(Title))
                                                      select p);
             if (!IsMaster())
+                _problems = _problems.Where(x => x.Hide == false);
+            if (!IsMaster() && User.Identity.IsAuthenticated)
                 _problems = _problems.Where(x => x.Hide == false || x.UserID == CurrentUser.ID);
             if (tags.Count > 0)
             {

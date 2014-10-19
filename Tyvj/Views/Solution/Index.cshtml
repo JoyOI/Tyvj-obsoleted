@@ -21,7 +21,7 @@
         </div>
         <div class="tyvj-content" style="padding-top:10px;">
             <div class="tyvj-content-subtitle">
-                标签: @foreach (SolutionTag tag in ViewBag.Tags)
+                标签: @foreach (SolutionTag tag in Model.SolutionTags)
                 {
                     if (tag.AlgorithmTag.FatherID != null)
                     {
