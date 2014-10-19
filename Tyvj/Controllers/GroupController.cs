@@ -112,15 +112,18 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Accept(int id)
         {
-            var gj = DbContext.GroupJoins.Find(id);
-            var group = DbContext.Groups.Find(gj.GroupID);
-            DbContext.GroupMembers.Add(new GroupMember
+            if(IsMaster())
             {
-                UserID = CurrentUser.ID,
-                GroupID = id
-            });
-            DbContext.GroupJoins.Remove(gj);
-            DbContext.SaveChanges();
+                var gj = DbContext.GroupJoins.Find(id);
+                var group = DbContext.Groups.Find(gj.GroupID);
+                DbContext.GroupMembers.Add(new GroupMember
+                {
+                    UserID = CurrentUser.ID,
+                    GroupID = id
+                });
+                DbContext.GroupJoins.Remove(gj);
+                DbContext.SaveChanges();
+            }
             return RedirectToAction("Group", "Ratify");
         }
 
@@ -129,11 +132,14 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Decline(int id)
         {
-            var gj = DbContext.GroupJoins.Find(id);
-            var group = DbContext.Groups.Find(gj.GroupID);
-            DbContext.GroupJoins.Remove(gj);
-            DbContext.SaveChanges();
-            return RedirectToAction("Group", "Ratify");
+            if (IsMaster())
+            {
+                var gj = DbContext.GroupJoins.Find(id);
+                var group = DbContext.Groups.Find(gj.GroupID);
+                DbContext.GroupJoins.Remove(gj);
+                DbContext.SaveChanges();
+                return RedirectToAction("Group", "Ratify");
+            }
         }
     }
 }
