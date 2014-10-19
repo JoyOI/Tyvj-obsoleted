@@ -123,7 +123,7 @@ namespace Tyvj.Controllers
                 });
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
-                return RedirectToAction("Group", "Ratify");
+                return RedirectToAction("Group", "Ratify", gj.GroupID);
             }
             return Message("对不起，你所在的用户组没有操作权限。");
         }
@@ -139,7 +139,7 @@ namespace Tyvj.Controllers
             {
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
-                return RedirectToAction("Group", "Ratify");
+                return RedirectToAction("Group", "Ratify", gj.GroupID);
             }
             return Message("对不起，你所在的用户组没有操作权限。");
         }
@@ -155,7 +155,7 @@ namespace Tyvj.Controllers
                 GroupID = id
             });
             DbContext.SaveChanges();
-            return RedirectToAction("Group", "Show");
+            return RedirectToAction("Group", "Show", id);
         }
 
         [Authorize]
