@@ -83,6 +83,8 @@ namespace Tyvj.Controllers
             else
             {
                 FormsAuthentication.SetAuthCookie(model.Username, model.Remember);
+                user.LastLoginTime = DateTime.Now;
+                DbContext.SaveChanges();
                 if (Request.UrlReferrer == null)
                     return Redirect("/");
                 else
