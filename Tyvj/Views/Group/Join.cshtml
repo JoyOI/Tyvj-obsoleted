@@ -12,7 +12,7 @@
             {
                 @Html.AntiForgeryToken()
                 <p>该团队需要验证您的身份信息审核加入</p>
-                <p>留言: @Html.TextBox("Message", "", new { @class = "textbox" }) 内容将供该团队的创始人参考并审核</p>
+                <p>留言: @Html.TextBox("Content", "", new { @class = "textbox" }) 内容将供该团队的创始人参考并审核</p>
                 <p><input type="submit" value="申请加入" class="button button-def" /></p>
             }
         </div>

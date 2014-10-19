@@ -44,7 +44,7 @@ namespace Tyvj.Controllers
                               orderby m.ID descending
                               select m).Skip(10 * Page.Value).Take(10).ToList();
             var members = new List<vGroupMember>();
-            foreach (var m in members)
+            foreach (var m in _members)
                 members.Add(new vGroupMember(m));
             return Json(members, JsonRequestBehavior.AllowGet);
         }
@@ -76,7 +76,7 @@ namespace Tyvj.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Join(int id, string Message)
+        public ActionResult Join(int id, string Content)
         {
             var group = DbContext.Groups.Find(id);
             if (group.JoinMethod == GroupJoinMethod.Ratify)
@@ -84,7 +84,7 @@ namespace Tyvj.Controllers
                 DbContext.GroupJoins.Add(new GroupJoin 
                 { 
                     GroupID = id,
-                    Content = Message,
+                    Content = Content,
                     UserID = CurrentUser.ID,
                     Time = DateTime.Now
                 });
