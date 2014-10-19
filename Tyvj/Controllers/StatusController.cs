@@ -109,6 +109,10 @@ namespace Tyvj.Controllers
             if (contest_id != null)
             {
                 contest = DbContext.Contests.Find(contest_id.Value);
+                if(DateTime.Now < contest.Begin || DateTime.Now >= contest.End)
+                    return Content("Insufficient permissions");
+                if(contest.ContestProblems.Where(x=>x.ProblemID == problem_id).Count() == 0)
+                    return Content("Insufficient permissions");
                 if (!Helpers.Contest.UserInContest(user.ID, contest_id.Value))
                     return Content("Insufficient permissions");
                 ContestFormat[] SubmitAnyTime = { ContestFormat.ACM, ContestFormat.OI };
