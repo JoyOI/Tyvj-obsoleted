@@ -28,5 +28,48 @@ namespace Tyvj.Controllers
             ViewBag.Contests = contests;
             return View(group);
         }
+
+        public ActionResult Member(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            return View(group);
+        }
+
+        [HttpGet]
+        public ActionResult GetMembers(int Page, int GroupID)
+        {
+            /* if (Page == null) Page = 0;
+            var _members = (from m in DbContext.GroupMembers
+                              where m.GroupID == GroupID
+                              orderby m.ID descending
+                              select m).Skip(10 * Page.Value).Take(10).ToList();
+            var members = new List<vGroupMember>();
+            foreach (var m in members)
+                members.Add(new vGroupMember(m));
+            return Json(members, JsonRequestBehavior.AllowGet); */
+        }
+
+        public ActionResult Join(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            if(group.JoinMethod == GroupJoinMethod.Everyone)
+            {
+                DbContext.GroupMembers.Add(new GroupMember
+                { 
+                    UserID = CurrentUser.ID,
+                    GroupID = id
+                });
+                DbContext.SaveChanges();
+                return RedirectToAction("Group", "Show", new { id = id });
+            }
+            else if(group.JoinMethod == GroupJoinMethod.Nobody)
+            {
+                return Message("该团队不允许任何人加入。");
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

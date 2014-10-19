@@ -540,6 +540,7 @@
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Solution\Edit.cshtml" />
     <Content Include="Views\Group\Show.cshtml" />
+    <Content Include="Views\Group\Join.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "团队";
+    ViewBag.BannerTitle = "团队";
+}
+
+<div class="tyvj-boder-top tyvj-shadow grid_9">
+    <div class="cont-wrap">
+        <table class="tyvj-list-discuss">
+            <tbody id="lstGroupMembers"></tbody>
+        </table>
+        <div>
+            <a href="javascript:Load()">
+                <div class="block-more enabled" id="btnMore">点击加载更多</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="tyvj-right grid_3">
+    <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <h2>团队操作</h2>
+        <ul>
+            <li>团队首页</li>
+            <li>团队成员</li>
+            <li>团队比赛</li>
+            <li>@Html.ActionLink("加入团队", "Group", "Join", new { id = ViewBag.Model.ID }, null)</li>
+            <li>团队设置</li>
+            <li>成员审核</li>
+        </ul>
+    </div>
+</div>

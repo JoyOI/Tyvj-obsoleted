@@ -4,8 +4,8 @@
     ViewBag.BannerTitle = "团队";
 }
 
-<div class="tyvj-boder-top tyvj-shadow grid_9">
-    <div class="tyvj-boder-top-red tyvj-shadow tyvj-block">
+<div class="tyvj-boder-top-red tyvj-shadow grid_9">
+    <div class="tyvj-block">
         <table class="tyvj-list-case">
             <tbody>
                 @foreach (vContest c in ViewBag.Contests)
@@ -30,13 +30,7 @@
                     </tr>
                 }
             </tbody>
-            <tbody id="lstContests"></tbody>
         </table>
-        <div>
-            <a href="javascript:Load()">
-                <div class="block-more enabled" id="btnMore">点击加载更多</div>
-            </a>
-        </div>
     </div>
 </div>
 
@@ -47,7 +41,7 @@
             <li>团队首页</li>
             <li>团队成员</li>
             <li>团队比赛</li>
-            <li>加入团队</li>
+            <li>@Html.ActionLink("加入团队", "Group", "Join", new { id = ViewBag.Model.ID }, null)</li>
             <li>团队设置</li>
             <li>成员审核</li>
         </ul>
