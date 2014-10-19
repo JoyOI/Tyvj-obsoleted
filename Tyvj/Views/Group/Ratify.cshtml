@@ -7,7 +7,25 @@
     <div class="cont-wrap">
         <table class="tyvj-list-discuss">
             <tbody>
-
+                @foreach (vGroupJoin g in ViewBag.GroupJoin)
+                {
+                    <tr>
+                        <td class="c1">
+                            <img class="face" src="@g.User.Gravatar" />
+                        </td>
+                        <td class="c2">
+                            <div class="title">
+                                <a href="/User/@g.UserID">@g.User.Username</a>
+                                <span style="font-size: 13px; color: #BBB;">@g.User.Motto</span>
+                            </div>
+                            <div class="footer">@g.Content</div>
+                        </td>
+                        <td class="c3">
+                            <a href="/Group/Ratify/Accept/@g.ID">接受</a>
+                            <a href="javascript:Decline()">驳回</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

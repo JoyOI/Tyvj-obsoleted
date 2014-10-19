@@ -29,6 +29,20 @@ namespace Tyvj.Controllers
             return View(group);
         }
 
+        public ActionResult Ratify(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            var _ratify = (from r in DbContext.GroupJoins
+                           where r.GroupID == id
+                           orderby r.ID descending
+                           select r).ToList();
+            var ratify = new List<vGroupJoin>();
+            foreach (var r in _ratify)
+                ratify.Add(new vGroupJoin(r));
+            ViewBag.GroupJoin = ratify;
+            return View(group);
+        }
+
         public ActionResult Member(int id)
         {
             var group = DbContext.Groups.Find(id);
@@ -91,6 +105,35 @@ namespace Tyvj.Controllers
                 DbContext.SaveChanges(); 
             }
             return Message("您已成功提交加入团队申请，请等候团队创始人审核");
+        }
+        
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Accept(int id)
+        {
+            var gj = DbContext.GroupJoins.Find(id);
+            var group = DbContext.Groups.Find(gj.GroupID);
+            DbContext.GroupMembers.Add(new GroupMember
+            {
+                UserID = CurrentUser.ID,
+                GroupID = id
+            });
+            DbContext.GroupJoins.Remove(gj);
+            DbContext.SaveChanges();
+            return RedirectToAction("Group", "Ratify");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Decline(int id)
+        {
+            var gj = DbContext.GroupJoins.Find(id);
+            var group = DbContext.Groups.Find(gj.GroupID);
+            DbContext.GroupJoins.Remove(gj);
+            DbContext.SaveChanges();
+            return RedirectToAction("Group", "Ratify");
         }
     }
 }

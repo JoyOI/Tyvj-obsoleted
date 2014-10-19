@@ -220,6 +220,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\vExistedProblem.cs" />
     <Compile Include="ViewModels\vGroup.cs" />
+    <Compile Include="ViewModels\vGroupJoin.cs" />
     <Compile Include="ViewModels\vGroupMember.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
     <Compile Include="ViewModels\vRank.cs" />
@@ -542,6 +543,8 @@
     <Content Include="Views\Solution\Edit.cshtml" />
     <Content Include="Views\Group\Show.cshtml" />
     <Content Include="Views\Group\Join.cshtml" />
+    <Content Include="Views\Group\Member.cshtml" />
+    <Content Include="Views\Group\Ratify.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
