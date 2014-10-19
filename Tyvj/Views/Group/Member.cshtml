@@ -20,12 +20,12 @@
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
         <h2>团队操作</h2>
         <ul>
-            <li>团队首页</li>
-            <li>团队成员</li>
-            <li>团队比赛</li>
-            <li>加入团队</li>
-            <li>团队设置</li>
-            <li>成员审核</li>
+            <li>@Html.ActionLink("团队首页", "Group", "Show", new { id = ViewBag.Model.ID }, null)</li>
+            <li>@Html.ActionLink("团队成员", "Group", "Member", new { id = ViewBag.Model.ID }, null)</li>
+            <li>@Html.ActionLink("团队比赛", "Group", "Contest", new { id = ViewBag.Model.ID }, null)</li>
+            <li>@Html.ActionLink("加入团队", "Group", "Join", new { id = ViewBag.Model.ID }, null)</li>
+            <li>@Html.ActionLink("团队设置", "Group", "Settings", new { id = ViewBag.Model.ID }, null)</li>
+            <li>@Html.ActionLink("成员审核", "Group", "Ratify", new { id = ViewBag.Model.ID }, null)</li>
         </ul>
     </div>
 </div>
