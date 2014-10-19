@@ -108,5 +108,17 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return RedirectToAction("EditTags", "Solution", new { id = solution.ID });
         }
+
+        [HttpGet]
+        public ActionResult GetSolutions(int? Page, int ProblemID)
+        {
+            if (Page == null) Page = 0;
+            var _solutions = (from s in DbContext.Solutions
+                              where s.ProblemID == ProblemID
+                              orderby s.ID descending
+                              select s).Skip(10 * Page.Value).Take(10).ToList();
+            var solutions = new List<vSolution>();
+
+        }
     }
 }
