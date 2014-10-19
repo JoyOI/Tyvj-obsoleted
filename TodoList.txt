@@ -1,7 +1,6 @@
 题目
 1、题目列表页面的分类tag - Nele
 2、题目提交后实时推送 - Yuno
-3、隐藏题目 - Yuno
 
 团队
 1、团队列表 - Ivy_End
@@ -10,7 +9,6 @@
 4、审核页面 - Ivy_End
 
 琐碎
-1、官方比赛、官方题目在列表中标记 - Yuno
-2、Hack记录 - Nele
-3、在排名上Hack - Yuno
-4、修复根据AC排名算法 - Yuno
+1、Hack记录 - Nele
+2、在排名上Hack - Yuno
+3、修复根据AC排名算法 - Yuno

@@ -14,6 +14,7 @@ namespace Tyvj.ViewModels
             var DbContext = new DB();
             ID = Problem.ID;
             Official = Problem.Official;
+            Hide = Problem.Hide;
             Title = Problem.Title;
             Accepted = (from s in DbContext.Statuses
                         where s.ResultAsInt == (int)JudgeResult.Accepted
@@ -38,6 +39,7 @@ namespace Tyvj.ViewModels
         public string Title { get; set; }
         public int Accepted { get; set; }
         public int Submitted { get; set; }
+        public bool Hide { get; set; }
         public int Ratio
         {
             get 

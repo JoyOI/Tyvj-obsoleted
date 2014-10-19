@@ -19,6 +19,7 @@ namespace Tyvj.ViewModels
                     select s.UserID).Distinct().ToList().Count;
             Title = Contest.Title;
             Begin = Contest.Begin.ToString("yyyy-MM-dd HH:mm");
+            Official = Contest.Official;
             Duration = Helpers.Time.ToTimeLength(Contest.Begin, Contest.End);
             if (DateTime.Now < Contest.Begin) StatusAsInt = 0;
             else if (DateTime.Now < Contest.End) StatusAsInt = 1;
@@ -44,5 +45,6 @@ namespace Tyvj.ViewModels
             } 
         }
         public int StatusAsInt { get; set; }
+        public bool Official { get; set; }
     }
 }

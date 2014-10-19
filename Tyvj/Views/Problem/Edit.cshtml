@@ -34,6 +34,11 @@
                                 <tr><td class="tyvj-status-info-left">输入格式</td><td><textarea class="ckeditor" id="txtInput" name="Input">@Model.Input</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left">输出格式</td><td><textarea class="ckeditor" id="txtOutput" name="Output">@Model.Output</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left">备注</td><td><textarea class="ckeditor" id="txtHint" name="Hint">@Model.Hint</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">隐藏题目</td><td>@Html.CheckBox("Hide", Model.Hide)</td></tr>
+                                 @if (ViewBag.CurrentUser.Role >= UserRole.Master)
+                                {
+                                    <tr><td class="tyvj-status-info-left">官方标识</td><td>@Html.CheckBox("Official", Model.Official) 勾选后列表中会显示官方标签</td></tr>
+                                }
                                 <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnSave" class="button button-def" /></td></tr>
                             </tbody>
                         </table>
