@@ -22,6 +22,7 @@ function Load() {
     LoadStandings();
     LoadRanks();
     LoadGroups();
+    LoadSolutions();
 }
 
 function BuildStandings(rank, data) {
@@ -138,8 +139,33 @@ function LoadContests() {
                 var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
                 $("#lstContests").append('<tr><td class="c1">'
                                                  + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
-                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration +official+ '</span></div></td>'
+                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + official + '</span></div></td>'
                                                  + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
+            }
+            lock = false;
+            page++;
+        });
+    }
+}
+function LoadSolutions() {
+    if ($("#lstSolutions").length > 0) {
+        $.getJSON("/Solution/GetSolutions", {
+            page: page,
+            id: id,
+            rnd: Math.random()
+        }, function (solutions) {
+            $("#btnMore").html("点击加载更多");
+            if (solutions.length < 10) {
+                Lock();
+                if (solutions.length == 0)
+                    return;
+            }
+            for (var i = 0; i < solutions.length; i++) {
+                if (solutions[i] == null) continue;
+                $("#lstSolutions").append('<tr class=""><td class="c1">'
+                                                 + '<img class="face" src="'+solutions[i].Gravatar+'">'
+                                                 + '</td><td class="c2"><div class="title"><a href="/Solution/'+solutions[i].ID+'">'+solutions[i].Title+'</a></div>'
+                                                 + '<div class="footer">作者：<a href="/User/'+solutions[i].Username+'">admin</a> / 标签 '+solutions[i].Tags+'</div></td></tr>');
             }
             lock = false;
             page++;

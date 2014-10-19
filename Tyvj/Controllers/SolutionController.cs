@@ -118,7 +118,9 @@ namespace Tyvj.Controllers
                               orderby s.ID descending
                               select s).Skip(10 * Page.Value).Take(10).ToList();
             var solutions = new List<vSolution>();
-
+            foreach (var s in _solutions)
+                solutions.Add(new vSolution(s));
+            return Json(solutions, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -223,6 +223,7 @@
     <Compile Include="ViewModels\vHackResult.cs" />
     <Compile Include="ViewModels\vRank.cs" />
     <Compile Include="ViewModels\vRegister.cs" />
+    <Compile Include="ViewModels\vSolution.cs" />
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />

@@ -17,6 +17,8 @@ namespace Tyvj.ViewModels
             Username = Solution.User.Username;
             Gravatar = Helpers.Gravatar.GetAvatarURL(Solution.User.Gravatar, 180);
             UserID = Solution.UserID;
+            ProblemID = Solution.ProblemID;
+            ProblemTitle = Solution.Problem.Title;
             Tags = "";
             var i = 0;
             foreach (var t in Solution.SolutionTags)
@@ -36,6 +38,8 @@ namespace Tyvj.ViewModels
         }
         public int ID { get; set; }
         public string Title { get; set; }
+        public int ProblemID { get; set; }
+        public string ProblemTitle { get; set; }
         public string Username { get; set; }
         public int UserID { get; set; }
         public string Gravatar { get; set; }
