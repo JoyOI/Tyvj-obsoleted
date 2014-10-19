@@ -112,10 +112,10 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Accept(int id)
         {
-            if(IsMaster())
+            var gj = DbContext.GroupJoins.Find(id);
+            var group = DbContext.Groups.Find(gj.GroupID);
+            if (IsMaster() || CurrentUser.ID == group.UserID)
             {
-                var gj = DbContext.GroupJoins.Find(id);
-                var group = DbContext.Groups.Find(gj.GroupID);
                 DbContext.GroupMembers.Add(new GroupMember
                 {
                     UserID = CurrentUser.ID,
@@ -123,8 +123,9 @@ namespace Tyvj.Controllers
                 });
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
+                return RedirectToAction("Group", "Ratify");
             }
-            return RedirectToAction("Group", "Ratify");
+            return Message("对不起，你所在的用户组没有操作权限。");
         }
 
         [Authorize]
@@ -132,14 +133,15 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Decline(int id)
         {
-            if (IsMaster())
+            var gj = DbContext.GroupJoins.Find(id);
+            var group = DbContext.Groups.Find(gj.GroupID);
+            if (IsMaster() || CurrentUser.ID == group.UserID)
             {
-                var gj = DbContext.GroupJoins.Find(id);
-                var group = DbContext.Groups.Find(gj.GroupID);
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
                 return RedirectToAction("Group", "Ratify");
             }
+            return Message("对不起，你所在的用户组没有操作权限。");
         }
     }
 }
