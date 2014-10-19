@@ -11,12 +11,9 @@ namespace Tyvj.ViewModels
         public vGroup() { }
         public vGroup(Group group)
         {
-<<<<<<< HEAD
             ID = group.ID;
             Title = group.Title;
-=======
-            Name = group.Title;
->>>>>>> 6d7730fe46eb36160dd9324abc1e2be10d9d056f
+            Title = group.Title;
             Description = group.Description;
             Gravatar = Helpers.Gravatar.GetAvatarURL(group.Gravatar, 200);
         }

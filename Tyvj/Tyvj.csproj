@@ -536,15 +536,9 @@
     <Content Include="Views\Solution\Index.cshtml" />
     <Content Include="Views\Solution\Create.cshtml" />
     <Content Include="Views\Solution\EditTags.cshtml" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
-=======
->>>>>>> 6d7730fe46eb36160dd9324abc1e2be10d9d056f
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Solution\Edit.cshtml" />
+    <Content Include="Views\Group\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
