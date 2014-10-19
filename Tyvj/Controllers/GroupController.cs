@@ -49,6 +49,7 @@ namespace Tyvj.Controllers
             return Json(members, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         public ActionResult Join(int id)
         {
             var group = DbContext.Groups.Find(id);
@@ -70,6 +71,26 @@ namespace Tyvj.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Join(int id, string Message)
+        {
+            var group = DbContext.Groups.Find(id);
+            if (group.JoinMethod == GroupJoinMethod.Ratify)
+            {
+                DbContext.GroupJoins.Add(new GroupJoin 
+                { 
+                    GroupID = id,
+                    Content = Message,
+                    UserID = CurrentUser.ID,
+                    Time = DateTime.Now
+                });
+                DbContext.SaveChanges(); 
+            }
+            return Message("您已成功提交加入团队申请，请等候团队创始人审核");
         }
     }
 }

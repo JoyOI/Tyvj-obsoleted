@@ -1,17 +1,20 @@
-﻿@{
-    Layout = null;
+﻿@model Group
+@{
+    ViewBag.Title = "加入"+Model.Title;
+    Layout = "~/Views/Shared/_LayoutNarrow.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+<div class="container_12 tyvj-block">
+    <div class="tyvj-shadow tyvj-content-narrow">
+        <div class="tyvj-content-narrow-header">"加入"+Model.Title</div>
+        <div class="tyvj-content" style="margin-top:40px;">
+            @using (Html.BeginForm("Join", "Group", null, FormMethod.Post, null))
+            {
+                @Html.AntiForgeryToken()
+                <p>该团队需要验证您的身份信息审核加入</p>
+                <p>留言: @Html.TextBox("Message", "", new { @class = "textbox" }) 内容将供该团队的创始人参考并审核</p>
+                <p><input type="submit" value="申请加入" class="button button-def" /></p>
+            }
+        </div>
     </div>
-</body>
-</html>
+</div>
