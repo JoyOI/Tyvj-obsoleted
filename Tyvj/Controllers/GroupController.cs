@@ -49,6 +49,28 @@ namespace Tyvj.Controllers
             return View(group);
         }
 
+        [Authorize]
+        public ActionResult Settings(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            if (!IsMaster() && CurrentUser.ID != group.UserID)
+                return Message("对不起，你所在的用户组没有操作权限。");
+            return View(group);
+        }
+
+        [HttpGet]
+        public ActionResult GetGroups(int? Page)
+        {
+            if (Page == null) Page = 0;
+            var _groups = (from g in DbContext.Groups
+                            orderby g.ID descending
+                            select g).Skip(10 * Page.Value).Take(10).ToList();
+            var groups = new List<vGroup>();
+            foreach (var g in _groups)
+                groups.Add(new vGroup(g));
+            return Json(groups, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult GetMembers(int? Page, int GroupID)
         {
@@ -144,14 +166,16 @@ namespace Tyvj.Controllers
             return Message("对不起，你所在的用户组没有操作权限。");
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult AddContest(int ID, int id)
+        [ValidateAntiForgeryToken]
+        public ActionResult AddContest(int ContestID, int id)
         {
             var group = DbContext.Groups.Find(id);
-            var contest = DbContext.Contests.Find(ID);
+            var contest = DbContext.Contests.Find(ContestID);
             DbContext.GroupContest.Add(new GroupContest 
             { 
-                ContestID = ID,
+                ContestID = ContestID,
                 GroupID = id
             });
             DbContext.SaveChanges();
@@ -159,12 +183,60 @@ namespace Tyvj.Controllers
         }
 
         [Authorize]
-        public ActionResult AddContest(int ID, int id)
+        public ActionResult AddContest(int id)
         {
             var group = DbContext.Groups.Find(id);
             if (!IsMaster() && CurrentUser.ID != group.UserID)
                 return Message("对不起，你所在的用户组没有操作权限。");
             return View(group);
+        }
+
+        [HttpGet]
+        public ActionResult GetGroupContests(int? Page, int id)
+        {
+            if (Page == null) Page = 0;
+            IEnumerable<Contest> _contests = (from c in DbContext.GroupContest
+                                              where c.GroupID == id
+                                              && !(DateTime.Now >= c.Contest.Begin && DateTime.Now < c.Contest.End)
+                                              select c.Contest);
+            _contests = _contests.OrderByDescending(x => x.End).Skip(10 * Page.Value).Take(10).ToList();
+            var contests = new List<vContest>();
+            foreach (var c in _contests)
+                contests.Add(new vContest(c));
+            return Json(contests, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create()
+        {
+            var group = new Group { 
+                Title = CurrentUser + "的团队",
+                Description = "",
+                JoinMethod = GroupJoinMethod.Everyone,
+                Gravatar = CurrentUser.Gravatar,
+                UserID = CurrentUser.ID
+            };
+            DbContext.Groups.Add(group);
+            DbContext.SaveChanges();
+            return RedirectToAction("Settings", "Group", new { id = group.ID });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Settings(int id, string Title, string Description, int JoinMethod, string Gravatar)
+        {
+            var group = DbContext.Groups.Find(id);
+            if (!IsMaster() && CurrentUser.ID != group.UserID)
+                return Message("对不起，你所在的用户组没有操作权限。");
+            group.Title = Title;
+            group.Description = Description;
+            group.JoinMethodAsInt = JoinMethod;
+            group.Gravatar = Gravatar;
+            DbContext.SaveChanges();
+            return RedirectToAction("Settings", "Group", id);
         }
     }
 }

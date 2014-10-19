@@ -16,11 +16,16 @@
     </div>
 </div>
 
+@using (Html.BeginForm("Create", "Group", null, FormMethod.Post, new { id = "frmCreateGroup" })) { @Html.AntiForgeryToken(); }
+
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
-        <h2>团队操作</h2>
-        <ul>
-            <li>创建团队</li>
-        </ul>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h2>团队操作</h2>
+            <ul>
+                <li><a href="javascript:$('#frmCreateGroup').submit();">创建团队</a></li>
+            </ul>
+        }
     </div>
 </div>

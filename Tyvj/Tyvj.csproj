@@ -546,6 +546,8 @@
     <Content Include="Views\Group\Member.cshtml" />
     <Content Include="Views\Group\Ratify.cshtml" />
     <Content Include="Views\Group\CreateContest.cshtml" />
+    <Content Include="Views\Group\Contest.cshtml" />
+    <Content Include="Views\Group\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

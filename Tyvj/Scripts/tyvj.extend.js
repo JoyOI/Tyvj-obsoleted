@@ -23,6 +23,7 @@ function Load() {
     LoadRanks();
     LoadGroups();
     LoadGroupMembers();
+    LoadGroupContest();
     LoadSolutions();
 }
 
@@ -148,6 +149,39 @@ function LoadContests() {
         });
     }
 }
+
+function LoadGroupContest()
+{
+    if ($("#lstGroupContests").length > 0) {
+        $.getJSON("/Group/GetGroupContests", {
+            page: page,
+            id: id,
+            rnd: Math.random()
+        }, function (contests) {
+            $("#btnMore").html("点击加载更多");
+            if (contests.length < 10) {
+                Lock();
+                if (contests.length == 0)
+                    return;
+            }
+            if (contests.length == 0) { $("#iconLoading").hide(); lock = true; return; }//尾页锁定
+            for (var i = 0; i < contests.length; i++) {
+                if (contests[i] == null) continue;
+                var official = "";
+                if (contests[i].Official)
+                    official = " / 官方举办";
+                var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
+                $("#lstContests").append('<tr><td class="c1">'
+                                                 + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
+                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + official + '</span></div></td>'
+                                                 + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
+            }
+            lock = false;
+            page++;
+        });
+    }
+}
+
 function LoadSolutions() {
     if ($("#lstSolutions").length > 0) {
         $.getJSON("/Solution/GetSolutions", {

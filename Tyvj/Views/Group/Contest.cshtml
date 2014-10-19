@@ -1,12 +1,12 @@
-﻿@{
+﻿@model Group
+@{
     ViewBag.Title = "团队";
-    ViewBag.BannerTitle = "团队";
 }
 
-<div class="tyvj-boder-top tyvj-shadow grid_9">
-    <div class="cont-wrap">
-        <table class="tyvj-list-discuss">
-            <tbody id="lstGroupMembers"></tbody>
+<div class="tyvj-left grid_9">
+    <div class="tyvj-boder-top-red tyvj-shadow tyvj-block">
+        <table class="tyvj-list-case">
+            <tbody id="lstGroupContests"></tbody>
         </table>
         <div>
             <a href="javascript:Load()">
@@ -32,3 +32,7 @@
         }
     </div>
 </div>
+
+<script>
+    id = @Model.ID;
+</script>
