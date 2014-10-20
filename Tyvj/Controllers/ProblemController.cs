@@ -96,7 +96,7 @@ namespace Tyvj.Controllers
             {
                 problem = DbContext.Problems.Find(id.Value);
                 pid = problem.ID;
-                if (CurrentUser == null || !IsMaster() && CurrentUser.ID != problem.UserID)
+                if (problem.Hide && (CurrentUser == null || !IsMaster() && CurrentUser.ID != problem.UserID))
                     return Message("没有找到题目");
             }
             else
@@ -110,7 +110,7 @@ namespace Tyvj.Controllers
                 ViewBag.ContestID = cp.ContestID;
             }
             if (problem == null)
-                return RedirectToAction("Message", "Shared", new { msg = "没有找到这道题目" });
+                return Message("没有找到这道题目");
             var uid = 0;
             if(User.Identity.IsAuthenticated)
             {

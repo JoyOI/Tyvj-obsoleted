@@ -56,8 +56,7 @@ namespace Tyvj.Controllers
         public User CurrentUser { get; set; }
         public ActionResult Message(string msg)
         {
-            return RedirectToAction("Message", "Shared", new { msg = msg });
+            return RedirectToAction("Info", "Shared", new { msg = msg });
         }
-
     }
 }
