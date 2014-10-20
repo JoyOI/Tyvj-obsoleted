@@ -45,7 +45,7 @@ namespace Tyvj.Controllers
         public ActionResult Create(int id)
         {
             if ((from f in DbContext.Forums where f.ID == id && f.FatherID != null select f).Count() == 0)
-                return RedirectToAction("Message", "Shared", new { msg = "没有找到这个论坛版块！" });
+                return Message("没有找到这个论坛版块！" );
             return View();
         }
 
@@ -56,9 +56,9 @@ namespace Tyvj.Controllers
         public ActionResult Create(ViewModels.vPost model)
         {
             if ((from f in DbContext.Forums where f.ID == model.ForumID && f.FatherID != null select f).Count() == 0)
-                return RedirectToAction("Message", "Shared", new { msg = "没有找到这个论坛版块！" });
+                return Message("没有找到这个论坛版块！");
             if (string.IsNullOrEmpty(model.Content))
-                return RedirectToAction("Message", "Shared", new { msg = "内容不能为空！" });
+                return Message("内容不能为空！" );
             var topic = new DataModels.Topic
             {
                 ForumID = model.ForumID,
@@ -89,7 +89,7 @@ namespace Tyvj.Controllers
             }
             else
             {
-                return RedirectToAction("Message", "Shared", new { msg = "您无权删除这个主题！" });
+                return Message("您无权删除这个主题！");
             }
         }
 

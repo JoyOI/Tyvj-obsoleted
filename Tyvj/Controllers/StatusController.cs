@@ -54,7 +54,7 @@ namespace Tyvj.Controllers
                     _statuses.Where(x => x.Contest.Format != ContestFormat.OI || x.Contest.End <= DateTime.Now).ToList();
             }
             var statuses = new List<vStatus>();
-            foreach (var status in _statuses.Skip(10 * Page.Value).Take(10).ToList())
+            foreach (var status in _statuses.Skip(50 * Page.Value).Take(50).ToList())
             {
                 var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
                 var contest = status.Contest;

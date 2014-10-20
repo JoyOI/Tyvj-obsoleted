@@ -456,8 +456,8 @@ function LoadRanks_AC() {
 }
 
 function LoadGroupMembers() {
-    if ($("#lstRanks").length > 0) {
-        $.getJSON("/Group/GetMembers", {
+    if ($("#lstGroupMembers").length > 0) {
+        $.getJSON("/Group/GetGroupMembers", {
             page: page,
             rnd: Math.random()
         }, function (members) {
@@ -510,10 +510,10 @@ function LoadGroups() {
                                 + '</td>'
                                 + '<td class="c2">'
                                 + '    <div class="title"><a href="/Group/' + groups[i].ID + '">' + groups[i].Title + '</a></div>'
-                                + '    <div class="footer">' + group[i].Description + '</div>'
+                                + '    <div class="footer">' + groups[i].Description + '</div>'
                                 + '</td>'
                                 + '</tr>';
-                $("#lstgroups").append(html);
+                $("#lstGroups").append(html);
             }
             lock = false;
             page++;

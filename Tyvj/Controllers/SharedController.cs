@@ -8,7 +8,7 @@ namespace Tyvj.Controllers
 {
     public class SharedController : BaseController
     {
-        public ActionResult Message(string msg)
+        public ActionResult Info(string msg)
         {
             ViewBag.Message = msg;
             return View();

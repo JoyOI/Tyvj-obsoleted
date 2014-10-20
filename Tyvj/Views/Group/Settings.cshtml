@@ -30,7 +30,7 @@
                                 <tr>
                                     <td class="tyvj-status-info-left">审核方式</td>
                                     <td>
-                                        <select class="select" id="lstFormat" name="Format">
+                                        <select class="select" id="lstJoinMethod" name="JoinMethod">
                                             <option value="0" @(Model.JoinMethod == GroupJoinMethod.Everyone ? "selected" : "")>Everyone</option>
                                             <option value="1" @(Model.JoinMethod == GroupJoinMethod.Nobody ? "selected" : "")>Nobody</option>
                                             <option value="2" @(Model.JoinMethod == GroupJoinMethod.Ratify ? "selected" : "")>Ratify</option>

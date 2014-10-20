@@ -59,12 +59,11 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetGroups(int? Page)
+        public ActionResult GetGroups(int page)
         {
-            if (Page == null) Page = 0;
             var _groups = (from g in DbContext.Groups
                             orderby g.ID descending
-                            select g).Skip(10 * Page.Value).Take(10).ToList();
+                            select g).Skip(10 * page).Take(10).ToList();
             var groups = new List<vGroup>();
             foreach (var g in _groups)
                 groups.Add(new vGroup(g));
@@ -72,13 +71,12 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetMembers(int? Page, int GroupID)
+        public ActionResult GetGroupMembers(int page, int GroupID)
         {
-            if (Page == null) Page = 0;
             var _members = (from m in DbContext.GroupMembers
                               where m.GroupID == GroupID
                               orderby m.ID descending
-                              select m).Skip(10 * Page.Value).Take(10).ToList();
+                              select m).Skip(10 * page).Take(10).ToList();
             var members = new List<vGroupMember>();
             foreach (var m in _members)
                 members.Add(new vGroupMember(m));
@@ -212,7 +210,7 @@ namespace Tyvj.Controllers
         public ActionResult Create()
         {
             var group = new Group { 
-                Title = CurrentUser + "的团队",
+                Title = CurrentUser.Username + "的团队",
                 Description = "",
                 JoinMethod = GroupJoinMethod.Everyone,
                 Gravatar = CurrentUser.Gravatar,

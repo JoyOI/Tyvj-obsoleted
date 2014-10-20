@@ -54,7 +54,7 @@ namespace Tyvj.Controllers
             if (!Helpers.Contest.UserInContest(user.ID,id))
                 return RedirectToAction("Register", "Contest", new { id = id });
             if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !IsMaster())
-                return RedirectToAction("Message", "Shared", new { msg = "目前不提供比赛排名显示。" });
+                return Message("目前不提供比赛排名显示。");
             ViewBag.AllowHack = false;
             if (User.Identity.IsAuthenticated)
             {
@@ -102,7 +102,7 @@ namespace Tyvj.Controllers
             }
             else
             {
-                return RedirectToAction("Message", "Shared", new { msg="参赛密码不正确！" });
+                return Message("参赛密码不正确！");
             }
         }
 
