@@ -46,13 +46,35 @@
                     }))
             {
                 @Html.AntiForgeryToken()
-                <div class="form-line"><label class="reg-label">Email: </label>@Session["Email"]</div>
-                <div class="form-line"><label class="reg-label">登录用户名: </label>@Html.TextBoxFor(x => x.Username, new { @class = "textbox" }) 4~16个字符<span id="UsernameInfo" class="reg-desc" style="color:red"></span></div>
-                <div class="form-line"><label class="reg-label">登录密码: </label>@Html.PasswordFor(x => x.Password, new { @class = "textbox" }) 至少4位</div>
-                <div class="form-line"><label class="reg-label">重复密码: </label>@Html.Password("repeat", "", new { @class = "textbox" })<span id="RepeatInfo" class="reg-desc">请重复输入密码</span></div>
-                <div class="form-line"><label class="reg-label">QQ号: </label>@Html.TextBoxFor(x => x.QQ, new { @class = "textbox" })</div>
-                <div class="form-line"><label class="reg-label">学校: </label>@Html.TextBoxFor(x => x.School, new { @class = "textbox" })</div>
-                <div class="form-line"><input type="submit" class="button button-def" value="完成注册"></div>
+                <table>
+                    <tr>
+                        <td class="tyvj-status-info-left">Email</td><td>@Session["Email"]</td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">登录用户名</td>
+                        <td>@Html.TextBoxFor(x => x.Username, new { @class = "textbox" }) 4~16个字符<span id="UsernameInfo" class="reg-desc" style="color:red"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">登录密码</td>
+                        <td>@Html.PasswordFor(x => x.Password, new { @class = "textbox" }) 至少4位</td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">重复密码</td>
+                        <td>@Html.Password("repeat", "", new { @class = "textbox" })<span id="RepeatInfo" class="reg-desc">请重复输入密码</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">QQ号</td>
+                        <td>@Html.TextBoxFor(x => x.QQ, new { @class = "textbox" })</td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">学校</td>
+                        <td>@Html.TextBoxFor(x => x.School, new { @class = "textbox" })</td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left"></td>
+                        <td><input type="submit" class="button button-def" value="完成注册"></td>
+                    </tr>
+                </table>
             }
         </div>
     </div>

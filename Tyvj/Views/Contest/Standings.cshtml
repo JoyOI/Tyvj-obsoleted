@@ -26,9 +26,9 @@
                                 <th class="tyvj-list-th" style="width:45px;">分数</th>
                                 <th class="tyvj-list-th" style="width:55px;">耗时</th>
                             }
-                            @for (char i = 'A'; i < Model.ContestProblems.Count + 'A'; i++)
+                            @foreach (var cp in Model.ContestProblems.OrderBy(x=>x.Point))
                             {
-                                <th class="tyvj-list-th">@i</th>
+                                <th class="tyvj-list-th">@cp.Number</th>
                             }
                         </tr>
                     </thead>

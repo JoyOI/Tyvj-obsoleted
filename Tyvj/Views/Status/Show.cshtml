@@ -24,14 +24,20 @@
                     </table>
                 </div>
             </div>
-            <div class="tyvj-boder-top tyvj-content-inner">
-                <h2>评测结果</h2>
-                <div id="lstJudgeResult"></div>
-            </div>
-            <div class="tyvj-boder-top tyvj-content-inner">
-                <h2>代码</h2>
-                <pre><code class="@Html.GetLanguageClass(Model.Language)">@Model.Code</code></pre>
-            </div>
+            @if (Model.Result != JudgeResult.Hidden)
+            {
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>评测结果</h2>
+                    <div id="lstJudgeResult"></div>
+                </div>
+            }
+            @if (ViewBag.CodeVisiable)
+            {
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>代码</h2>
+                    <pre><code class="@Html.GetLanguageClass(Model.Language)">@Model.Code</code></pre>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -47,7 +53,14 @@
         <h3>题目操作</h3>
     </div>
     <ul class="section" id="actions" style="margin-left:10px">
-        <li><a class="action" href="/p/@Model.ProblemID/solution">查看题解</a></li>
+        @if (Model.ContestID != null && DateTime.Now >= Model.Contest.End)
+        {
+            <li><a class="action" href="/p/@Model.ProblemID/solution">查看题解</a></li>
+        }
         <li><a class="action" href="/p/@Model.ProblemID/statuses" target="_self">查看本题提交记录</a></li>
     </ul>
 </div>
+<script>
+    id = @Model.ID;
+    GetStatusDetail();
+</script>

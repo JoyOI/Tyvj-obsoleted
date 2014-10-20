@@ -229,6 +229,7 @@
     <Compile Include="ViewModels\vStanding.cs" />
     <Compile Include="ViewModels\vJudger.cs" />
     <Compile Include="ViewModels\vPost.cs" />
+    <Compile Include="ViewModels\vStatusDetail.cs" />
     <Compile Include="ViewModels\vTestCase.cs" />
     <Compile Include="ViewModels\vTopic.cs" />
     <Compile Include="ViewModels\vContest.cs" />
@@ -459,6 +460,7 @@
     <Content Include="Scripts\codemirror.js" />
     <Content Include="Scripts\colorbox.css" />
     <Content Include="Scripts\excanvas.js" />
+    <Content Include="Scripts\highlight.pack.js" />
     <Content Include="Scripts\jplaceholder.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -548,6 +550,7 @@
     <Content Include="Views\Group\CreateContest.cshtml" />
     <Content Include="Views\Group\Contest.cshtml" />
     <Content Include="Views\Group\Settings.cshtml" />
+    <Content Include="Views\Shared\Message.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

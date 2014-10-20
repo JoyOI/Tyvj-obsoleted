@@ -5,11 +5,11 @@
 
 
 <div class="tyvj-left" style="width:755px;">
-    <table style="width:100%" class="tyvj-shadow">
+    <table style="width:100%" class="tyvj-shadow tyvj-list">
         <thead class="tyvj-list-head">
             <tr>
                 <th class="tyvj-list-th">#</th>
-                <th class="tyvj-list-th">题目</th>
+                <th class="tyvj-list-th" style="width:120px;">题目</th>
                 <th class="tyvj-list-th">AC</th>
                 <th class="tyvj-list-th">PE</th>
                 <th class="tyvj-list-th">WA</th>
@@ -29,19 +29,19 @@
             @foreach (var item in Model.ContestProblems.OrderBy(x => x.Point))
             {
                 <tr>
-                    <td>@item.Number</td>
-                    <td>@item.Problem.Title</td>
-                    <td>@ViewBag.Statistics[i, 0]</td>
-                    <td>@ViewBag.Statistics[i, 1]</td>
-                    <td>@ViewBag.Statistics[i, 2]</td>
-                    <td>@ViewBag.Statistics[i, 3]</td>
-                    <td>@ViewBag.Statistics[i, 4]</td>
-                    <td>@ViewBag.Statistics[i, 5]</td>
-                    <td>@ViewBag.Statistics[i, 6]</td>
-                    <td>@ViewBag.Statistics[i, 7]</td>
+                    <td class="tyvj-list-td">@item.Number</td>
+                    <td class="tyvj-list-td">@item.Problem.Title</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 0]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 1]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 2]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 3]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 4]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 5]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 6]</td>
+                    <td class="tyvj-list-td">@ViewBag.Statistics[i, 7]</td>
                     @if (Model.Format == ContestFormat.Codeforces)
                     {
-                        <td>@ViewBag.Statistics[i, 8]</td>
+                        <td class="tyvj-list-td">@ViewBag.Statistics[i, 8]</td>
                     }
                 </tr>
                     { i++; }

@@ -26,7 +26,7 @@
 <div class="tyvj-right grid_3">
     @if (Request.RequestContext.RouteData.Values["id"] != null)
     {
-        <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <div class="tyvj-shadow tyvj-boder-top tyvj-content tyvj-block">
             <p>@Html.ActionLink("发表新主题", "Create", "Topic", new { id = Request.RequestContext.RouteData.Values["id"] }, null)</p>
         </div>
     }

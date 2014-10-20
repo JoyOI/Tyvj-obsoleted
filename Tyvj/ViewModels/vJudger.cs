@@ -12,7 +12,7 @@ namespace Tyvj.ViewModels
         public vJudger(User user, SignalR.Client client) 
         {
             ID = user.ID;
-            Nickname = Helpers.ColorName.GetNicknameHtml(user.Username, 4000);
+            Nickname = user.Username; 
             Gravatar = Helpers.Gravatar.GetAvatarURL(user.Gravatar, 50);
             Motto = HttpUtility.HtmlEncode(user.Motto);
             Ratio = client.Ratio;

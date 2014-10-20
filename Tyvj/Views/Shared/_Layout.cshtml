@@ -102,7 +102,7 @@
                     <ul>
                         @foreach (vJudger j in ViewBag.Judgers)
                         {
-                            <li>@j.Nickname</li>
+                            <li>@Html.Sanitized(j.Nickname)</li>
                         }
                     </ul>
                 </div>

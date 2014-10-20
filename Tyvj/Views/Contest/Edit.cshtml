@@ -37,7 +37,7 @@
                                     </td>
                                 </tr>
                                 <tr><td class="tyvj-status-info-left">开始时间</td><td>@Html.TextBox("Begin", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
-                                <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.End.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
                                 <tr><td class="tyvj-status-info-left">比赛密码</td><td>@Html.Password("Password", "", new { @class = "textbox" }) (留空为公开赛)</td></tr>
                                 <tr><td class="tyvj-status-info-left">比赛介绍</td><td><textarea class="ckeditor" name="Description">@Model.Description</textarea></td></tr>
                                 @if (ViewBag.CurrentUser.Role >= UserRole.Master)

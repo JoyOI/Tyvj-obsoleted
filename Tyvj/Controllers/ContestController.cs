@@ -53,7 +53,7 @@ namespace Tyvj.Controllers
             var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
             if (!Helpers.Contest.UserInContest(user.ID,id))
                 return RedirectToAction("Register", "Contest", new { id = id });
-            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !IsMaster())
                 return RedirectToAction("Message", "Shared", new { msg = "目前不提供比赛排名显示。" });
             ViewBag.AllowHack = false;
             if (User.Identity.IsAuthenticated)
@@ -71,7 +71,7 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             if (!Helpers.Contest.UserInContest(user.ID, id))
                 return RedirectToAction("Register", "Contest", new { id = id });
-            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !ViewBag.IsMaster)
+            if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !IsMaster())
                 return Json(null, JsonRequestBehavior.AllowGet);
             var standings = Helpers.Standings.Build(id);
             return Json(standings, JsonRequestBehavior.AllowGet);
@@ -116,7 +116,7 @@ namespace Tyvj.Controllers
             var i = 0;
             foreach (var p in contest.ContestProblems.OrderBy(x => x.Point))
             {
-                var statuses = Helpers.Contest.GetStatuses(p.ProblemID, id);
+                var statuses = Helpers.Contest.GetStatuses(p.ProblemID, id).ToList();
                 if (contest.Format == ContestFormat.OI)
                 {
                     var user_ids = (from s in statuses
