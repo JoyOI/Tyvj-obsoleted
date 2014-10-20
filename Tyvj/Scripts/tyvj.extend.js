@@ -691,7 +691,7 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc;text-align:right;"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td>');
             }
@@ -702,7 +702,7 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccctext-align:right;"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
             }

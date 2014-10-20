@@ -209,5 +209,56 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return Message("注册成功，您可以通过右上方登录按钮进行登录操作");
         }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(int id, string OldPassword, string NewPassword, string ConfirmPassword)
+        {
+            if (CurrentUser.Role < UserRole.Master && CurrentUser.ID != id)
+                return Content("您没有权限执行本操作");
+            if (NewPassword != ConfirmPassword)
+                return Content("两次密码输入不一致");
+            var user = DbContext.Users.Find(id);
+            if (CurrentUser.Role < UserRole.Master)
+            {
+                if (Helpers.Security.SHA1(OldPassword) != CurrentUser.Password)
+                    return Content("旧密码不正确");
+            }
+            user.Password = Helpers.Security.SHA1(NewPassword);
+            DbContext.SaveChanges();
+            return Content("密码修改成功");
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeProfile(int id, string QQ, string School, int Sex, int CommonLanguage, string Gravatar, string Motto)
+        {
+            if (CurrentUser.Role < UserRole.Master && CurrentUser.ID != id)
+                return Content("您没有权限执行本操作");
+            var user = DbContext.Users.Find(id);
+            user.QQ = QQ;
+            user.School = School;
+            user.SexAsInt = Sex;
+            user.CommonLanguageAsInt = CommonLanguage;
+            user.Gravatar = Gravatar;
+            user.Motto = Motto;
+            DbContext.SaveChanges();
+            return Content("个人资料修改成功");
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeRole(int id, int Role)
+        {
+            if (CurrentUser.Role < UserRole.Root)
+                return Content("您无权执行本操作");
+            var user = DbContext.Users.Find(id);
+            user.RoleAsInt = Role;
+            DbContext.SaveChanges();
+            return Content("用户角色修改成功");
+        }
     }
 }

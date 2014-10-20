@@ -19,14 +19,21 @@
             <div class="tyvj-boder-top tyvj-content-inner">
                 <h2>修改密码</h2>
                 <div class="tyvj-status-info">
-                    <table>
-                        <tbody>
-                            <tr><td class="tyvj-status-info-left">旧密码</td><td>@Html.TextBox("OldPassword", "", new { @class = "textbox" })</td></tr>
-                            <tr><td class="tyvj-status-info-left">新密码</td><td>@Html.TextBox("NewPassword", "", new { @class = "textbox" })</td></tr>
-                            <tr><td class="tyvj-status-info-left">密码重复</td><td>@Html.TextBox("ConfirmPassword", "", new { @class = "textbox" })</td></tr>
-                            <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnChangePassword" class="button" /></td></tr>
-                        </tbody>
-                    </table>
+                    @using (Html.BeginForm("ChangePassword", "User", new { id = Model.ID }, FormMethod.Post, new { id = "frmChangePassword" })) 
+                    { 
+                        @Html.AntiForgeryToken()
+                        <table>
+                            <tbody>
+                                @if (ViewBag.CurrentUser.Role < UserRole.Master)
+                                {
+                                    <tr><td class="tyvj-status-info-left">旧密码</td><td>@Html.TextBox("OldPassword", "", new { @class = "textbox" })</td></tr>
+                                }
+                                <tr><td class="tyvj-status-info-left">新密码</td><td>@Html.TextBox("NewPassword", "", new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">密码重复</td><td>@Html.TextBox("ConfirmPassword", "", new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnChangePassword" class="button" /></td></tr>
+                            </tbody>
+                        </table>
+                    }
                 </div>
             </div>
         </div>
@@ -34,13 +41,21 @@
             <div class="tyvj-boder-top tyvj-content-inner">
                 <h2>修改资料</h2>
                 <div class="tyvj-status-info">
+                    @using (Html.BeginForm("ChangeProfile", "User", new { id = Model.ID }, FormMethod.Post, new { id="frmChangeProfile"}))
+                    { 
                     <table>
                         <tbody>
+                            <tr><td class="tyvj-status-info-left">性别</td><td class="tyvj-status-info-middle">
+                                <select name="Sex">
+                                    <option value="0" @(Model.SexAsInt == 0 ? "selected" : "")>♂</option>
+                                    <option value="1" @(Model.SexAsInt == 0 ? "selected" : "")>♀</option>
+                                </select>
+                                </td><td></td></tr>
                             <tr><td class="tyvj-status-info-left">学校</td><td class="tyvj-status-info-middle">@Html.TextBox("School", Model.School, new { @class = "textbox" })</td><td></td></tr>
                             <tr><td class="tyvj-status-info-left">QQ</td><td class="tyvj-status-info-middle">@Html.TextBox("QQ", Model.QQ, new { @class = "textbox" })</td><td></td></tr>
                             <tr><td class="tyvj-status-info-left">Gravatar</td><td class="tyvj-status-info-middle">@Html.TextBox("Gravatar", Model.Gravatar, new { @class = "textbox" })</td><td><small><a href="https://www.gravatar.com/">Gravatar</a>是一个全球通用的头像服务。</small></td></tr>
                             <tr><td class="tyvj-status-info-left"></td><td class="tyvj-status-info-middle">@Html.Gravatar(Model.Gravatar, 120)</td><td></td></tr>
-                            <tr><td class="tyvj-status-info-left">个性签名</td><td class="tyvj-status-info-middle">@Html.TextBox("ConfirmPassword", Model.Motto, new { @class = "textbox" })</td><td></td></tr>
+                            <tr><td class="tyvj-status-info-left">个性签名</td><td class="tyvj-status-info-middle">@Html.TextBox("Motto", Model.Motto, new { @class = "textbox" })</td><td></td></tr>
                             <tr>
                                 <td class="tyvj-status-info-left">偏好语言</td>
                                 <td class="tyvj-status-info-middle">
@@ -65,42 +80,49 @@
                             <tr><td class="tyvj-status-info-left"></td><td class="tyvj-status-info-middle"><input type="button" value="保存" id="btnChangeProfile" class="button" /></td><td></td></tr>
                         </tbody>
                     </table>
+                    }
                 </div>
             </div>
         </div>
-        <div class="tyvj-content" style="padding-top:10px;">
-            <div class="tyvj-boder-top tyvj-content-inner">
-                <h2>修改角色</h2>
-                <div class="tyvj-status-info">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="tyvj-status-info-left">用户角色</td>
-                                <td>
-                                    <select name="Role" class="select">
-                                        @{
-                                            var i = 0;
-                                            foreach (var name in Enum.GetNames(typeof(UserRole)))
-                                            {
-                                                if (Model.RoleAsInt == i)
-                                                {
-                                                    <option value="@(i++)" selected>@name</option>
+        @if (ViewBag.CurrentUser.Role >= UserRole.Root)
+        {
+            <div class="tyvj-content" style="padding-top:10px;">
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>修改角色</h2>
+                    <div class="tyvj-status-info">
+                        @using (Html.BeginForm("ChangeRole", "User", new { id = Model.ID }, FormMethod.Post, new { id = "frmChangeRole" }))
+                        {
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="tyvj-status-info-left">用户角色</td>
+                                        <td>
+                                            <select name="Role" class="select">
+                                                @{
+                            var i = 0;
+                            foreach (var name in Enum.GetNames(typeof(UserRole)))
+                            {
+                                if (Model.RoleAsInt == i)
+                                {
+                                    <option value="@(i++)" selected>@name</option>
+                                }
+                                else
+                                {
+                                    <option value="@(i++)">@name</option>
+                                }
+                            }
                                                 }
-                                                else
-                                                {
-                                                    <option value="@(i++)">@name</option>
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                    <input type="button" value="保存" id="btnChangeRole" class="button" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            </select>
+                                            <input type="button" value="保存" id="btnChangeRole" class="button" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 <div class="tyvj-right" style="width:200px;">
@@ -122,3 +144,15 @@
         }
     </ul>
 </div>
+
+<script>
+    $("#btnChangePassword").click(function () {
+        $.post("/User/ChangePassword/@Model.ID", $("#frmChangePassword").serialize(), function (msg) { CastMsg(msg) });
+    });
+    $("#btnChangeProfile").click(function () {
+        $.post("/User/ChangeProfile/@Model.ID", $("#frmChangeProfile").serialize(), function (msg) { CastMsg(msg) });
+    });
+    $("#btnChangeRole").click(function () {
+        $.post("/User/ChangeRole/@Model.ID", $("#frmChangeRole").serialize(), function (msg) { CastMsg(msg) });
+    });
+</script>
