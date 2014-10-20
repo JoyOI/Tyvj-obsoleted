@@ -14,10 +14,17 @@ namespace Tyvj.Controllers
         public ActionResult Index()
         {
             var contests = new List<vContest>();
+            var topics = new List<vTopic>();
             var _contests = (from c in DbContext.Contests
                              where c.Begin <= DateTime.Now
                              && c.End > DateTime.Now
                              select c).ToList();
+
+            var _topics = (from t in DbContext.Topics
+                           orderby t.Time descending
+                           select t).ToList();
+
+
             if (_contests.Count < 5)
             {
                 _contests = _contests.Union((from c in DbContext.Contests
@@ -32,8 +39,20 @@ namespace Tyvj.Controllers
                                              orderby c.Begin ascending
                                              select c).Take(5 - _contests.Count).ToList()).ToList();
             }
+
+            if (_topics.Count >10)
+            {
+                _topics = _topics.Take(10).ToList();
+            }
+
+
             foreach (var c in _contests)
                 contests.Add(new vContest(c));
+
+            foreach (var t in _topics)
+                topics.Add(new vTopic(t));
+
+            ViewBag.Topics = topics;
             ViewBag.Contests = contests;
             return View();
         }

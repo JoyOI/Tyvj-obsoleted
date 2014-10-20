@@ -15,14 +15,13 @@ namespace Tyvj.ViewModels
             ForumTitle = topic.Forum.Title;
             Gravatar = Helpers.Gravatar.GetAvatarURL(topic.User.Gravatar, 180);
             Nickname = topic.User.Username;
-           // Nickname = Helpers.ColorName.GetNicknameHtml(topic.User.Nickname, topic.User.Ratings.Sum(x => x.Credit) + 1500);
             RepliesCount = topic.Replies.Count;
             Time = Helpers.Time.ToTimeTip(topic.Time);
             Title = HttpUtility.HtmlEncode(topic.Title);
             Top = topic.Top;
             UserID = topic.UserID;
             HasReply = topic.Replies.Count == 0 ? false : true;
-            LastReplyNickname = topic.Replies.Count == 0 ? null : (Helpers.ColorName.GetNicknameHtml(topic.Replies.OrderBy(x => x.Time).Last().User.Username, topic.Replies.OrderBy(x => x.Time).Last().User.Ratings.Sum(x => x.Credit) + 1500));
+            LastReplyNickname = topic.Replies.Count == 0 ? null : topic.Replies.OrderBy(x => x.Time).Last().User.Username;
             LastReplyTime = topic.Replies.Count == 0 ? null : (Helpers.Time.ToTimeTip(topic.Replies.OrderBy(x => x.Time).Last().Time));
             LastReplyUserID = topic.Replies.Count == 0 ? null : (int?)(topic.Replies.OrderBy(x => x.Time).Last().UserID);
         }

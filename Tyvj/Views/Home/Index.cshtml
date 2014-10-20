@@ -8,7 +8,7 @@
         {
             <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
                 <td class="c1">
-                    <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id=c.ID}, null)</div>
+                    <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
                     <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
                 </td>
                 @if (c.StatusAsInt == 0)
@@ -27,17 +27,36 @@
         }
     </table>
     <table class="tyvj-boder-top tyvj-shadow tyvj-list-discuss">
-        <tr class="">
-            <td class="c1">
-                <img class="face" src="http://www.gravatar.com/avatar/159c4a0a78d0980aca8df9d781d1c755?s=180&d=mm">
-            </td>
-            <td class="c2">
-                <div class="title"><a href="/bbs/Discuss_Show.aspx?id=30435">P1064旧版题解</a></div>
-                <div class="footer">作者：<a href="/User_Show.aspx?id=3" target="_blank" class="user usergroup3">huangrl</a> / 发表在 <a href="/bbs/Discuss.aspx?districtid=2" class="node" target="_self">题解区</a></div>
-            </td>
-            <td class="c3">1</td>
-        </tr>
+        @foreach (vTopic t in ViewBag.Topics)
+        {
+            <tr @Html.Sanitized(t.Top == true ? "class=\"highlight\"" : "")>
+                <td class="c1">
+                    <img src="@t.Gravatar" />
+                    @*<div>@Html.Gravatar(t.Gravatar, 180, "face")</div>*@
+                </td>
+                <td class="c2">
+                    <div class="title">@Html.ActionLink(t.Title, "Index", "Topic", new { id = t.ID }, null)</div>
+
+                    @if (t.RepliesCount > 0)
+                    {
+                        <div class="footer">
+                            作者：@Html.ActionLink(t.Nickname, "Index", "User", new { id = t.UserID }, null) / 发表在 @Html.ActionLink(t.ForumTitle, "Index", "Forum", new { id = t.ForumID }, null)
+                            /最新回复:@Html.ActionLink(t.LastReplyNickname, "Index", "User", new { id = t.LastReplyUserID }, null) @@@t.LastReplyTime
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="footer">
+                            作者：@Html.ActionLink(t.Nickname, "Index", "User", new { id = t.UserID }, null) / 发表在 @Html.ActionLink(t.ForumTitle, "Index", "Forum", new { id = t.ForumID }, null)
+                        </div>
+                    }
+
+                </td>
+                <td class="c3">1</td>
+            </tr>
+        }
     </table>
+    <div class="block-more"><a href="/Forum/Index">查看更多</a></div>
 </div>
 
 <div class="tyvj-right grid_3">
