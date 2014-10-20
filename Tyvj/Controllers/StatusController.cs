@@ -46,6 +46,13 @@ namespace Tyvj.Controllers
             if (ProblemID != null)
                 _statuses = _statuses.Where(x => x.ProblemID == ProblemID);
             _statuses = _statuses.OrderByDescending(x => x.Time);
+            if (Result.HasValue && !IsMaster())
+            {
+                if (User.Identity.IsAuthenticated)
+                    _statuses.Where(x => x.Contest.Format != ContestFormat.OI || x.Contest.End <= DateTime.Now || x.Contest.UserID == CurrentUser.ID).ToList();
+                else
+                    _statuses.Where(x => x.Contest.Format != ContestFormat.OI || x.Contest.End <= DateTime.Now).ToList();
+            }
             var statuses = new List<vStatus>();
             foreach (var status in _statuses.Skip(10 * Page.Value).Take(10).ToList())
             {
@@ -241,7 +248,7 @@ namespace Tyvj.Controllers
             var status = DbContext.Statuses.Find(id);
             if (User.Identity.IsAuthenticated)
             {
-                if (CurrentUser.ID == status.UserID || CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || CurrentUser.ID == status.Contest.UserID)
+                if (CurrentUser.ID == status.UserID || CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || (status.ContestID != null && CurrentUser.ID == status.Contest.UserID))
                     ViewBag.CodeVisiable = true;
             }
             int MemoryUsage = 0, TimeUsage = 0;
@@ -253,7 +260,7 @@ namespace Tyvj.Controllers
             catch { }
             ViewBag.TimeUsage = TimeUsage;
             ViewBag.MemoryUsage = MemoryUsage;
-            if (status.Contest.Format == ContestFormat.OI && DateTime.Now < status.Contest.End)
+            if (status.ContestID!=null&&status.Contest.Format == ContestFormat.OI && DateTime.Now < status.Contest.End)
             {
                 if (User.Identity.IsAuthenticated == false)
                 {
@@ -261,7 +268,7 @@ namespace Tyvj.Controllers
                     ViewBag.TimeUsage = 0;
                     ViewBag.MemoryUsage = 0;
                 }
-                if (!(CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || CurrentUser.ID == status.Contest.UserID))
+                else if (!(CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || (status.ContestID != null && CurrentUser.ID == status.Contest.UserID)))
                 {
                     status.Result = JudgeResult.Hidden;
                     ViewBag.TimeUsage = 0;
