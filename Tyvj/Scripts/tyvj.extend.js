@@ -6,6 +6,7 @@ var isIE8 = isIE && !!document.documentMode;
 var isIE7 = isIE && !isIE6 && !isIE8;
 var isIE678 = isIE6 || isIE7 || isIE8;
 var id = null;
+var RealTimeStatusID = null;
 
 function Load() {
     if (lock) return;
@@ -648,6 +649,32 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
             }
+            if (RealTimeStatusID != null) {
+                if (RealTimeStatusID != status.ID) return;
+                var html_detail = "";
+                $.getJSON("/Status/GetStatusDetails/" + status.ID, { rnd: Math.random() }, function (details) {
+                    for (var i = 0; i < details.length;i++) {
+                        html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="status-text-' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
+                        html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
+                        html_detail += details[i].Hint;
+                        html_detail += '</blockquote></div></div>';
+                    }
+                    if (status.ResultAsInt < JudgeResultAsInt)
+                    {
+                        JudgeResultAsInt = status.ResultAsInt;
+                        JudgeResult = status.Result;
+                    }
+                    var html = '<h3>评测结果</h3><p><span class=status-text-' + StatusCss[JudgeResultAsInt] + '>' + JudgeResult + '</span> Time=' + status.TimeUsage + 'ms, Memory=' + status.MemoryUsage + 'KiB</p><div id="lstDetails">' + html_detail + '</div>';
+                    if(isIE678)
+                        $.colorbox({ html: "<div id='JudgeResultContent'></div>", width: '700px',height:'500px', onComplete: function () { $("#JudgeResultContent").html(html); }});
+                    else
+                        $.colorbox({ html: html, width: '700px'});
+                    $(".btnDetail").unbind().click(function () {
+                        var did = $(this).attr("did");
+                        $("#d_" + did).toggle();
+                        $.colorbox.resize('Height:auto');
+                    });
+                });
         }
     }
     $.connection.hub.start();
