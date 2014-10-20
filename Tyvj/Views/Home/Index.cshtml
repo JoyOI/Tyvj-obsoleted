@@ -40,8 +40,8 @@
                     @if (t.RepliesCount > 0)
                     {
                         <div class="footer">
-                            作者：@Html.ActionLink(t.Nickname, "Index", "User", new { id = t.UserID }, null) / 发表在 @Html.ActionLink(t.ForumTitle, "Index", "Forum", new { id = t.ForumID }, null)
-                            /最新回复:@Html.ActionLink(t.LastReplyNickname, "Index", "User", new { id = t.LastReplyUserID }, null) @@@t.LastReplyTime
+                            作者：@Html.ActionLink(t.Nickname, "Index", "User", new { id = t.UserID }, null) /  发表在 @Html.ActionLink(t.ForumTitle, "Index", "Forum", new { id = t.ForumID }, null)
+                            &nbsp;&nbsp;/  最新回复:@Html.ActionLink(t.LastReplyNickname, "Index", "User", new { id = t.LastReplyUserID }, null) @@@t.LastReplyTime
                         </div>
                     }
                     else

@@ -318,7 +318,7 @@ function LoadTopics() {
                 str =str+ '<td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
                                                   + '</td><td class="c2">'
                                                   + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
-                                                  + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a> / ' + topics[i].Time + ' 发表在 <a href="/Forum/' + topics[i].ForumID + '">' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? '最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
+                                                  + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a>  /  发表在 <a href="/Forum/' + topics[i].ForumID + '"> ' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? ' /  最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
                                                   + '</td>'
                                                   + '<td class="c3">' + topics[i].RepliesCount + '</td></tr>';
                $("#lstTopics").append(str);
