@@ -21,8 +21,18 @@
                             <div class="footer">@g.Content</div>
                         </td>
                         <td class="c3">
-                            <a href="/Group/Ratify/Accept/@g.ID">接受</a>
-                            <a href="javascript:Decline()">驳回</a>
+                            @using (Html.BeginForm("Accept", "Group", new { id = g.ID }, FormMethod.Post, null))
+                            {
+                                @Html.AntiForgeryToken()
+                                <p>@Html.TextBox("id", @g.ID, new { @class = "textbox" }) 请输入有效的比赛ID。</p>
+                                <p><input type="submit" value="接受" class="button button-def" /></p>
+                            }
+                            @using (Html.BeginForm("Decline", "Group", new { id = g.ID }, FormMethod.Post, null))
+                            {
+                                @Html.AntiForgeryToken()
+                                <p>@Html.TextBox("id", @g.ID, new { @class = "textbox" }) 请输入有效的比赛ID。</p>
+                                <p><input type="submit" value="拒绝" class="button button-def" /></p>
+                            }
                         </td>
                     </tr>
                 }
@@ -31,19 +41,34 @@
     </div>
 </div>
 
+
+
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
         @if (User.Identity.IsAuthenticated)
         {
             <h2>团队操作</h2>
             <ul>
-                <li>@Html.ActionLink("团队首页", "Group", "Show", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队成员", "Group", "Member", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队比赛", "Group", "Contest", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("加入团队", "Group", "Join", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队设置", "Group", "Settings", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("成员审核", "Group", "Ratify", new { id = ViewBag.Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队主页", "Show", "Group", new { id = Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队成员", "Member", "Group", new { id = Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队比赛", "Contest", "Group", new { id = Model.ID }, null)</li>
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID != Model.UserID)
+                {
+                    <li>@Html.ActionLink("加入团队", "Join", "Group", new { id = Model.ID }, null)</li>
+                }
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID == Model.UserID)
+                {
+                    <li>@Html.ActionLink("创建比赛", "CreateContest", "Group", new { id = Model.ID }, null)</li>
+                    <li>@Html.ActionLink("团队设置", "Settings", "Group", new { id = Model.ID }, null)</li>
+                    <li>@Html.ActionLink("成员审核", "Ratify", "Group", new { id = Model.ID }, null)</li>
+                }
             </ul>
         }
     </div>
 </div>
+
+<script>
+    function Accept() {
+
+    }
+</script>

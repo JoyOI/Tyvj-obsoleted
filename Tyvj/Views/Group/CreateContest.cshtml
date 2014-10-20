@@ -12,7 +12,7 @@
             {
                 @Html.AntiForgeryToken()
                 <p>请输入团队比赛的ID</p>
-                <p>ID: @Html.TextBox("ID", "", new { @class = "textbox" }) 请输入有效的比赛ID。</p>
+                <p>ID: @Html.TextBox("ContestID", "", new { @class = "textbox" }) 请输入有效的比赛ID。</p>
                 <p><input type="submit" value="添加比赛" class="button button-def" /> <span style="color:red">@ViewBag.Info</span></p>
             }
         </div>

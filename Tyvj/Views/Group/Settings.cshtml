@@ -32,8 +32,8 @@
                                     <td>
                                         <select class="select" id="lstJoinMethod" name="JoinMethod">
                                             <option value="0" @(Model.JoinMethod == GroupJoinMethod.Everyone ? "selected" : "")>Everyone</option>
-                                            <option value="1" @(Model.JoinMethod == GroupJoinMethod.Nobody ? "selected" : "")>Nobody</option>
-                                            <option value="2" @(Model.JoinMethod == GroupJoinMethod.Ratify ? "selected" : "")>Ratify</option>
+                                            <option value="1" @(Model.JoinMethod == GroupJoinMethod.Ratify ? "selected" : "")>Ratify</option>
+                                            <option value="2" @(Model.JoinMethod == GroupJoinMethod.Nobody ? "selected" : "")>Nobody</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -49,6 +49,6 @@
 </div>
 <div class="tyvj-right" style="width:200px;">
     <ul class="section" id="actions">
-        <li><a class="action" href="/Group/Index">返回团队列表</a></li>
+        <li><a class="action" href="/Group/@Model.ID/Show">返回团队列表</a></li>
     </ul>
 </div>

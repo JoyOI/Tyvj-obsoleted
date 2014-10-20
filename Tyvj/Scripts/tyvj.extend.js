@@ -176,7 +176,7 @@ function LoadGroupContest()
                 if (contests[i].Official)
                     official = " / 官方举办";
                 var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
-                $("#lstContests").append('<tr><td class="c1">'
+                $("#lstGroupContests").append('<tr><td class="c1">'
                                                  + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
                                                  + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + official + '</span></div></td>'
                                                  + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
@@ -459,6 +459,7 @@ function LoadGroupMembers() {
     if ($("#lstGroupMembers").length > 0) {
         $.getJSON("/Group/GetGroupMembers", {
             page: page,
+            GroupID: id,
             rnd: Math.random()
         }, function (members) {
             $("#btnMore").html("点击加载更多");
@@ -471,15 +472,14 @@ function LoadGroupMembers() {
                 if (members[i] == null) continue;
                 var html = '<tr>'
                                         + '<td class="c1">'
-                                        + '    <img class="face" src="' + members[i].Gravatar + '">'
+                                        + '    <img class="face" src="' + members[i].User.Gravatar + '">'
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/User/' + members[i].ID + '">' + members[i].Nickname + '</a>';
-                if (members[i].Motto.length > 0)
-                    html += '         <span style="font-size: 13px; color: #BBB;">（' + members[i].Motto + '）</span>';
+                                        + '         <a href="/User/' + members[i].User.ID + '">' + members[i].User.Username + '</a>';
+                var tmp = members[i].User.Motto.length > 0 ? members[i].User.Motto.length : '这家伙很懒，什么都没留下。';
                 html += '     </div>'
-                                        + '     <div class="footer">Rating: ' + members[i].Credit + ' / 提交：' + members[i].Total + ' / 通过：' + members[i].AC + ' / 通过率：' + members[i].ACRate + '</div>'
+                                        + '     <div class="footer">' + tmp + '</div>'
                                         + '</td>'
                                         + '</tr>';
                 $("#lstGroupMembers").append(html);
@@ -509,7 +509,7 @@ function LoadGroups() {
                                 + '    <img class="face" src="' + groups[i].Gravatar + '">'
                                 + '</td>'
                                 + '<td class="c2">'
-                                + '    <div class="title"><a href="/Group/' + groups[i].ID + '">' + groups[i].Title + '</a></div>'
+                                + '    <div class="title"><a href="/Group/' + groups[i].ID + '/Show">' + groups[i].Title + '</a></div>'
                                 + '    <div class="footer">' + groups[i].Description + '</div>'
                                 + '</td>'
                                 + '</tr>';

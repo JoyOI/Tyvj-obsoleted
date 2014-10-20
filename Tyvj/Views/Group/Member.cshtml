@@ -22,13 +22,24 @@
         {
             <h2>团队操作</h2>
             <ul>
-                <li>@Html.ActionLink("团队首页", "Group", "Show", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队成员", "Group", "Member", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队比赛", "Group", "Contest", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("加入团队", "Group", "Join", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("团队设置", "Group", "Settings", new { id = ViewBag.Model.ID }, null)</li>
-                <li>@Html.ActionLink("成员审核", "Group", "Ratify", new { id = ViewBag.Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队主页", "Show", "Group", new { id = Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队成员", "Member", "Group", new { id = Model.ID }, null)</li>
+                <li>@Html.ActionLink("团队比赛", "Contest", "Group", new { id = Model.ID }, null)</li>
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID != Model.UserID)
+                {
+                    <li>@Html.ActionLink("加入团队", "Join", "Group", new { id = Model.ID }, null)</li>
+                }
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID == Model.UserID)
+                {
+                    <li>@Html.ActionLink("创建比赛", "CreateContest", "Group", new { id = Model.ID }, null)</li>
+                    <li>@Html.ActionLink("团队设置", "Settings", "Group", new { id = Model.ID }, null)</li>
+                    <li>@Html.ActionLink("成员审核", "Ratify", "Group", new { id = Model.ID }, null)</li>
+                }
             </ul>
         }
     </div>
 </div>
+
+<script>
+    id = @Model.ID;
+</script>

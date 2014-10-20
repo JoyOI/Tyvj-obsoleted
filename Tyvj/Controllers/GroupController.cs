@@ -43,7 +43,19 @@ namespace Tyvj.Controllers
             return View(group);
         }
 
+        public ActionResult CreateContest(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            return View(group);
+        }
+
         public ActionResult Member(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+            return View(group);
+        }
+
+        public ActionResult Contest(int id)
         {
             var group = DbContext.Groups.Find(id);
             return View(group);
@@ -56,6 +68,31 @@ namespace Tyvj.Controllers
             if (!IsMaster() && CurrentUser.ID != group.UserID)
                 return Message("对不起，你所在的用户组没有操作权限。");
             return View(group);
+        }
+
+        [Authorize]
+        public ActionResult Join(int id)
+        {
+            var group = DbContext.Groups.Find(id);
+
+            if(group.JoinMethod == GroupJoinMethod.Everyone)
+            {
+                DbContext.GroupMembers.Add(new GroupMember
+                { 
+                    UserID = CurrentUser.ID,
+                    GroupID = id
+                });
+                DbContext.SaveChanges();
+                return RedirectToAction("Show", "Group", new { id = id });
+            }
+            else if(group.JoinMethod == GroupJoinMethod.Nobody)
+            {
+                return Message("该团队不允许任何人加入。");
+            }
+            else
+            {
+                return View(group);
+            }
         }
 
         [HttpGet]
@@ -84,35 +121,12 @@ namespace Tyvj.Controllers
         }
 
         [Authorize]
-        public ActionResult Join(int id)
-        {
-            var group = DbContext.Groups.Find(id);
-            if(group.JoinMethod == GroupJoinMethod.Everyone)
-            {
-                DbContext.GroupMembers.Add(new GroupMember
-                { 
-                    UserID = CurrentUser.ID,
-                    GroupID = id
-                });
-                DbContext.SaveChanges();
-                return RedirectToAction("Group", "Show", new { id = id });
-            }
-            else if(group.JoinMethod == GroupJoinMethod.Nobody)
-            {
-                return Message("该团队不允许任何人加入。");
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Join(int id, string Content)
         {
             var group = DbContext.Groups.Find(id);
+
             if (group.JoinMethod == GroupJoinMethod.Ratify)
             {
                 DbContext.GroupJoins.Add(new GroupJoin 
@@ -143,7 +157,7 @@ namespace Tyvj.Controllers
                 });
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
-                return RedirectToAction("Group", "Ratify", new { id = group.ID });
+                return RedirectToAction("Ratify", "Group", new { id = group.ID });
             }
             return Message("对不起，你所在的用户组没有操作权限。");
         }
@@ -159,7 +173,7 @@ namespace Tyvj.Controllers
             {
                 DbContext.GroupJoins.Remove(gj);
                 DbContext.SaveChanges();
-                return RedirectToAction("Group", "Ratify", new { id = group.ID });
+                return RedirectToAction("Ratify", "Group", new { id = group.ID });
             }
             return Message("对不起，你所在的用户组没有操作权限。");
         }
@@ -177,7 +191,7 @@ namespace Tyvj.Controllers
                 GroupID = id
             });
             DbContext.SaveChanges();
-            return RedirectToAction("Group", "Show", new { id = id });
+            return RedirectToAction("Show", "Group", new { id = id });
         }
 
         [Authorize]
@@ -209,7 +223,8 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create()
         {
-            var group = new Group { 
+            var group = new Group
+            {
                 Title = CurrentUser.Username + "的团队",
                 Description = "",
                 JoinMethod = GroupJoinMethod.Everyone,
@@ -217,6 +232,11 @@ namespace Tyvj.Controllers
                 UserID = CurrentUser.ID
             };
             DbContext.Groups.Add(group);
+            DbContext.GroupMembers.Add(new GroupMember
+            {
+                GroupID = group.ID,
+                UserID = CurrentUser.ID
+            });
             DbContext.SaveChanges();
             return RedirectToAction("Settings", "Group", new { id = group.ID });
         }
