@@ -14,9 +14,9 @@ namespace Tyvj.Helpers
             DB db = new DB();
             List<vStanding> standings = new List<vStanding>();
             var contest = db.Contests.Find(id);
-            var users = (from cr in db.ContestRegisters
-                         where cr.ContestID == id
-                         select cr.User).Distinct().ToList();
+            var users = (from s in db.Statuses
+                         where s.ContestID == id
+                         select s.User).Distinct().ToList();
             foreach (var user in users)
                 standings.Add(new vStanding(user, contest));
             Sort(contest.Format, ref standings);

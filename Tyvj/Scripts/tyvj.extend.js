@@ -7,6 +7,10 @@ var isIE7 = isIE && !isIE6 && !isIE8;
 var isIE678 = isIE6 || isIE7 || isIE8;
 var id = null;
 var RealTimeStatusID = null;
+var StatusCss = ["judgeState0", "judgeState1", "judgeState2", "judgeState3", "judgeState4", "judgeState5", "judgeState6", "judgeState7", "judgeState8", "judgeState9", "judgeState10", "judgeState11", "judgeState12"];
+var StatusDisplay = ["Accepted", "Presentation Error", "Wrong Answer", "Output Limit Exceeded", "Time Limit Exceeded", "Memory Limit Exceeded", "Runtime Error", "Compile Error", "System Error", "Hacked", "Running", "Pending", "Hidden"];
+var JudgeResultAsInt;
+var JudgeResult;
 
 function Load() {
     if (lock) return;
@@ -522,6 +526,29 @@ function GetRanksByRating() {
     page = 0;
 }
 
+function GetStatusDetail()
+{
+    $.getJSON("/Status/GetStatusDetails/" + id, { rnd: Math.random() }, function (details) {
+        for (var i = 0; i < details.length; i++) {
+            var html_detail = "";
+            html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
+            html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
+            html_detail += details[i].Hint;
+            html_detail += '</blockquote></div></div>';
+        }
+        if (status.ResultAsInt < JudgeResultAsInt) {
+            JudgeResultAsInt = status.ResultAsInt;
+            JudgeResult = status.Result;
+        }
+        var html = '<div id="lstDetails">' + html_detail + '</div>';
+        $("#lstJudgeResult").html(html);
+        $(".btnDetail").unbind().click(function () {
+            var did = $(this).attr("did");
+            $("#d_" + did).toggle();
+        });
+    });
+}
+
 $(document).ready(function () {
     Load();
     $(window).scroll(function () {
@@ -625,6 +652,36 @@ $(document).ready(function () {
     //SignalR
     UserHub = $.connection.userHub;
     UserHub.client.onStatusChanged = function (status) {
+        if (RealTimeStatusID != null) {
+            if (RealTimeStatusID != status.ID) return;
+            var html_detail = "";
+            $.getJSON("/Status/GetStatusDetails/" + status.ID, { rnd: Math.random() }, function (details) {
+                for (var i = 0; i < details.length; i++) {
+                    html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
+                    html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
+                    html_detail += details[i].Hint;
+                    html_detail += '</blockquote></div></div>';
+                }
+                if (status.ResultAsInt < JudgeResultAsInt) {
+                    JudgeResultAsInt = status.ResultAsInt;
+                    JudgeResult = status.Result;
+                }
+                var html = '<h3>评测结果</h3><p><span class="' + StatusCss[JudgeResultAsInt] + '">' + JudgeResult + '</span> Time=' + status.TimeUsage + 'ms, Memory=' + status.MemoryUsage + 'KiB</p><div id="lstDetails">' + html_detail + '</div>';
+                if (isIE678)
+                    $.colorbox({ html: "<div id='JudgeResultContent'></div>", width: '700px', height: '500px', onComplete: function () { $("#JudgeResultContent").html(html); } });
+                else
+                    $.colorbox({ html: html, width: '700px' });
+                $(".btnDetail").unbind().click(function () {
+                    var did = $(this).attr("did");
+                    $("#d_" + did).toggle();
+                    $.colorbox.resize('Height:auto');
+                });
+            });
+        }
+        if (id != null)
+        {
+            GetStatusDetail();
+        }
         if ($("#lstStatuses").length > 0) {
             var ac = "";
             if (status.Score == 100) ac = "ac";
@@ -648,32 +705,6 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
-            }
-            if (RealTimeStatusID != null) {
-                if (RealTimeStatusID != status.ID) return;
-                var html_detail = "";
-                $.getJSON("/Status/GetStatusDetails/" + status.ID, { rnd: Math.random() }, function (details) {
-                    for (var i = 0; i < details.length; i++) {
-                        html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="status-text-' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
-                        html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
-                        html_detail += details[i].Hint;
-                        html_detail += '</blockquote></div></div>';
-                    }
-                    if (status.ResultAsInt < JudgeResultAsInt) {
-                        JudgeResultAsInt = status.ResultAsInt;
-                        JudgeResult = status.Result;
-                    }
-                    var html = '<h3>评测结果</h3><p><span class=status-text-' + StatusCss[JudgeResultAsInt] + '>' + JudgeResult + '</span> Time=' + status.TimeUsage + 'ms, Memory=' + status.MemoryUsage + 'KiB</p><div id="lstDetails">' + html_detail + '</div>';
-                    if (isIE678)
-                        $.colorbox({ html: "<div id='JudgeResultContent'></div>", width: '700px', height: '500px', onComplete: function () { $("#JudgeResultContent").html(html); } });
-                    else
-                        $.colorbox({ html: html, width: '700px' });
-                    $(".btnDetail").unbind().click(function () {
-                        var did = $(this).attr("did");
-                        $("#d_" + did).toggle();
-                        $.colorbox.resize('Height:auto');
-                    });
-                });
             }
         }
     }

@@ -237,7 +237,13 @@ namespace Tyvj.Controllers
 
         public ActionResult Show(int id)
         {
+            ViewBag.CodeVisiable = false;
             var status = DbContext.Statuses.Find(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (CurrentUser.ID == status.UserID || CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || CurrentUser.ID == status.Contest.UserID)
+                    ViewBag.CodeVisiable = true;
+            }
             int MemoryUsage = 0, TimeUsage = 0;
             try
             {
@@ -247,7 +253,54 @@ namespace Tyvj.Controllers
             catch { }
             ViewBag.TimeUsage = TimeUsage;
             ViewBag.MemoryUsage = MemoryUsage;
+            if (status.Contest.Format == ContestFormat.OI && DateTime.Now < status.Contest.End)
+            {
+                if (User.Identity.IsAuthenticated == false)
+                {
+                    status.Result = JudgeResult.Hidden;
+                    ViewBag.TimeUsage = 0;
+                    ViewBag.MemoryUsage = 0;
+                }
+                if (!(CurrentUser.Role >= UserRole.Master || CurrentUser.ID == status.Problem.UserID || CurrentUser.ID == status.Contest.UserID))
+                {
+                    status.Result = JudgeResult.Hidden;
+                    ViewBag.TimeUsage = 0;
+                    ViewBag.MemoryUsage = 0;
+                }
+            }
             return View(status);
+        }
+
+        [HttpGet]
+        public ActionResult GetStatusDetails(int id)
+        {
+            //TODO: 针对不同权限不同赛制提供有限的内容
+            var status = DbContext.Statuses.Find(id);
+            Contest contest = null;
+            if (status.ContestID != null)
+            { 
+                contest = status.Contest;
+            }
+            var judgetasks = (from jt in DbContext.JudgeTasks
+                              where jt.StatusID == id
+                              select jt).ToList();
+            var statusdetails = new List<vStatusDetail>();
+            int index = 0;
+            foreach (var jt in judgetasks)
+                statusdetails.Add(new vStatusDetail(jt, index++));
+            if (contest!=null && (DateTime.Now >= contest.End || (CurrentUser!=null && contest.UserID == CurrentUser.ID)))
+                return Json(statusdetails, JsonRequestBehavior.AllowGet);
+            if (contest != null && (contest.Format == ContestFormat.ACM || contest.Format == ContestFormat.OI))
+            {
+                return Json(new object(), JsonRequestBehavior.AllowGet);
+            }
+            else if (contest != null && contest.Format == ContestFormat.OI)
+            {
+                foreach (var sd in statusdetails)
+                    sd.Hint = "比赛期间不提供详细信息显示";
+                return Json(statusdetails, JsonRequestBehavior.AllowGet);
+            }
+            return Json(statusdetails, JsonRequestBehavior.AllowGet);
         }
     }
 }
