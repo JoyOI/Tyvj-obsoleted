@@ -630,7 +630,7 @@ $(document).ready(function () {
             if (status.Score == 100) ac = "ac";
             if ($("#s-" + status.ID).length > 0) {
                 $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg '+ac+'"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
@@ -641,7 +641,7 @@ $(document).ready(function () {
             else {
                 $("#lstStatuses").prepend('<tr id="s-' + status.ID + '" class="tyvj-list-body-tr">'
                                                  + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' +ac+'"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + status.ProblemID + '" target="_self">P' + status.ProblemID + '&nbsp;' + status.ProblemTitle + '</a></span></div></td>'
@@ -653,41 +653,40 @@ $(document).ready(function () {
                 if (RealTimeStatusID != status.ID) return;
                 var html_detail = "";
                 $.getJSON("/Status/GetStatusDetails/" + status.ID, { rnd: Math.random() }, function (details) {
-                    for (var i = 0; i < details.length;i++) {
+                    for (var i = 0; i < details.length; i++) {
                         html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="status-text-' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
                         html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
                         html_detail += details[i].Hint;
                         html_detail += '</blockquote></div></div>';
                     }
-                    if (status.ResultAsInt < JudgeResultAsInt)
-                    {
+                    if (status.ResultAsInt < JudgeResultAsInt) {
                         JudgeResultAsInt = status.ResultAsInt;
                         JudgeResult = status.Result;
                     }
                     var html = '<h3>评测结果</h3><p><span class=status-text-' + StatusCss[JudgeResultAsInt] + '>' + JudgeResult + '</span> Time=' + status.TimeUsage + 'ms, Memory=' + status.MemoryUsage + 'KiB</p><div id="lstDetails">' + html_detail + '</div>';
-                    if(isIE678)
-                        $.colorbox({ html: "<div id='JudgeResultContent'></div>", width: '700px',height:'500px', onComplete: function () { $("#JudgeResultContent").html(html); }});
+                    if (isIE678)
+                        $.colorbox({ html: "<div id='JudgeResultContent'></div>", width: '700px', height: '500px', onComplete: function () { $("#JudgeResultContent").html(html); } });
                     else
-                        $.colorbox({ html: html, width: '700px'});
+                        $.colorbox({ html: html, width: '700px' });
                     $(".btnDetail").unbind().click(function () {
                         var did = $(this).attr("did");
                         $("#d_" + did).toggle();
                         $.colorbox.resize('Height:auto');
                     });
                 });
+            }
         }
     }
-    $.connection.hub.start();
+            $.connection.hub.start();
 
-    // 代码高亮插件初始化
-    $('.ckeditor-code').unbind().each(function () {
-        if (isIE678) return;
-        $(this).html('<code>' + $(this).html() + '</code>');
-        $(this).removeClass('ckeditor-code');
-    });
+            // 代码高亮插件初始化
+            $('.ckeditor-code').unbind().each(function () {
+                if (isIE678) return;
+                $(this).html('<code>' + $(this).html() + '</code>');
+                $(this).removeClass('ckeditor-code');
+            });
 
-    if (!(isIE6 || isIE7 || isIE8)) {
-        hljs.initHighlightingOnLoad();
-    }
-});
-
+            if (!(isIE6 || isIE7 || isIE8)) {
+                hljs.initHighlightingOnLoad();
+            }
+        });

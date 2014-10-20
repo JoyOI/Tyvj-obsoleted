@@ -170,6 +170,19 @@ namespace Tyvj.Controllers
                     }
                     testcase_ids = testcase_ids.Distinct().ToList();
                 }
+                foreach (var id in testcase_ids)
+                {
+                    DbContext.JudgeTasks.Add(new JudgeTask
+                    {
+                        StatusID = status.ID,
+                        TestCaseID = id,
+                        Result = JudgeResult.Pending,
+                        MemoryUsage = 0,
+                        TimeUsage = 0,
+                        Hint = ""
+                    });
+                }
+                DbContext.SaveChanges();
                 foreach (var jt in status.JudgeTasks)
                 {
                     try
@@ -186,22 +199,38 @@ namespace Tyvj.Controllers
                 SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
                 if (contest.Format == ContestFormat.OI && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                     return Content("OI");
-
             }
-
-            foreach (var id in testcase_ids)
+            else
             {
-                DbContext.JudgeTasks.Add(new JudgeTask
+                foreach (var id in testcase_ids)
                 {
-                    StatusID = status.ID,
-                    TestCaseID = id,
-                    Result = JudgeResult.Pending,
-                    MemoryUsage = 0,
-                    TimeUsage = 0,
-                    Hint = ""
-                });
+                    DbContext.JudgeTasks.Add(new JudgeTask
+                    {
+                        StatusID = status.ID,
+                        TestCaseID = id,
+                        Result = JudgeResult.Pending,
+                        MemoryUsage = 0,
+                        TimeUsage = 0,
+                        Hint = ""
+                    });
+                }
+                DbContext.SaveChanges();
+                foreach (var jt in status.JudgeTasks)
+                {
+                    try
+                    {
+                        var group = SignalR.JudgeHub.GetNode();
+                        if (group == null) return Content("No Online Judger");
+                        SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
+                        SignalR.JudgeHub.ThreadBusy(group);
+                        jt.Result = JudgeResult.Running;
+                        DbContext.SaveChanges();
+                    }
+                    catch { }
+                }
+                SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
             }
-            DbContext.SaveChanges();
+            
             SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(status));
             return Content(status.ID.ToString());
         }
