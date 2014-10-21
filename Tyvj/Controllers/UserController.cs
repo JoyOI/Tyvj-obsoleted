@@ -88,7 +88,7 @@ namespace Tyvj.Controllers
             }
             else
             {
-                FormsAuthentication.SetAuthCookie(model.Username, model.Remember);
+                FormsAuthentication.SetAuthCookie(user.Username, model.Remember);
                 user.LastLoginTime = DateTime.Now;
                 DbContext.SaveChanges();
                 if (Request.UrlReferrer == null)

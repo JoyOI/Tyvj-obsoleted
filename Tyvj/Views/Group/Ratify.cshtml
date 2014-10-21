@@ -1,6 +1,6 @@
-﻿@{
-    ViewBag.Title = "团队";
-    ViewBag.BannerTitle = "团队";
+﻿@model Group
+@{
+    ViewBag.Title = Model.Title + " - 团队";
 }
 
 <div class="tyvj-boder-top tyvj-shadow grid_9">
@@ -42,7 +42,18 @@
                 <li>@Html.ActionLink("团队比赛", "Contest", "Group", new { id = Model.ID }, null)</li>
                 @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID != Model.UserID)
                 {
-                    <li>@Html.ActionLink("加入团队", "Join", "Group", new { id = Model.ID }, null)</li>
+                    if (Model.GroupJoins.Where(x => x.UserID == (int)ViewBag.CurrentUser.ID).Count() > 0)
+                    {
+                        <li>正在审核加入申请</li>
+                    }
+                    else if (Model.Members.Where(x => x.UserID == (int)ViewBag.CurrentUser.ID).Count() > 0)
+                    {
+                        <li>@Html.ActionLink("退出团队", "Join", "Group", new { id = Model.ID }, null)</li>
+                    }
+                    else if (Model.UserID != ViewBag.CurrentUserID)
+                    {
+                        <li>@Html.ActionLink("加入团队", "Join", "Group", new { id = Model.ID }, null)</li>
+                    }
                 }
                 @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID == Model.UserID)
                 {

@@ -72,7 +72,7 @@
     {
         @Html.AntiForgeryToken()
         <div id="NormalLogin">
-            <p><label>帐   号</label><input name="Username" type="text" class="textbox role-login-user" style="width: 120px;" placeholder="用户名/Email" /></p>
+            <p><label>帐　号</label><input name="Username" type="text" class="textbox role-login-user" style="width: 120px;" placeholder="用户名/Email" /></p>
             <p><label>密　码</label><input name="Password" type="password" class="textbox role-login-pass" style="width: 120px;" /></p>
             <p><input type="submit" class="button button-def" value="登录" /> @Html.CheckBox("Remember", false, new { @class = "checkbox" })<small>记住我</small> <a href="/User/Forgot"><small>忘记密码</small></a></p>
         </div>

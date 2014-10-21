@@ -619,6 +619,11 @@ $(document).ready(function () {
         editor.setValue("");
     });
     $("#btnSubmitCode").click(function () {
+        if (editor.getValue().length == 0)
+        {
+            CastMsg("请不要提交空代码");
+            return;
+        }
         $.colorbox({ html: '<h3>评测结果</h3><p>正在等待系统验证及分配评测资源...</p>', width: '700px' });
         $("#editor").val(editor.getValue());
         $.post("/Status/Create", $("#frmSubmitCode").serialize(), function (data) {
