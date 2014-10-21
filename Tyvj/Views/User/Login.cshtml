@@ -10,7 +10,7 @@
             @using (Html.BeginForm("Login", "User", null, FormMethod.Post, null))
             {
                 @Html.AntiForgeryToken()
-                <p>@Html.TextBoxFor(x => x.Username, new { @class="textbox", placeholder="用户名", style="width:190px"})</p>
+                <p>@Html.TextBoxFor(x => x.Username, new { @class="textbox", placeholder="用户名/Email地址", style="width:190px"})</p>
                 <p>@Html.PasswordFor(x => x.Password, new { @class = "textbox", placeholder = "密码", style = "width:190px" })</p>
                 <p>@Html.CheckBoxFor(x => x.Remember, new { @class="checkbox"})记住我</p>
                 <p><input type="submit" value="登录" class="button button-def" /> <span>@ViewBag.Info</span></p>

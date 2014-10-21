@@ -48,8 +48,8 @@
                         <tbody>
                             <tr><td class="tyvj-status-info-left">性别</td><td class="tyvj-status-info-middle">
                                 <select name="Sex" class="select" style="width:30px">
-                                    <option value="0" @(Model.SexAsInt == 0 ? "selected" : "")>♀</option>
-                                    <option value="1" @(Model.SexAsInt == 0 ? "selected" : "")>♂</option>
+                                    <option value="0" @(Model.SexAsInt == 0 ? "selected" : "")>♂</option>
+                                    <option value="1" @(Model.SexAsInt == 1 ? "selected" : "")>♀</option>
                                 </select>
                                 </td><td></td></tr>
                             <tr><td class="tyvj-status-info-left">学校</td><td class="tyvj-status-info-middle">@Html.TextBox("School", Model.School, new { @class = "textbox" })</td><td></td></tr>

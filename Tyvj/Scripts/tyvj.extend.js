@@ -533,8 +533,8 @@ function GetRanksByRating() {
 function GetStatusDetail()
 {
     $.getJSON("/Status/GetStatusDetails/" + id, { rnd: Math.random() }, function (details) {
+        var html_detail = "";
         for (var i = 0; i < details.length; i++) {
-            var html_detail = "";
             html_detail += '<p><a href="javascript:void(0)" class="btnDetail" did="' + details[i].ID + '">#' + details[i].ID + ': <span class="' + StatusCss[details[i].Result] + '">' + StatusDisplay[details[i].Result] + '</span> (' + details[i].TimeUsage + 'ms, ' + details[i].MemoryUsage + 'KiB)</a></p>';
             html_detail += '<div class="status-detail-main" style="display:none" id="d_' + details[i].ID + '"><blockquote>';
             html_detail += details[i].Hint;

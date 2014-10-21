@@ -196,6 +196,8 @@ namespace Tyvj.Controllers
                     {
                         var group = SignalR.JudgeHub.GetNode();
                         if (group == null) return Content("No Online Judger");
+                        status.Result = JudgeResult.Running;
+                        DbContext.SaveChanges();
                         SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
                         SignalR.JudgeHub.ThreadBusy(group);
                         jt.Result = JudgeResult.Running;

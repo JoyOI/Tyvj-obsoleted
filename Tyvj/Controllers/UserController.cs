@@ -46,7 +46,13 @@ namespace Tyvj.Controllers
             {
                 return Redirect("/");
             }
-            var user = (from u in DbContext.Users
+            User user;
+            if(model.Username.IndexOf("@")>0)
+                user = (from u in DbContext.Users
+                        where u.Email == model.Username
+                        select u).SingleOrDefault();
+            else
+                user = (from u in DbContext.Users
                         where u.Username == model.Username
                         select u).SingleOrDefault();
             if (user == null)
