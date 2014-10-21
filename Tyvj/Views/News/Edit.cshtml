@@ -1,0 +1,15 @@
+﻿@model News
+@{
+    ViewBag.Title = "编辑新闻";
+}
+<div class="tyvj-left grid_12">
+        <div class="tyvj-shadow tyvj-boder-top tyvj-content tyvj-block">
+            @using (Html.BeginForm("Edit", "News", new { id = Model.ID }, FormMethod.Post, null))
+            {
+                @Html.AntiForgeryToken()
+                <p><input type="text" class="textbox" name="Title" placeholder="新闻标题" value="@Model.Title" /></p>
+                <p><textarea name="Content" class="ckeditor">@Model.Content</textarea></p>
+                <p><input type="submit" value="保存修改" class="button button-def" /></p>
+            }
+        </div>
+</div>

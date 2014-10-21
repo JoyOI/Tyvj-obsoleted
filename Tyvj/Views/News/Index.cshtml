@@ -1,0 +1,43 @@
+﻿@model IEnumerable<News>
+@{
+    ViewBag.Title = "新闻";
+}
+<div class="tyvj-left grid_12">
+    @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Role >= UserRole.Master) { 
+        <div class="tyvj-shadow tyvj-boder-top tyvj-content tyvj-block">
+            @using (Html.BeginForm("Create", "News", FormMethod.Post))
+            { 
+                @Html.AntiForgeryToken()
+                <p><input type="text" class="textbox" name="Title" placeholder="新闻标题" /></p>
+                <p><textarea name="Content" class="ckeditor"></textarea></p>
+                <p><input type="submit" value="发布新闻" class="button button-def" /></p>
+            }
+        </div>
+    }
+    @foreach (var news in Model)
+    {
+        <div class="tyvj-shadow tyvj-boder-top tyvj-content tyvj-block">
+            <h2>@news.Title</h2>
+            <p><small>@news.Time.ToString("yyyy-MM-dd")
+                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Role >= UserRole.Master)
+                {
+                    <a href="/News/@news.ID/Edit">编辑</a>
+                    <a href="javascript:;" class="btnDelete" nid="@news.ID">删除</a>
+                }
+                </small></p>
+            @Html.Sanitized(news.Content)
+        </div>
+    }
+</div>
+@using (Html.BeginForm("Delete", "News", null, FormMethod.Post, new { id = "frmDeleteNews" }))
+{ 
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="NewsID" />
+}
+
+<script>
+    $(".btnDelete").click(function () {
+        $("#NewsID").val($(this).attr("id"));
+        $("#fromDeleteNews").submit();
+    });
+</script>

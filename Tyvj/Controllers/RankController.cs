@@ -36,7 +36,7 @@ namespace Tyvj.Controllers
                          select new
                          {
                              UserID = t.Key,
-                             AC = t.Sum(x => x.Result == 0 ? 1 : 0),
+                             AC = t.Sum(x => x.ResultAsInt == 0 ? 1 : 0),
                              Count = t.Count()
                          }).OrderByDescending(x => x.AC).OrderBy(x => x.Count).Skip(10 * page).Take(10).ToList();
             List<vRank> ranks = new List<vRank>();

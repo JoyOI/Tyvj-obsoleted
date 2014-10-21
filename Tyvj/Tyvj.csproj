@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Controllers\RankController.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
@@ -489,6 +490,7 @@
     <Content Include="Styles\codemirror.css" />
     <Content Include="Styles\colorbox.css" />
     <Content Include="Styles\de.css" />
+    <Content Include="Styles\github.css" />
     <Content Include="Styles\PIE.htc" />
     <Content Include="Styles\tyvj.base.css" />
     <Content Include="Styles\tyvj.extend.css" />
@@ -551,6 +553,8 @@
     <Content Include="Views\Group\Contest.cshtml" />
     <Content Include="Views\Group\Settings.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

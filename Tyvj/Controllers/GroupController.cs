@@ -141,41 +141,63 @@ namespace Tyvj.Controllers
             return Message("您已成功提交加入团队申请，请等候团队创始人审核");
         }
         
+        //[Authorize]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Accept(int id)
+        //{
+        //    var gj = DbContext.GroupJoins.Find(id);
+        //    var group = DbContext.Groups.Find(gj.GroupID);
+        //    if (IsMaster() || CurrentUser.ID == group.UserID)
+        //    {
+        //        DbContext.GroupMembers.Add(new GroupMember
+        //        {
+        //            UserID = CurrentUser.ID,
+        //            GroupID = id
+        //        });
+        //        DbContext.GroupJoins.Remove(gj);
+        //        DbContext.SaveChanges();
+        //        return RedirectToAction("Ratify", "Group", new { id = group.ID });
+        //    }
+        //    return Message("对不起，你所在的用户组没有操作权限。");
+        //}
+
+        //[Authorize]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Decline(int id)
+        //{
+        //    var gj = DbContext.GroupJoins.Find(id);
+        //    var group = DbContext.Groups.Find(gj.GroupID);
+        //    if (IsMaster() || CurrentUser.ID == group.UserID)
+        //    {
+        //        DbContext.GroupJoins.Remove(gj);
+        //        DbContext.SaveChanges();
+        //        return RedirectToAction("Ratify", "Group", new { id = group.ID });
+        //    }
+        //    return Message("对不起，你所在的用户组没有操作权限。");
+        //}
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Accept(int id)
+        public ActionResult Ratify(int id, int Accept)
         {
             var gj = DbContext.GroupJoins.Find(id);
             var group = DbContext.Groups.Find(gj.GroupID);
-            if (IsMaster() || CurrentUser.ID == group.UserID)
-            {
+            if (!IsMaster() && CurrentUser.ID != group.UserID)
+                return Message("您无权执行本操作");
+            if (Accept == 1)
+            { 
                 DbContext.GroupMembers.Add(new GroupMember
                 {
                     UserID = CurrentUser.ID,
                     GroupID = id
                 });
-                DbContext.GroupJoins.Remove(gj);
-                DbContext.SaveChanges();
-                return RedirectToAction("Ratify", "Group", new { id = group.ID });
             }
-            return Message("对不起，你所在的用户组没有操作权限。");
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Decline(int id)
-        {
-            var gj = DbContext.GroupJoins.Find(id);
-            var group = DbContext.Groups.Find(gj.GroupID);
-            if (IsMaster() || CurrentUser.ID == group.UserID)
-            {
-                DbContext.GroupJoins.Remove(gj);
-                DbContext.SaveChanges();
-                return RedirectToAction("Ratify", "Group", new { id = group.ID });
-            }
-            return Message("对不起，你所在的用户组没有操作权限。");
+            DbContext.GroupJoins.Remove(gj);
+            DbContext.SaveChanges();
+            return RedirectToAction("Ratify", "Group", new { id = group.ID });
         }
 
         [Authorize]

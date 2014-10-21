@@ -1458,3 +1458,11 @@ face2 {
     padding-top: 24px;
     padding-bottom: 6px;
 }
+
+.tyvj-footer-text {
+    color:#888;
+}
+
+.tyvj-footer-text :hover {
+    color:#444;
+}

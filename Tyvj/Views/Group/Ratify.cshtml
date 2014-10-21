@@ -21,18 +21,8 @@
                             <div class="footer">@g.Content</div>
                         </td>
                         <td class="c3">
-                            @using (Html.BeginForm("Accept", "Group", new { id = g.ID }, FormMethod.Post, null))
-                            {
-                                @Html.AntiForgeryToken()
-                                <p>@Html.TextBox("id", @g.ID, new { @class = "textbox" }) 请输入有效的比赛ID。</p>
-                                <p><input type="submit" value="接受" class="button button-def" /></p>
-                            }
-                            @using (Html.BeginForm("Decline", "Group", new { id = g.ID }, FormMethod.Post, null))
-                            {
-                                @Html.AntiForgeryToken()
-                                <p>@Html.TextBox("id", @g.ID, new { @class = "textbox" }) 请输入有效的比赛ID。</p>
-                                <p><input type="submit" value="拒绝" class="button button-def" /></p>
-                            }
+                            <input type="submit" value="接受" class="button button-def btnAccept" jid="@g.ID" />
+                            <input type="submit" value="拒绝" class="button button-def btnsDecline" jid="@g.ID" />
                         </td>
                     </tr>
                 }
@@ -40,8 +30,6 @@
         </table>
     </div>
 </div>
-
-
 
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
@@ -66,9 +54,21 @@
         }
     </div>
 </div>
-
+@using (Html.BeginForm("Ratify", "Group", null, FormMethod.Post, new { id = "frmRatify" }))
+{ 
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="JoinID" />
+    <input type="hidden" name="Accept" value="0" id="Accept" />
+}
 <script>
-    function Accept() {
-
-    }
+    $(".btnAccept").click(function () {
+        $("#JoinID").val($(this).attr("jid"));
+        $("#Accept").val(1);
+        $("#frmRatify").submit();
+    });
+    $(".btnDecline").click(function () {
+        $("#JoinID").val($(this).attr("jid"));
+        $("#Accept").val(0);
+        $("#frmRatify").submit();
+    });
 </script>
