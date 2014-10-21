@@ -588,10 +588,6 @@ a {
     color: #888;
 }
 
-.tyvj-footer-text {
-    color: #888;
-}
-
 .block-more {
     user-select: none;
     -webkit-user-select: none;
@@ -1460,9 +1456,9 @@ face2 {
 }
 
 .tyvj-footer-text {
-    color:#888;
+    color:#888!important;
 }
 
 .tyvj-footer-text :hover {
-    color:#444;
+    color:#444!important;
 }
