@@ -11,6 +11,10 @@ var StatusCss = ["judgeState0", "judgeState1", "judgeState2", "judgeState3", "ju
 var StatusDisplay = ["Accepted", "Presentation Error", "Wrong Answer", "Output Limit Exceeded", "Time Limit Exceeded", "Memory Limit Exceeded", "Runtime Error", "Compile Error", "System Error", "Hacked", "Running", "Pending", "Hidden"];
 var JudgeResultAsInt;
 var JudgeResult;
+var lock = false;
+var standings;
+var allowhack = false;
+var key2desc = false;
 
 function Load() {
     if (lock) return;
@@ -286,7 +290,7 @@ function LoadStatuses() {
                                                  + '<td class="tyvj-list-td tyvjlc22">' + statuses[i].TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + statuses[i].MemoryUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc3" style="text-align:left"><div class="wrap"><span class="c"><a href="/p/' + statuses[i].ProblemID + '" target="_self">P' + statuses[i].ProblemID + '&nbsp;' + statuses[i].ProblemTitle + '</a></span></div></td>'
-                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc"><a href="/User/' + statuses[i].UserID + '" target="_blank" class="user">' + statuses[i].Username + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccc;float:right"><a href="/User/' + statuses[i].UserID + '" target="_blank" class="user">' + statuses[i].Username + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + statuses[i].Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + statuses[i].Time + '</td></tr>');
             }
@@ -651,6 +655,11 @@ $(document).ready(function () {
 
     //SignalR
     UserHub = $.connection.userHub;
+    UserHub.client.onStandingsChanged = function (tid, data) {
+        if (tid == id) {
+            StandingsUpdate(data);
+        }
+    }
     UserHub.client.onStatusChanged = function (status) {
         if (RealTimeStatusID != null) {
             if (RealTimeStatusID != status.ID) return;

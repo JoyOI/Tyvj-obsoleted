@@ -555,11 +555,11 @@
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\CKEditor\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
-    <Folder Include="Views\CKEditor\" />
     <Folder Include="Views\Verify\" />
   </ItemGroup>
   <ItemGroup>

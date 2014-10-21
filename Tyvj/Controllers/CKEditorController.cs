@@ -9,17 +9,17 @@ using System.IO;
 
 namespace Tyvj.Controllers
 {
-    public class CKEditorController : Controller
+    public class CKEditorController : BaseController
     {
         [HttpPost]
         [Authorize]
         public ActionResult Upload(string CKEditorFuncNum, HttpPostedFileBase upload)
         {
-            if (ViewBag.CurrentUser.Role < UserRole.VIP)
+            if (CurrentUser.Role < UserRole.VIP)
             {
                 if (upload.ContentLength > 1024 * 512) return new HttpStatusCodeResult(400);
             }
-            else if (ViewBag.CurrentUser.Role < UserRole.Root)
+            else if (CurrentUser.Role < UserRole.Root)
             {
                 if (upload.ContentLength > 1024 * 2048) return new HttpStatusCodeResult(400);
             }

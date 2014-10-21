@@ -67,7 +67,7 @@ namespace Tyvj.ViewModels
         public vStandingCol() { }
         public vStandingCol(User user, Problem problem, Contest contest, int credit) 
         {
-            var statuses = Helpers.Contest.GetStatuses(problem.ID, contest.ID).ToList();
+            var statuses = Helpers.Contest.GetStatuses(problem.ID, contest.ID).Where(x=>x.UserID == user.ID).ToList();
             #region OI赛制逻辑
             if (contest.Format == ContestFormat.OI)
             {

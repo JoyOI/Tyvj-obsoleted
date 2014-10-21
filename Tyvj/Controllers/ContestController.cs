@@ -209,7 +209,8 @@ namespace Tyvj.Controllers
             { 
                 ContestID = id,
                 Number = Number,
-                ProblemID = PID
+                ProblemID = PID,
+                Point = Point
             });
             DbContext.SaveChanges();
             return RedirectToAction("Problem", "Contest", new { id = id });

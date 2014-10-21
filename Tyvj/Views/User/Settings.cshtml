@@ -26,10 +26,10 @@
                             <tbody>
                                 @if (ViewBag.CurrentUser.Role < UserRole.Master)
                                 {
-                                    <tr><td class="tyvj-status-info-left">旧密码</td><td>@Html.TextBox("OldPassword", "", new { @class = "textbox" })</td></tr>
+                                    <tr><td class="tyvj-status-info-left">旧密码</td><td>@Html.Password("OldPassword", "", new { @class = "textbox" })</td></tr>
                                 }
-                                <tr><td class="tyvj-status-info-left">新密码</td><td>@Html.TextBox("NewPassword", "", new { @class = "textbox" })</td></tr>
-                                <tr><td class="tyvj-status-info-left">密码重复</td><td>@Html.TextBox("ConfirmPassword", "", new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">新密码</td><td>@Html.Password("NewPassword", "", new { @class = "textbox" })</td></tr>
+                                <tr><td class="tyvj-status-info-left">密码重复</td><td>@Html.Password("ConfirmPassword", "", new { @class = "textbox" })</td></tr>
                                 <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnChangePassword" class="button" /></td></tr>
                             </tbody>
                         </table>

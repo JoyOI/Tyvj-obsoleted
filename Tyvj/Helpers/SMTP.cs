@@ -24,7 +24,7 @@ namespace Tyvj.Helpers
             client.Credentials = new System.Net.NetworkCredential("noreply@cenaplus.org", "yuno123");
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-            MailAddress addressFrom = new MailAddress("noreply@cenaplus.org", "Code Comb");
+            MailAddress addressFrom = new MailAddress("noreply@cenaplus.org", "Tyvj");
             MailAddress addressTo = new MailAddress(Target, "");
 
             System.Net.Mail.MailMessage message = new MailMessage(addressFrom, addressTo);
