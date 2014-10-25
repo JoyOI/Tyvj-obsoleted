@@ -14,7 +14,7 @@ namespace Tyvj.ViewModels
         {
             ID = Solution.ID;
             Title = Solution.Title;
-            Username = Solution.User.Username;
+            Username = HttpUtility.HtmlEncode(Solution.User.Username);
             Gravatar = Helpers.Gravatar.GetAvatarURL(Solution.User.Gravatar, 180);
             UserID = Solution.UserID;
             ProblemID = Solution.ProblemID;

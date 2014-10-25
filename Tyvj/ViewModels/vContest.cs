@@ -17,7 +17,7 @@ namespace Tyvj.ViewModels
             Join = (from s in DbContext.Statuses
                     where s.ContestID == Contest.ID
                     select s.UserID).Distinct().ToList().Count;
-            Title = Contest.Title;
+            Title = HttpUtility.HtmlEncode(Contest.Title);
             Begin = Contest.Begin.ToString("yyyy-MM-dd HH:mm");
             Official = Contest.Official;
             Duration = Helpers.Time.ToTimeLength(Contest.Begin, Contest.End);

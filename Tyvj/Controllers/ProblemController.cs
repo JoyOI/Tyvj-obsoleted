@@ -71,12 +71,16 @@ namespace Tyvj.Controllers
             }
             if (MoreThan != null && LessThan != null)
                 _problems = _problems.Where(x => x.ID >= MoreThan && x.ID <= LessThan);
-            _problems = _problems.OrderBy(x => x.ID).Skip(100 * Page.Value).Take(100).ToList();
+            _problems = _problems.OrderBy(x => x.ID).Skip(100 * Page.Value).Take(100);
+            _problems = _problems.ToList();
             List<vProblem> problems = new List<vProblem>();
             if (User.Identity.IsAuthenticated)
             {
+                var ac = Helpers.AcList.GetList(CurrentUser.AcceptedList);
+                var submit = Helpers.AcList.GetList(CurrentUser.SubmitList);
                 foreach (var problem in _problems)
-                    problems.Add(new vProblem(problem, ViewBag.CurrentUser.Username));
+                    problems.Add(new vProblem(problem, ac, submit));
+                    //problems.Add(new vProblem(problem));
             }
             else 
             {

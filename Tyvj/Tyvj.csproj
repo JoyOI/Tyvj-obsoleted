@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AcList.cs" />
     <Compile Include="Helpers\ColorName.cs" />
     <Compile Include="Helpers\Contest.cs" />
     <Compile Include="Helpers\Gravatar.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="ViewModels\vGroupJoin.cs" />
     <Compile Include="ViewModels\vGroupMember.cs" />
     <Compile Include="ViewModels\vHackResult.cs" />
+    <Compile Include="ViewModels\vPlist.cs" />
     <Compile Include="ViewModels\vRank.cs" />
     <Compile Include="ViewModels\vRegister.cs" />
     <Compile Include="ViewModels\vSolution.cs" />

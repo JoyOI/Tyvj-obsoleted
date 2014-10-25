@@ -87,6 +87,12 @@ namespace Tyvj.DataModels
             set { RangeValidatorLanguageAsInt = (int)value; }
         }
 
+        [Column("submit_count")]
+        public int SubmitCount { get; set; }
+
+        [Column("accepted_count")]
+        public int AcceptedCount { get; set; }
+
         public virtual ICollection<TestCase> TestCases { get; set; }
 
         public virtual ICollection<Status> Statuses { get; set; }

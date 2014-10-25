@@ -111,29 +111,32 @@ namespace Tyvj.SignalR
         }
         public void JudgeFeedBack(JudgeFeedback jfb)
         {
+            DB db = new DB();
             if (Online.FindIndex(x => x.Token == Context.ConnectionId) < 0)
                 return;
-            var jt = DbContext.JudgeTasks.Find(jfb.ID);
+            var jt = db.JudgeTasks.Find(jfb.ID);
             jt.Hint = jfb.Hint;
             jt.MemoryUsage = jfb.MemoryUsage;
             jt.TimeUsage = jfb.TimeUsage;
             jt.Result = jfb.Result;
-            DbContext.SaveChanges();
+            db.SaveChanges();
             ThreadFree();
             if (jt.Status.JudgeTasks.Where(x => x.ResultAsInt == (int)JudgeResult.Running || x.ResultAsInt == (int)JudgeResult.Pending).Count() == 0)
             {
                 jt.Status.ResultAsInt = jt.Status.JudgeTasks.Max(x => x.ResultAsInt);
-                DbContext.SaveChanges();
+                db.SaveChanges();
+                if (jt.Status.Result == JudgeResult.Accepted)
+                {
+                    var aclist = Helpers.AcList.GetList(jt.Status.User.AcceptedList);
+                    aclist.Add(jt.Status.ProblemID);
+                    jt.Status.User.AcceptedList = Helpers.AcList.ToString(aclist);
+                    db.SaveChanges();
+                }
                 var contest = jt.Status.Contest;
                 if (contest!=null && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                 {
                     SignalR.UserHub.context.Clients.All.onStandingsChanged(contest.ID, new vStanding(jt.Status.User, contest));
                 }
-            }
-            else
-            {
-                jt.Status.Result = JudgeResult.Running;
-                DbContext.SaveChanges();
             }
             SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(jt.Status));//推送新状态
         }

@@ -15,6 +15,8 @@ namespace Tyvj.Controllers
         {
             return View();
         }
+
+        [Authorize]
         public ActionResult Show(int id)
         {
             var group = DbContext.Groups.Find(id);
@@ -29,9 +31,12 @@ namespace Tyvj.Controllers
             return View(group);
         }
 
+        [Authorize]
         public ActionResult Ratify(int id)
         {
             var group = DbContext.Groups.Find(id);
+            if (!IsMaster() && group.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
             var _ratify = (from r in DbContext.GroupJoins
                            where r.GroupID == id
                            orderby r.ID descending
@@ -43,9 +48,12 @@ namespace Tyvj.Controllers
             return View(group);
         }
 
+        [Authorize]
         public ActionResult CreateContest(int id)
         {
             var group = DbContext.Groups.Find(id);
+            if (!IsMaster() && group.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作");
             return View(group);
         }
 
@@ -200,6 +208,7 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult GetGroupContests(int? Page, int id)
         {
             if (Page == null) Page = 0;

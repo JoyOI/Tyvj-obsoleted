@@ -18,7 +18,7 @@ namespace Tyvj.Controllers
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            if (DateTime.Now >= Convert.ToDateTime("2014-10-23 0:00"))
+            if (DateTime.Now >= Convert.ToDateTime("2014-10-27 12:00"))
             {
                 var i = 123;
                 var j = 1;

@@ -22,11 +22,11 @@ namespace Tyvj.Controllers
             }
             if (cid != null)
             {
-                ViewBag.DestContestID = cid;
+                ViewBag.DestContestID = cid.Value;
             }
             if (pid != null)
             {
-                ViewBag.DestProblemID = pid;
+                ViewBag.DestProblemID = pid.Value;
             }
             return View();
         }
@@ -36,7 +36,14 @@ namespace Tyvj.Controllers
         {
             var _statuses = from s in DbContext.Statuses select s;
             if (!string.IsNullOrEmpty(Username))
-                _statuses = _statuses.Where(x => x.User.Username.Contains(Username));
+            {
+                var destuser = (from u in DbContext.Users
+                                where u.Username == Username
+                                select u).FirstOrDefault();
+                var uid = 0;
+                if (destuser != null) uid = destuser.ID;
+                _statuses = _statuses.Where(x => x.User.ID == uid);
+            }
             if (Result != null)
             {
                 _statuses = _statuses.Where(x => x.ResultAsInt == Result.Value);
@@ -45,16 +52,17 @@ namespace Tyvj.Controllers
                 _statuses = _statuses.Where(x => x.ContestID == ContestID);
             if (ProblemID != null)
                 _statuses = _statuses.Where(x => x.ProblemID == ProblemID);
-            _statuses = _statuses.OrderByDescending(x => x.Time);
+            _statuses = _statuses.OrderByDescending(x => x.ID);
             if (Result.HasValue && !IsMaster())
             {
                 if (User.Identity.IsAuthenticated)
-                    _statuses.Where(x => x.Contest.Format != ContestFormat.OI || x.Contest.End <= DateTime.Now || x.Contest.UserID == CurrentUser.ID).ToList();
+                    _statuses.Where(x => x.Contest.FormatAsInt != (int)ContestFormat.OI || x.Contest.End <= DateTime.Now || x.Contest.UserID == CurrentUser.ID).ToList();
                 else
-                    _statuses.Where(x => x.Contest.Format != ContestFormat.OI || x.Contest.End <= DateTime.Now).ToList();
+                    _statuses.Where(x => x.Contest.FormatAsInt != (int)ContestFormat.OI || x.Contest.End <= DateTime.Now).ToList();
             }
+            _statuses = _statuses.Skip(50 * Page.Value).Take(50);
             var statuses = new List<vStatus>();
-            foreach (var status in _statuses.Skip(50 * Page.Value).Take(50).ToList())
+            foreach (var status in _statuses.ToList())
             {
                 var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
                 var contest = status.Contest;
@@ -144,6 +152,11 @@ namespace Tyvj.Controllers
                 ContestID = contest_id
             };
             DbContext.Statuses.Add(status);
+            problem.SubmitCount++;
+            user.SubmitCount++;
+            var submitlist = Helpers.AcList.GetList(user.SubmitList);
+            submitlist.Add(problem.ID);
+            user.SubmitList = Helpers.AcList.ToString(submitlist);
             var testcase_ids = (from tc in problem.TestCases
                                 where tc.Type != TestCaseType.Sample
                                 orderby tc.Type ascending
@@ -196,12 +209,8 @@ namespace Tyvj.Controllers
                     {
                         var group = SignalR.JudgeHub.GetNode();
                         if (group == null) return Content("No Online Judger");
-                        status.Result = JudgeResult.Running;
-                        DbContext.SaveChanges();
                         SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
                         SignalR.JudgeHub.ThreadBusy(group);
-                        jt.Result = JudgeResult.Running;
-                        DbContext.SaveChanges();
                     }
                     catch { }
                 }
@@ -232,8 +241,6 @@ namespace Tyvj.Controllers
                         if (group == null) return Content("No Online Judger");
                         SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
                         SignalR.JudgeHub.ThreadBusy(group);
-                        jt.Result = JudgeResult.Running;
-                        DbContext.SaveChanges();
                     }
                     catch { }
                 }

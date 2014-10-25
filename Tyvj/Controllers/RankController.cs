@@ -30,18 +30,12 @@ namespace Tyvj.Controllers
 
         public ActionResult GetRanksByAC(int page)
         {
-            var users = (from s in DbContext.Statuses
-                         group s by s.UserID
-                         into t
-                         select new
-                         {
-                             UserID = t.Key,
-                             AC = t.Sum(x => x.ResultAsInt == 0 ? 1 : 0),
-                             Count = t.Count()
-                         }).OrderByDescending(x => x.AC).OrderBy(x => x.Count).Skip(10 * page).Take(10).ToList();
+            var users = (from u in DbContext.Users
+                         orderby u.AcceptedCount descending, u.SubmitCount ascending
+                         select u).Skip(page * 10).Take(10).ToList();
             List<vRank> ranks = new List<vRank>();
             for (int i = 0; i < users.Count(); i++)
-                ranks.Add(new vRank(DbContext.Users.Find(users[i].UserID), page * 10 + i + 1));
+                ranks.Add(new vRank(users[i], page * 10 + i + 1));
             return Json(ranks, JsonRequestBehavior.AllowGet);
         }
     }

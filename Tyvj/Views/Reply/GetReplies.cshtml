@@ -55,7 +55,7 @@
                                         <a href="/User/@replyinreply.UserID">@Html.Nickname(replyinreply.User.Username, replyinreply.User.Ratings.Sum(x => x.Credit) + 1500, "comment-info")</a> @@@Html.ToTimeTip(replyinreply.Time)
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            if (reply.UserID == ViewBag.CurrentUser.ID || reply.Father.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
+                                            if (reply.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)
                                             {
                                                 <a href="javascript:$.post('/Reply/Delete', $('#frmDeleteReply@(replyinreply.ID)').serialize(),function(){$('#reply_@(replyinreply.ID)').hide()});">删除</a>
                                                 using (Html.BeginForm("Delete", "Reply", FormMethod.Post, new { id = "frmDeleteReply" + replyinreply.ID, style = "display:none;" }))

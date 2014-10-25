@@ -71,6 +71,26 @@ namespace Tyvj.Controllers
                 }
             }
 
+            //更新提交/ac数据
+            if (string.IsNullOrEmpty(user.SubmitList) || string.IsNullOrEmpty(user.SubmitList))
+            {
+                var sub = (from s in DbContext.Statuses
+                           where s.UserID == user.ID
+                             && s.ResultAsInt == 0
+                           select s.ProblemID).Distinct().ToList();
+                user.SubmitList = Helpers.AcList.ToString(sub);
+                user.SubmitCount = (from s in DbContext.Statuses
+                                    where s.UserID == user.ID
+                                    select s).Count();
+                var ac = (from s in DbContext.Statuses
+                          where s.UserID == user.ID
+                            && s.ResultAsInt == 0
+                          select s.ProblemID).Distinct().ToList();
+                user.AcceptedCount = ac.Count;
+                user.AcceptedList = Helpers.AcList.ToString(ac);
+                DbContext.SaveChanges();
+            }
+
             //更新明文密码为sha1
             if (user.Password.Length < 16)
             {

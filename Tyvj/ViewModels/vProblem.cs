@@ -15,23 +15,17 @@ namespace Tyvj.ViewModels
             ID = Problem.ID;
             Official = Problem.Official;
             Hide = Problem.Hide;
-            Title = Problem.Title;
-            Accepted = (from s in DbContext.Statuses
-                        where s.ResultAsInt == (int)JudgeResult.Accepted
-                        && s.ProblemID == ID
-                        select s).Count();
-            Submitted = (from s in DbContext.Statuses
-                         where s.ProblemID == ID
-                         select s).Count();
+            Title = HttpUtility.HtmlEncode(Problem.Title);
+            Accepted = Problem.AcceptedCount;
+            Submitted = Problem.SubmitCount;
         }
-        public vProblem(Problem Problem, string Username) : this(Problem)
+        public vProblem(Problem Problem, List<int> ac, List<int> submit)
+            : this(Problem)
         {
-            var DbContext = new DB();
-            if ((from s in DbContext.Statuses where s.User.Username == Username && s.ProblemID == Problem.ID select s).Count() == 0)
-                Flag = 0;
-            else if ((from s in DbContext.Statuses where s.User.Username == Username && s.ProblemID == Problem.ID && s.ResultAsInt == (int)JudgeResult.Accepted select s).Count() == 0)
+            Flag = 0;
+            if (Helpers.AcList.Existed(submit, Problem.ID))
                 Flag = 1;
-            else 
+            if (Helpers.AcList.Existed(ac, Problem.ID))
                 Flag = 2;
         }
         public int ID { get; set; }

@@ -12,16 +12,25 @@ namespace Tyvj.ViewModels
         public vRank(User user, int rank)
         {
             UserID = user.ID;
-            Nickname = user.Username;
+            Nickname = HttpUtility.HtmlEncode(user.Username);
             Credit = user.Ratings.Sum(x => x.Credit) + 1500;
             Rank = rank;
             Gravatar = Helpers.Gravatar.GetAvatarURL(user.Gravatar, 200);
-            Motto = user.Motto;
+            Motto = HttpUtility.HtmlEncode(user.Motto);
             if (Motto == null)
                 Motto = "";
             var DbContext = new DB();
-            var ACCount = (from s in DbContext.Statuses where s.ResultAsInt == (int)JudgeResult.Accepted && s.UserID == UserID select s.ProblemID).Distinct().Count();
-            var TotalCount = (from s in DbContext.Statuses where s.UserID == UserID select s.ProblemID).Count();
+            var ACCount = user.AcceptedCount;
+            var HideProblemIDs = (from p in DbContext.Problems
+                                      where p.Hide == true
+                                      select p.ID).ToList();
+            var HideCount = (from s in DbContext.Statuses
+                             where s.UserID == user.ID
+                             && s.ResultAsInt == 0
+                             && HideProblemIDs.Contains(s.ProblemID)
+                             select s.ProblemID).Distinct().Count();
+            ACCount -= HideCount;
+            var TotalCount = user.SubmitCount;
             AC = ACCount;
             Total = TotalCount;
             if(Total == 0)
@@ -30,7 +39,7 @@ namespace Tyvj.ViewModels
             }
             else
             {
-                ACRate = (Convert.ToDouble(AC) / Convert.ToDouble(Total)).ToString("0.00") + "%";
+                ACRate = (Convert.ToDouble(AC) * 100 / Convert.ToDouble(Total)).ToString("0.00") + "%";
             }
         }
         public int UserID { get; set; }

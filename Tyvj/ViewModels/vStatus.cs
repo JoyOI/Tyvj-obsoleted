@@ -15,7 +15,7 @@ namespace Tyvj.ViewModels
             UserID = Status.UserID;
             IsContestStatus = Status.ContestID == null ? false : true;
             ProblemID = Status.ProblemID;
-            ProblemTitle = Status.Problem.Title;
+            ProblemTitle = HttpUtility.HtmlEncode(Status.Problem.Title);
             ResultAsInt = Status.ResultAsInt;
             Result = CommonEnums.JudgeResultDisplay[Status.ResultAsInt];
             try
@@ -30,7 +30,7 @@ namespace Tyvj.ViewModels
                 MemoryUsage = 0;
                 Score = 0;
             }
-            Username = Status.User.Username;
+            Username = HttpUtility.HtmlEncode(Status.User.Username);
             Language = CommonEnums.LanguageDisplay[Status.LanguageAsInt];
             Time = Status.Time.ToString("yyyy-MM-dd HH:mm:ss");
         }

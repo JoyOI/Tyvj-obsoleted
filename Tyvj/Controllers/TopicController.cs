@@ -64,7 +64,7 @@ namespace Tyvj.Controllers
                 ForumID = model.ForumID,
                 Title = model.Title,
                 Content = model.Content,
-                UserID =1,// ViewBag.CurrentUser.ID,
+                UserID = CurrentUser.ID,
                 Time = DateTime.Now,
                 Top = false,
                 LastReply = DateTime.Now

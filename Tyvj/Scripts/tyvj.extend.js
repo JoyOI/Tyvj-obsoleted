@@ -7,8 +7,9 @@ var isIE7 = isIE && !isIE6 && !isIE8;
 var isIE678 = isIE6 || isIE7 || isIE8;
 var id = null;
 var RealTimeStatusID = null;
-var StatusCss = ["judgeState0", "judgeState1", "judgeState2", "judgeState3", "judgeState4", "judgeState5", "judgeState6", "judgeState7", "judgeState8", "judgeState9", "judgeState10", "judgeState11", "judgeState12"];
-var StatusDisplay = ["Accepted", "Presentation Error", "Wrong Answer", "Output Limit Exceeded", "Time Limit Exceeded", "Memory Limit Exceeded", "Runtime Error", "Compile Error", "System Error", "Hacked", "Running", "Pending", "Hidden"];
+var StatusCss = ["judgeState0", "judgeState1", "judgeState2", "judgeState3", "judgeState4", "judgeState5", "judgeState6", "judgeState7", "judgeState8", "judgeState9", "judgeState10", "judgeState10", "judgeState12"];
+var StatusDisplay = ["Accepted", "Presentation Error", "Wrong Answer", "Output Limit Exceeded", "Time Limit Exceeded", "Memory Limit Exceeded", "Runtime Error", "Compile Error", "System Error", "Hacked", "Running", "Running", "Hidden"];
+var StatusDisplayShort = ["Accepted", "Presentation Error", "Wrong Answer", "Output Exceeded", "Time Exceeded", "Memory Exceeded", "Runtime Error", "Compile Error", "System Error", "Hacked", "Running", "Running", "Hidden"];
 var JudgeResultAsInt;
 var JudgeResult;
 var lock = false;
@@ -16,11 +17,24 @@ var standings;
 var allowhack = false;
 var key2desc = false;
 
+function Jump(a, b) {
+    morethan = a;
+    lessthan = b;
+    page = 0;
+    lock = false;
+    title = "";
+    tags = "";
+    $(".ProblemTag").removeClass("orange");
+    $("#txtProblemTitle").val("");
+    $("#lstProblems").html("");
+    Load();
+}
+
 function Load() {
     if (lock) return;
     lock = true;
     if ($("#btnMore").length > 0) {
-        $("#btnMore").html("加载中...");
+        $("#btnMore").html("<div class='loading'>玩命加载中...</div>");
     }
 
     LoadContests();
@@ -209,7 +223,7 @@ function LoadSolutions() {
                 $("#lstSolutions").append('<tr class=""><td class="c1">'
                                                  + '<img class="face" src="'+solutions[i].Gravatar+'">'
                                                  + '</td><td class="c2"><div class="title"><a href="/Solution/'+solutions[i].ID+'">'+solutions[i].Title+'</a></div>'
-                                                 + '<div class="footer">作者：<a href="/User/'+solutions[i].Username+'">admin</a> / 标签 '+solutions[i].Tags+'</div></td></tr>');
+                                                 + '<div class="footer">作者：<a href="/User/' + solutions[i].UserID + '">' + solutions[i].Username + '</a> / 标签 ' + solutions[i].Tags + '</div></td></tr>');
             }
             lock = false;
             page++;
@@ -283,9 +297,10 @@ function LoadStatuses() {
             for (var i = 0; i < statuses.length; i++) {
                 if (statuses[i] == null) continue;
                 var ac = "";
-                if (statuses[i].Score == 100) ac = "ac";
+                if (statuses[i].Score == 100 || statuses[i].ResultAsInt == 0) ac = "ac";
+                if (statuses[i].ResultAsInt == 0) statuses[i].Score = 100;
                 $("#lstStatuses").append('<tr id="s-' + statuses[i].ID + '" class="tyvj-list-body-tr">'
-                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState' + statuses[i].ResultAsInt + '">' + statuses[i].Result + '</a></td>'
+                                                 + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState' + statuses[i].ResultAsInt + '">' + StatusDisplayShort[statuses[i].ResultAsInt] + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + statuses[i].Score + '%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + statuses[i].TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + statuses[i].MemoryUsage + '</td>'
@@ -407,7 +422,7 @@ function LoadRanks_Ratings() {
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>';
+                                        + '         <a href="/User/' + ranks[i].UserID + '">' + ranks[i].Nickname + '</a>';
                 if (ranks[i].Motto.length > 0)
                     html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
                 html += '     </div>'
@@ -442,7 +457,7 @@ function LoadRanks_AC() {
                                         + '</td>'
                                         + '<td class="c2">'
                                         + '     <div class="title">'
-                                        + '         <a href="/User/' + ranks[i].ID + '">' + ranks[i].Nickname + '</a>';
+                                        + '         <a href="/User/' + ranks[i].UserID + '">' + ranks[i].Nickname + '</a>';
                 if (ranks[i].Motto.length>0)
                     html += '         <span style="font-size: 13px; color: #BBB;">（' + ranks[i].Motto + '）</span>';
                 html += '     </div>'
@@ -700,7 +715,8 @@ $(document).ready(function () {
             var ac = "";
             if (status.Score == 100) ac = "ac";
             if ($("#s-" + status.ID).length > 0) {
-                $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
+                if ($("#s" + "status.ID").attr("score") != null && parseInt($("#s" + "status.ID").attr("score")) >= status.Score) return;
+                $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + StatusDisplayShort[status.ResultAsInt] + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
                                                  + '<td class="tyvj-list-td tyvjlc22">' + status.TimeUsage + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc23" style="border-right:1px solid #ccc">' + status.MemoryUsage + '</td>'
@@ -719,6 +735,10 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc4" style="border-right:1px solid #ccctext-align:right;"><a href="/User/' + status.UserID + '" target="_blank" class="user">' + status.Username + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
+            }
+            if ($("#s" + "status.ID").length > 0)
+            {
+                $("#s" + "status.ID").attr("score", status.Score);
             }
         }
     }

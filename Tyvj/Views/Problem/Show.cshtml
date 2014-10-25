@@ -68,9 +68,9 @@
                         <h2>测试样例@(number++)</h2>
                         <div class="tyvj-content-inner">
                             <h3>输入</h3>
-                            <blockquote>@sample.Input</blockquote>
+                            <blockquote>@Html.Sanitized(HttpUtility.HtmlEncode(sample.Input.TrimEnd('\n')).Replace("\n", "<br/>"))</blockquote>
                             <h3>输出</h3>
-                            <blockquote>@sample.Output</blockquote>
+                            <blockquote>@Html.Sanitized(HttpUtility.HtmlEncode(sample.Output.TrimEnd('\n')).Replace("\n", "<br/>"))</blockquote>
                         </div>
                     }
                 </div>

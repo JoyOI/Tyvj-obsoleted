@@ -4,8 +4,8 @@
 
 <div class="tyvj-left grid_12">
     <div class="tyvj-shadow tyvj-block tyvj-border-side tyvj-toolbar">
-        题目编号: <input type="text" class="textbox" id="txtProblemID" value="@(ViewBag.DestProblemID != null ? (string)ViewBag.DestProblemID : "")" style="width:70px" />
-        用户名: <input type="text" class="textbox" id="txtSubmitter" value="@(ViewBag.DestUsername !=null?(string)ViewBag.DestUsername:"")" />
+        题目编号: <input type="text" class="textbox" id="txtProblemID" value="@(ViewBag.DestProblemID != null ? ""+ViewBag.DestProblemID : "")" style="width:70px" />
+        用户名: <input type="text" class="textbox" id="txtSubmitter" value="@(ViewBag.DestUsername != null ? "" + ViewBag.DestUsername : "")" />
         评测结果: <select class="select" id="lstResult">
             <option selected value="">全部结果</option>
             <option value="0">Accepted</option>
@@ -27,14 +27,14 @@
         <table class="tyvj-list-records tyvj-list">
             <thead class="tyvj-list-head">
                 <tr>
-                    <th class="tyvj-list-th" style="width:150px;">Status</th>
+                    <th class="tyvj-list-th" style="width:130px;">Status</th>
                     <th class="tyvj-list-th" style="width:60px;border-left:1px solid #ccc">得分</th>
                     <th class="tyvj-list-th" style="width:60px;">(ms)</th>
                     <th class="tyvj-list-th" style="width:70px;border-right:1px solid #ccc">(KiB)</th>
                     <th class="tyvj-list-th" style="text-align:left">题目</th>
-                    <th class="tyvj-list-th" style="width:95px;text-align:right;">提交者</th>
+                    <th class="tyvj-list-th" style="width:105px;text-align:right;">提交者</th>
                     <th class="tyvj-list-th" style="width:75px;border-left:1px solid #ccc;border-right:1px solid #ccc">语言</th>
-                    <th class="tyvj-list-th" style="width:170px;">提交时间</th>
+                    <th class="tyvj-list-th" style="width:135px;">提交时间</th>
                 </tr>
             </thead>
             <tbody id="lstStatuses"></tbody>

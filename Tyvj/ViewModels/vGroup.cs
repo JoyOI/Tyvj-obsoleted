@@ -12,9 +12,8 @@ namespace Tyvj.ViewModels
         public vGroup(Group group)
         {
             ID = group.ID;
-            Title = group.Title;
-            Title = group.Title;
-            Description = group.Description;
+            Title = HttpUtility.HtmlEncode(group.Title);
+            Description = HttpUtility.HtmlEncode(group.Description);
             Gravatar = Helpers.Gravatar.GetAvatarURL(group.Gravatar, 200);
         }
 

@@ -59,8 +59,20 @@ namespace Tyvj.DataModels
             set { RoleAsInt = (int)value; }
         }
 
+        [Column("accepted_count")]
+        public int AcceptedCount { get; set; }
+
+        [Column("submit_count")]
+        public int SubmitCount { get; set; }
+
         [Column("common_language")]
         public int CommonLanguageAsInt { get; set; }
+
+        [Column("accepted_list")]
+        public string AcceptedList { get; set; }
+
+        [Column("submit_list")]
+        public string SubmitList { get; set; }
 
         [NotMapped]
         public Language CommonLanguage

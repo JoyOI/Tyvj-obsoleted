@@ -14,7 +14,7 @@ namespace Tyvj.ViewModels
             ForumID = topic.ForumID;
             ForumTitle = topic.Forum.Title;
             Gravatar = Helpers.Gravatar.GetAvatarURL(topic.User.Gravatar, 180);
-            Nickname = topic.User.Username;
+            Nickname = HttpUtility.HtmlEncode(topic.User.Username);
             RepliesCount = topic.Replies.Count;
             Time = Helpers.Time.ToTimeTip(topic.Time);
             Title = HttpUtility.HtmlEncode(topic.Title);

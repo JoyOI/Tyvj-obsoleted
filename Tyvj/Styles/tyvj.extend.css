@@ -3,7 +3,6 @@
     font-family: "Microsoft YaHei UI","Microsoft YaHei","Segou UI";
     background-image: url(/Images/bg.jpg);
     background-repeat: repeat-x;
-    background-color: RGB(246,246,244) !Important;
     font-size: 12px;
     line-height: 20px;
 }
@@ -278,9 +277,8 @@ textarea.textbox {
 }
 
 #tyvj-footer {
-    background-image: url(/Images/ft.jpg);
-    background-color: RGB(246,246,244) !Important;
-    background-position-y: bottom;
+    background-image: url(/Images/ft.png);
+    background-position-y: top;
     background-repeat: repeat-x;
     min-height: 80px;
     _height: 80px;
@@ -720,7 +718,7 @@ table {
 }
 
     .tyvj-list-discuss tr.highlight .c2 {
-        background: url(../img/discuss_hl.png?1) right top no-repeat;
+        background: url(/Images/discuss_hl.png?1) right top no-repeat;
     }
 
     .tyvj-list-discuss tr.highlight .c3 {
@@ -1461,4 +1459,15 @@ face2 {
 
 .tyvj-footer-text :hover {
     color:#444!important;
+}
+
+.loading {
+    width: 16px;
+    height: 16px;
+    background:url("/Images/loading.svg") no-repeat;
+    *background: url("/Image/loading.gif") no-repeat;
+    _background: url("/Image/loading.gif") no-repeat;
+    padding-left:20px;
+    margin:0 auto;
+    width:74px;
 }

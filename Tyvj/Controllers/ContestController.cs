@@ -169,6 +169,7 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             if (!IsMaster() && CurrentUser.ID != contest.UserID)
                 return Message("您无权执行本操作");
+            if (Title.Length == 0) return Message("请输入比赛名称");
             contest.Title = Title;
             contest.Description = Description;
             contest.Begin = Begin;

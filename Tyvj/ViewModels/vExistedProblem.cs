@@ -12,7 +12,7 @@ namespace Tyvj.ViewModels
         public vExistedProblem(Problem Problem)
         {
             ID = Problem.ID;
-            Title = Problem.Title;
+            Title = HttpUtility.HtmlEncode(Problem.Title);
             Content = Helpers.String.CleanHTML(Problem.Background + " " + Problem.Description + " " + Problem.Input + " " + Problem.Output);
             if (Content.Length > 255)
             {
