@@ -72,11 +72,10 @@ namespace Tyvj.Controllers
             }
 
             //更新提交/ac数据
-            if (string.IsNullOrEmpty(user.SubmitList) || string.IsNullOrEmpty(user.SubmitList))
+            if (string.IsNullOrEmpty(user.SubmitList) || string.IsNullOrEmpty(user.AcceptedList))
             {
                 var sub = (from s in DbContext.Statuses
                            where s.UserID == user.ID
-                             && s.ResultAsInt == 0
                            select s.ProblemID).Distinct().ToList();
                 user.SubmitList = Helpers.AcList.ToString(sub);
                 user.SubmitCount = (from s in DbContext.Statuses
@@ -225,7 +224,12 @@ namespace Tyvj.Controllers
                 CommonLanguage = Language.C,
                 Gravatar = email,
                 QQ = model.QQ,
-                School = model.School
+                School = model.School,
+                AcceptedList = "",
+                SubmitList = "",
+                Sex = Sex.Male,
+                AcceptedCount = 0,
+                SubmitCount = 0
             });
             DbContext.SaveChanges();
             var email_verification = (from ev in DbContext.EmailVerifications

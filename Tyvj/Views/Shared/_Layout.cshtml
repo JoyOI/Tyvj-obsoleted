@@ -85,7 +85,12 @@
     <div id="tyvj-body">
         <div class="container_12">
             <div class="grid_12">
-                <p style="line-height:30px;">当前位置：@(Request.RawUrl.ToString().IndexOf("Info?") >= 0 ? "/Home" : Request.RawUrl.ToString())</p>
+                <p style="line-height:30px;">当前位置：@(Request.RawUrl.ToString().IndexOf("Info?") >= 0 ? "/Home" : Request.RawUrl.ToString())
+                @if (User.Identity.IsAuthenticated)
+                { 
+                    <span style="float:right">通过: @ViewBag.CurrentUser.AcceptedCount / 提交: @ViewBag.CurrentUser.SubmitCount / AC%: @(ViewBag.CurrentUser.SubmitCount == 0 ? "0" : (ViewBag.CurrentUser.AcceptedCount * 100 / ViewBag.CurrentUser.SubmitCount))%</span>
+                }
+                </p>
                 @if (Request.RawUrl == "/")
                 {
                     <p><img src="/Images/banner.jpg" class="tyvj-shadow" id="tyvj-banner-pic" /></p>

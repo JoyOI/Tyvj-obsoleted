@@ -31,6 +31,7 @@ namespace Tyvj.Controllers
             IEnumerable<Contest> _contests = (from c in DbContext.Contests
                                 where c.Title.Contains(Title)
                                 && !(DateTime.Now >= c.Begin && DateTime.Now <c.End)
+                                && c.ContestProblems.Count > 0
                                 select c);
             if (Format != null)
                 _contests = _contests.Where(x => x.FormatAsInt == Format.Value).OrderByDescending(x=>x.End).Skip(10 * Page.Value).Take(10).ToList();

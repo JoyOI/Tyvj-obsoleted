@@ -31,6 +31,7 @@ namespace Tyvj.Controllers
         public ActionResult GetRanksByAC(int page)
         {
             var users = (from u in DbContext.Users
+                         where u.SubmitCount > 0
                          orderby u.AcceptedCount descending, u.SubmitCount ascending
                          select u).Skip(page * 10).Take(10).ToList();
             List<vRank> ranks = new List<vRank>();

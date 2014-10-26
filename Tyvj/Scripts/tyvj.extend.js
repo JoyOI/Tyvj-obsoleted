@@ -742,8 +742,13 @@ $(document).ready(function () {
             }
         }
     }
-            $.connection.hub.start();
-
+    $.connection.hub.start();
+    if ($("#nav-login").length > 0 && isIE6)
+    {
+        $("#nav-login").click(function () {
+            window.location.href = "/Login";
+        });
+    }
             // 代码高亮插件初始化
             $('.ckeditor-code').unbind().each(function () {
                 if (isIE678) return;

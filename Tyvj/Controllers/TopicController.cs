@@ -59,6 +59,8 @@ namespace Tyvj.Controllers
                 return Message("没有找到这个论坛版块！");
             if (string.IsNullOrEmpty(model.Content))
                 return Message("内容不能为空！" );
+            if (string.IsNullOrEmpty(model.Title))
+                return Message("标题不能为空！");
             var topic = new DataModels.Topic
             {
                 ForumID = model.ForumID,

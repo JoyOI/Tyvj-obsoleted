@@ -118,7 +118,7 @@ namespace Tyvj.Controllers
         public ActionResult GetGroups(int page)
         {
             var _groups = (from g in DbContext.Groups
-                            orderby g.ID descending
+                            orderby g.Members.Count descending
                             select g).Skip(10 * page).Take(10).ToList();
             var groups = new List<vGroup>();
             foreach (var g in _groups)

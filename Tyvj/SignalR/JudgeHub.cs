@@ -130,6 +130,8 @@ namespace Tyvj.SignalR
                     var aclist = Helpers.AcList.GetList(jt.Status.User.AcceptedList);
                     aclist.Add(jt.Status.ProblemID);
                     jt.Status.User.AcceptedList = Helpers.AcList.ToString(aclist);
+                    jt.Status.User.AcceptedCount = jt.Status.User.AcceptedList.Count();
+                    jt.Status.Problem.AcceptedCount++;
                     db.SaveChanges();
                 }
                 var contest = jt.Status.Contest;
