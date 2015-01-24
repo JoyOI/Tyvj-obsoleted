@@ -10,6 +10,7 @@ namespace Tyvj.Controllers
 {
     public class ProblemController : BaseController
     {
+        public static List<Problem> ProblemListCache = new List<Problem>();
         // GET: Problem
         public ActionResult Index()
         {
@@ -39,6 +40,16 @@ namespace Tyvj.Controllers
             return View();
         }
 
+        public static void RefreshProblemListCache()
+        {
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var DbContext = new DataModels.DB();
+                ProblemListCache = (from p in DbContext.Problems
+                                    select p).ToList();
+            });
+        }
+
         [HttpGet]
         public ActionResult GetProblems(int? Page, string Title, string Tags, int? MoreThan, int? LessThan)
         { 
@@ -53,7 +64,7 @@ namespace Tyvj.Controllers
                 foreach (var t in _tags)
                     tags.Add(Convert.ToInt32(t));
             }
-            IEnumerable<Problem> _problems = (from p in DbContext.Problems
+            IEnumerable<Problem> _problems = (from p in ProblemListCache
                                                      where (p.Title.Contains(Title))
                                                      select p);
             if (!IsMaster())
@@ -113,8 +124,6 @@ namespace Tyvj.Controllers
                     return RedirectToAction("Show", "Problem", new { id = problem.ID });
                 ViewBag.ContestID = cp.ContestID;
             }
-            if (problem == null)
-                return Message("没有找到这道题目");
             var uid = 0;
             if(User.Identity.IsAuthenticated)
             {
@@ -125,6 +134,11 @@ namespace Tyvj.Controllers
                              && s.UserID == uid
                              orderby s.Time descending
                              select s).Take(20).ToList();
+            if (cpid.HasValue)
+            {
+                foreach (var s in _statuses)
+                    s.Result = JudgeResult.Hidden;
+            }
             var statuses = new List<vProblemStatus>();
             foreach (var s in _statuses)
                 statuses.Add(new vProblemStatus(s));
@@ -149,7 +163,7 @@ namespace Tyvj.Controllers
         [HttpGet]
         public ActionResult GetExistedProblems(string Title)
         {
-            var _problems = (from p in DbContext.Problems
+            var _problems = (from p in ProblemListCache
                              where p.Title.Contains(Title)
                              || Title.Contains(p.Title)
                              select p).ToList();
@@ -182,6 +196,7 @@ namespace Tyvj.Controllers
             };
             DbContext.Problems.Add(problem);
             DbContext.SaveChanges();
+            RefreshProblemListCache();
             return RedirectToAction("Edit", "Problem", new { id = problem.ID });
         }
 
@@ -198,7 +213,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide)
+        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide, int? Difficulty)
         {
             var problem = DbContext.Problems.Find(id);
             if (!IsMaster() && problem.UserID != CurrentUser.ID)
@@ -219,8 +234,12 @@ namespace Tyvj.Controllers
             else
                 problem.MemoryLimit = 131072;
             if (IsMaster())
+            {
                 problem.Official = Official.Value;
+                problem.Difficulty = Difficulty.Value;
+            }
             DbContext.SaveChanges();
+            RefreshProblemListCache();
             return Content("True");
         }
 

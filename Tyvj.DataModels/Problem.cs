@@ -93,6 +93,9 @@ namespace Tyvj.DataModels
         [Column("accepted_count")]
         public int AcceptedCount { get; set; }
 
+        [Column("difficulty")]
+        public int Difficulty { get; set; }
+
         public virtual ICollection<TestCase> TestCases { get; set; }
 
         public virtual ICollection<Status> Statuses { get; set; }

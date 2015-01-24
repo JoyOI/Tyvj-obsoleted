@@ -73,6 +73,7 @@ namespace Tyvj.Controllers
             };
             DbContext.Topics.Add(topic);
             DbContext.SaveChanges();
+            HomeController.RefreshHomeTopicsCache();
             return RedirectToAction("Index", "Topic", new { id = topic.ID });
         }
 

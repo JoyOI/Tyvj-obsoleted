@@ -93,8 +93,8 @@ namespace Tyvj.Controllers
                         new JudgeTask
                         {
                             Result = JudgeResult.Hidden,
-                            MemoryUsage = status.JudgeTasks.Max(x=>x.MemoryUsage),
-                            TimeUsage = status.JudgeTasks.Max(x=>x.TimeUsage),
+                            MemoryUsage = 0,
+                            TimeUsage = 0,
                             Hint="比赛期间不提供详细信息",
                             StatusID = status.ID
                         }
@@ -107,6 +107,7 @@ namespace Tyvj.Controllers
                 }
                 statuses.Add(new vStatus(status));
             }
+            GC.Collect();
             return Json(statuses, JsonRequestBehavior.AllowGet);
         }
 
@@ -118,7 +119,7 @@ namespace Tyvj.Controllers
         {
             var problem = DbContext.Problems.Find(problem_id);
             var user = (User)ViewBag.CurrentUser;
-            if (problem == null)
+            if (problem == null || (problem.Hide && !IsMaster() && CurrentUser.ID != problem.ID && !contest_id.HasValue))
                 return Content("Problem not existed");
             Contest contest = new Contest();
             if (contest_id != null)
@@ -149,7 +150,10 @@ namespace Tyvj.Controllers
                 UserID = user.ID,
                 Time = DateTime.Now,
                 Result = JudgeResult.Pending,
-                ContestID = contest_id
+                ContestID = contest_id,
+                Score = 0,
+                TimeUsage = 0,
+                MemoryUsage = 0
             };
             DbContext.Statuses.Add(status);
             problem.SubmitCount++;
@@ -214,7 +218,7 @@ namespace Tyvj.Controllers
                     }
                     catch { }
                 }
-                SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
+                SignalR.UserHub.context.Clients.Group("Status").onStatusCreated(new vStatus(status));//推送新状态
                 if (contest.Format == ContestFormat.OI && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                     return Content("OI");
             }
@@ -244,10 +248,11 @@ namespace Tyvj.Controllers
                     }
                     catch { }
                 }
-                SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
+                SignalR.UserHub.context.Clients.Group("Status").onStatusCreated(new vStatus(status));//推送新状态
             }
-            
-            SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(status));
+
+            SignalR.UserHub.context.Clients.Group("Status").onStatusChanged(new vStatus(status));
+            GC.Collect();
             return Content(status.ID.ToString());
         }
 
@@ -316,6 +321,7 @@ namespace Tyvj.Controllers
                     sd.Hint = "比赛期间不提供详细信息显示";
                 return Json(statusdetails, JsonRequestBehavior.AllowGet);
             }
+            GC.Collect();
             return Json(statusdetails, JsonRequestBehavior.AllowGet);
         }
     }

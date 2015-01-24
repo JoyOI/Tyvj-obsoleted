@@ -48,13 +48,16 @@ namespace Tyvj.SignalR
                               Input = tc.Input,
                               Output = tc.Output
                           }).Single();
+            GC.Collect();
             return upload;
         }
         public string GetTestCaseHash(int ID)
         {
             if (Online.FindIndex(x => x.Token == Context.ConnectionId) < 0)
                 return null;
-            return DbContext.TestCases.Find(ID).Hash;
+            var hash = DbContext.TestCases.Find(ID).Hash;
+            GC.Collect();
+            return hash;
         }
         public void Auth(string Username, string Password, int MaxThreads)
         {
@@ -94,6 +97,24 @@ namespace Tyvj.SignalR
                            select s).ToList();
                 foreach (var status in err_statuses)
                 {
+                    var existed_ids = (from s in status.JudgeTasks
+                                       select s.TestCaseID).ToList();
+                    var new_ids = (from t in status.Problem.TestCases
+                                   where t.TypeAsInt != (int)TestCaseType.Sample
+                                   select t.ID).ToList();
+                    var need_adds = new_ids.Except(existed_ids).ToList();
+                    foreach (var id in need_adds)
+                    { 
+                        DbContext.JudgeTasks.Add(new DataModels.JudgeTask{ 
+                            StatusID = status.ID,
+                            TestCaseID = id,
+                            Hint="",
+                            Result = JudgeResult.Pending,
+                            TimeUsage = 0,
+                            MemoryUsage = 0
+                        });
+                    }
+                    DbContext.SaveChanges();
                     foreach (var jt in status.JudgeTasks.ToList())
                     {
                         var judgetask = new CodeComb.Judge.Models.JudgeTask(jt);
@@ -105,42 +126,53 @@ namespace Tyvj.SignalR
                     }
                     status.Result = JudgeResult.Running;
                     DbContext.SaveChanges();
-                    SignalR.UserHub.context.Clients.All.onStatusCreated(new vStatus(status));//推送新状态
+                    SignalR.UserHub.context.Clients.Group("Status").onStatusCreated(new vStatus(status));//推送新状态
                 }
             }
         }
         public void JudgeFeedBack(JudgeFeedback jfb)
         {
-            DB db = new DB();
             if (Online.FindIndex(x => x.Token == Context.ConnectionId) < 0)
                 return;
-            var jt = db.JudgeTasks.Find(jfb.ID);
+            var jt = DbContext.JudgeTasks.Find(jfb.ID);
             jt.Hint = jfb.Hint;
             jt.MemoryUsage = jfb.MemoryUsage;
             jt.TimeUsage = jfb.TimeUsage;
             jt.Result = jfb.Result;
-            db.SaveChanges();
+            DbContext.SaveChanges();
             ThreadFree();
             if (jt.Status.JudgeTasks.Where(x => x.ResultAsInt == (int)JudgeResult.Running || x.ResultAsInt == (int)JudgeResult.Pending).Count() == 0)
             {
                 jt.Status.ResultAsInt = jt.Status.JudgeTasks.Max(x => x.ResultAsInt);
-                db.SaveChanges();
-                if (jt.Status.Result == JudgeResult.Accepted)
+                jt.Status.MemoryUsage = jt.Status.JudgeTasks.Max(x => x.MemoryUsage);
+                jt.Status.TimeUsage = jt.Status.JudgeTasks.Sum(x => x.TimeUsage);
+                jt.Status.Score = jt.Status.JudgeTasks.Where(x => x.Result == JudgeResult.Accepted).Count() * 100 / jt.Status.JudgeTasks.Count;
+                DbContext.SaveChanges();
+
+                if (jt.Status.Result == JudgeResult.Accepted && jt.Status.ContestID == null)
                 {
                     var aclist = Helpers.AcList.GetList(jt.Status.User.AcceptedList);
                     aclist.Add(jt.Status.ProblemID);
                     jt.Status.User.AcceptedList = Helpers.AcList.ToString(aclist);
-                    jt.Status.User.AcceptedCount = jt.Status.User.AcceptedList.Count();
+                    jt.Status.User.AcceptedCount = aclist.Count();
                     jt.Status.Problem.AcceptedCount++;
-                    db.SaveChanges();
+                    DbContext.SaveChanges();
                 }
                 var contest = jt.Status.Contest;
                 if (contest!=null && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                 {
-                    SignalR.UserHub.context.Clients.All.onStandingsChanged(contest.ID, new vStanding(jt.Status.User, contest));
+                    SignalR.UserHub.context.Clients.Group("Standings").onStandingsChanged(contest.ID, new vStanding(jt.Status.User, contest));
                 }
             }
-            SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(jt.Status));//推送新状态
+            if (jt.Status.ContestID != null && jt.Status.Contest.Format == ContestFormat.OI && DateTime.Now >= jt.Status.Contest.Begin && DateTime.Now < jt.Status.Contest.End)
+            {
+                var tmp = jt.Status;
+                tmp.Result = JudgeResult.Hidden;
+                SignalR.UserHub.context.Clients.Group("Status").onStatusChanged(new vStatus(tmp));//推送新状态
+            }
+            else
+                SignalR.UserHub.context.Clients.Group("Status").onStatusChanged(new vStatus(jt.Status));//推送新状态
+            GC.Collect();
         }
         public void HackFeedBack(HackFeedback hfb)
         {
@@ -180,11 +212,11 @@ namespace Tyvj.SignalR
                 SignalR.UserHub.context.Clients.Group(hack.Defender.Username).onHacked(new vHackResult(hack, true));
                 SignalR.UserHub.context.Clients.Group(hack.Hacker.Username).onHackFinished(new vHackResult(hack));
 
-                SignalR.UserHub.context.Clients.All.onStatusChanged(new vStatus(hack.Status));
+                SignalR.UserHub.context.Clients.Group("Status").onStatusChanged(new vStatus(hack.Status));
                 if (DateTime.Now >= hack.Status.Contest.Begin)
                 {
-                    SignalR.UserHub.context.Clients.All.onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Defender, hack.Status.Contest));
-                    SignalR.UserHub.context.Clients.All.onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Hacker, hack.Status.Contest));
+                    SignalR.UserHub.context.Clients.Group("Standings").onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Defender, hack.Status.Contest));
+                    SignalR.UserHub.context.Clients.Group("Standings").onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Hacker, hack.Status.Contest));
                 }
             }
             else
@@ -192,7 +224,7 @@ namespace Tyvj.SignalR
                 SignalR.UserHub.context.Clients.Group(hack.Hacker.Username).onHackFinished(new vHackResult(hack));
                 if (DateTime.Now >= hack.Status.Contest.Begin && DateTime.Now < hack.Status.Contest.End)
                 {
-                    SignalR.UserHub.context.Clients.All.onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Hacker, hack.Status.Contest));
+                    SignalR.UserHub.context.Clients.Group("Standings").onStandingsChanged(hack.Status.Contest.ID, new vStanding(hack.Hacker, hack.Status.Contest));
                 }
             }
         }

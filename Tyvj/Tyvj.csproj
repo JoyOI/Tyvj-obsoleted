@@ -182,6 +182,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\ContestController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Helpers\Gravatar.cs" />
     <Compile Include="Helpers\HtmlFilter.cs" />
     <Compile Include="Helpers\MvcHtmlHelperExt.cs" />
+    <Compile Include="Helpers\Ratings.cs" />
     <Compile Include="Helpers\Regexes.cs" />
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="Helpers\SMTP.cs" />
@@ -558,6 +560,9 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\CKEditor\Upload.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Users.cshtml" />
+    <Content Include="Views\Admin\Rating.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

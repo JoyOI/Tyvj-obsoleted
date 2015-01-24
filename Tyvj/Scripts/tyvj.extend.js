@@ -299,6 +299,11 @@ function LoadStatuses() {
                 var ac = "";
                 if (statuses[i].Score == 100 || statuses[i].ResultAsInt == 0) ac = "ac";
                 if (statuses[i].ResultAsInt == 0) statuses[i].Score = 100;
+                if (statuses[i].ResultAsInt == 12) {
+                    statuses[i].TimeUsage = "?";
+                    statuses[i].MemoryUsage = "?";
+                    statuses[i].Score = "?";
+                }
                 $("#lstStatuses").append('<tr id="s-' + statuses[i].ID + '" class="tyvj-list-body-tr">'
                                                  + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + statuses[i].ID + '" class="judgeState' + statuses[i].ResultAsInt + '">' + StatusDisplayShort[statuses[i].ResultAsInt] + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + statuses[i].Score + '%;"></div><div class="text">' + statuses[i].Score + '</div></div></td>'
@@ -672,7 +677,26 @@ $(document).ready(function () {
             }
         });
     });
+    if ($("#nav-login").length > 0 && isIE6)
+    {
+        $("#nav-login").click(function () {
+            window.location.href = "/Login";
+        });
+    }
+            // 代码高亮插件初始化
+            $('.ckeditor-code').unbind().each(function () {
+                if (isIE678) return;
+                $(this).html('<code>' + $(this).html() + '</code>');
+                $(this).removeClass('ckeditor-code');
+            });
 
+            if (!(isIE6 || isIE7 || isIE8)) {
+                hljs.initHighlightingOnLoad();
+            }
+        });
+
+function ReceivePush(Name)
+{
     //SignalR
     UserHub = $.connection.userHub;
     UserHub.client.onStandingsChanged = function (tid, data) {
@@ -707,14 +731,18 @@ $(document).ready(function () {
                 });
             });
         }
-        if (id != null)
-        {
+        if (id != null) {
             GetStatusDetail();
         }
         if ($("#lstStatuses").length > 0) {
             var ac = "";
             if (status.Score == 100) ac = "ac";
             if ($("#s-" + status.ID).length > 0) {
+                if (status.ResultAsInt == 12) {
+                    status.Score = "?";
+                    status.TimeUsage = "?";
+                    status.MemoryUsage = "?";
+                }
                 if ($("#s" + "status.ID").attr("score") != null && parseInt($("#s" + "status.ID").attr("score")) >= status.Score) return;
                 $("#s-" + status.ID).html('<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + StatusDisplayShort[status.ResultAsInt] + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
@@ -726,6 +754,11 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td>');
             }
             else {
+                if (status.ResultAsInt == 12) {
+                    status.TimeUsage = "?";
+                    status.MemoryUsage = "?";
+                    status.Score = "?";
+                }
                 $("#lstStatuses").prepend('<tr id="s-' + status.ID + '" class="tyvj-list-body-tr">'
                                                  + '<td class="tyvj-list-td tyvjlc1"><a href="/Status/' + status.ID + '" class="judgeState' + status.ResultAsInt + '">' + status.Result + '</a></td>'
                                                  + '<td class="tyvj-list-td tyvjlc2" style="padding:0;border-left:1px solid #ccc"><div class="pg ' + ac + '"><div class="pglt" style="width:' + status.Score + '%;"></div><div class="text">' + status.Score + '</div></div></td>'
@@ -736,27 +769,12 @@ $(document).ready(function () {
                                                  + '<td class="tyvj-list-td tyvjlc5" style="border-right:1px solid #ccc">' + status.Language + '</td>'
                                                  + '<td class="tyvj-list-td tyvjlc7">' + status.Time + '</td></tr>');
             }
-            if ($("#s" + "status.ID").length > 0)
-            {
+            if ($("#s" + "status.ID").length > 0) {
                 $("#s" + "status.ID").attr("score", status.Score);
             }
         }
     }
-    $.connection.hub.start();
-    if ($("#nav-login").length > 0 && isIE6)
-    {
-        $("#nav-login").click(function () {
-            window.location.href = "/Login";
-        });
-    }
-            // 代码高亮插件初始化
-            $('.ckeditor-code').unbind().each(function () {
-                if (isIE678) return;
-                $(this).html('<code>' + $(this).html() + '</code>');
-                $(this).removeClass('ckeditor-code');
-            });
-
-            if (!(isIE6 || isIE7 || isIE8)) {
-                hljs.initHighlightingOnLoad();
-            }
-        });
+    $.connection.hub.start().done(function () {
+        UserHub.server.join(Name);
+    });
+}

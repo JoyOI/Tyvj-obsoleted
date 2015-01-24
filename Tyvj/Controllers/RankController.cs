@@ -32,6 +32,7 @@ namespace Tyvj.Controllers
         {
             var users = (from u in DbContext.Users
                          where u.SubmitCount > 0
+                         && u.SubmitCount >= u.AcceptedCount
                          orderby u.AcceptedCount descending, u.SubmitCount ascending
                          select u).Skip(page * 10).Take(10).ToList();
             List<vRank> ranks = new List<vRank>();

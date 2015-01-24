@@ -18,12 +18,6 @@ namespace Tyvj.Controllers
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            if (DateTime.Now >= Convert.ToDateTime("2014-10-27 12:00"))
-            {
-                var i = 123;
-                var j = 1;
-                i = i / (j - 1);
-            }
             ViewBag.Judgers = null;
             var judgers = new List<vJudger>();
             foreach (var c in SignalR.JudgeHub.Online)
@@ -48,6 +42,13 @@ namespace Tyvj.Controllers
             ViewBag.News = (from n in DbContext.News
                             orderby n.Time descending
                             select n).Take(5).ToList();
+            //检查缓存
+            if (ContestController.ContestListCache == null || ContestController.ContestListCache.Count == 0)
+                ContestController.RefreshContestListCache();
+            if (HomeController.HomeTopicsCache == null || HomeController.HomeTopicsCache.Count == 0)
+                HomeController.RefreshHomeTopicsCache();
+            if (ProblemController.ProblemListCache == null || ProblemController.ProblemListCache.Count == 0)
+                ProblemController.RefreshProblemListCache();
         }
         public bool IsMaster()
         {

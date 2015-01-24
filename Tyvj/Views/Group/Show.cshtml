@@ -3,35 +3,41 @@
     ViewBag.Title = Model.Title+" - 团队";
 }
 
-<div class="tyvj-boder-top-red tyvj-shadow grid_9">
-    <div class="tyvj-block">
-        <table class="tyvj-list-case">
-            <tbody>
-                @foreach (vContest c in ViewBag.Contests)
-                {
-                    <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
-                        <td class="c1">
-                            <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
-                            <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
-                        </td>
-                        @if (c.StatusAsInt == 0)
-                        {
-                            <td class="c2"><span style="color:green">@c.Status</span></td>
-                        }
-                        else if (c.StatusAsInt == 1)
-                        {
-                            <td class="c2"><span style="color:rgb(255,128,128)">@c.Status</span></td>
-                        }
-                        else
-                        {
-                            <td class="c2"><span style="color:#333">@c.Status</span></td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="grid_9">
+    <div class="tyvj-block tyvj-boder-top tyvj-shadow tyvj-content">
+        <h2>团队介绍</h2>
+        <p>@Model.Description</p>
     </div>
-</div>
+    @if (Model.GroupContest.Count > 0) { 
+        <div class="tyvj-block tyvj-boder-top-red tyvj-shadow">
+            <table class="tyvj-list-case">
+                <tbody>
+                    @foreach (vContest c in ViewBag.Contests)
+                    {
+                        <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
+                            <td class="c1">
+                                <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
+                                <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
+                            </td>
+                            @if (c.StatusAsInt == 0)
+                            {
+                                <td class="c2"><span style="color:green">@c.Status</span></td>
+                            }
+                            else if (c.StatusAsInt == 1)
+                            {
+                                <td class="c2"><span style="color:rgb(255,128,128)">@c.Status</span></td>
+                            }
+                            else
+                            {
+                                <td class="c2"><span style="color:#333">@c.Status</span></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    </div>
 
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">

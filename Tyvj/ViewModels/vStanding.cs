@@ -81,7 +81,9 @@ namespace Tyvj.ViewModels
                 else
                 {
                     StatusID = status.ID;
-                    var score = status.JudgeTasks.Where(x=>x.ResultAsInt == (int)JudgeResult.Accepted).Count() * 100 / status.JudgeTasks.Count;
+                    int score;
+                    try { score = status.JudgeTasks.Where(x => x.ResultAsInt == (int)JudgeResult.Accepted).Count() * 100 / status.JudgeTasks.Count; }
+                    catch { score = 0; }
                     Display = score.ToString();
                     if (score == 0)
                         Css = "rank-red";
@@ -90,8 +92,8 @@ namespace Tyvj.ViewModels
                     else
                         Css = "rank-green";
                     Key1 = score;
-                    Key2 = status.JudgeTasks.Sum(x => x.TimeUsage);
-                    Key3 = status.JudgeTasks.Sum(x => x.MemoryUsage);
+                    Key2 = status.JudgeTasks.Where(x=>x.Result == JudgeResult.Accepted).ToList().Sum(x => x.TimeUsage);
+                    Key3 = status.JudgeTasks.Where(x => x.Result == JudgeResult.Accepted).ToList().Sum(x => x.MemoryUsage);
                 }
             }
             #endregion

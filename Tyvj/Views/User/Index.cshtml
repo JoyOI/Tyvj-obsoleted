@@ -22,6 +22,8 @@
                         <tbody>
                             <tr><td class="tyvj-status-info-left">UID</td><td>@Model.ID</td></tr>
                             <tr><td class="tyvj-status-info-left">用户组</td><td>@Model.Role.ToString()</td></tr>
+                            <tr><td class="tyvj-status-info-left">提交</td><td>@Model.SubmitCount.ToString()</td></tr>
+                            <tr><td class="tyvj-status-info-left">通过</td><td>@Model.AcceptedCount.ToString()</td></tr>
                             <tr><td class="tyvj-status-info-left">注册时间</td><td>@Model.RegisterTime.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
                             <tr><td class="tyvj-status-info-left">上次登录</td><td>@Html.ToTimeTip(Model.LastLoginTime)</td></tr>
                         </tbody>

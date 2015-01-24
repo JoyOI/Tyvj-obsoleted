@@ -10,10 +10,12 @@ namespace Tyvj.Controllers
 {
     public class ContestController : BaseController
     {
+        public static List<Contest> ContestListCache = new List<Contest>();
+
         // GET: Contest
         public ActionResult Index()
         {
-            var _contests = (from c in DbContext.Contests
+            var _contests = (from c in ContestListCache
                                               where DateTime.Now >= c.Begin && DateTime.Now < c.End
                                               orderby c.End ascending
                                               select c).ToList();
@@ -23,12 +25,22 @@ namespace Tyvj.Controllers
             return View(contests);
         }
 
+        public static void RefreshContestListCache()
+        {
+            System.Threading.Tasks.Task.Factory.StartNew(() => {
+                var DbContext = new DB();
+                ContestListCache = (from c in DbContext.Contests
+                                    orderby c.ID descending
+                                    select c).ToList();
+            });
+        }
+
         [HttpGet]
         public ActionResult GetContests(int? Page, string Title, int? Format)
         { 
             if(Title == null)Title = "";
             if(Page == null)Page = 0;
-            IEnumerable<Contest> _contests = (from c in DbContext.Contests
+            IEnumerable<Contest> _contests = (from c in ContestListCache
                                 where c.Title.Contains(Title)
                                 && !(DateTime.Now >= c.Begin && DateTime.Now <c.End)
                                 && c.ContestProblems.Count > 0
@@ -182,6 +194,7 @@ namespace Tyvj.Controllers
                 contest.Official = Official.Value;
             }
             DbContext.SaveChanges();
+            RefreshContestListCache();
             return RedirectToAction("Edit", "Contest", new { id = id });
         }
 
@@ -207,6 +220,15 @@ namespace Tyvj.Controllers
             {
                 return Message("请不要重复添加同一道题目");
             }
+            var Problem = DbContext.Problems.Find(PID);
+            if (Problem == null)
+                return Message("没有找到这道题目");
+            if (!IsMaster() && Problem.Hide && Problem.UserID != CurrentUser.ID)
+                return Message("您没有权限使用这道题");
+            if (contest.Format == ContestFormat.Codeforces && (string.IsNullOrEmpty(Problem.RangeValidator)||string.IsNullOrEmpty(Problem.StandardProgram)))
+            {
+                return Message("这道题不适合作为Codeforces赛制题目");
+            }
             DbContext.ContestProblems.Add(new ContestProblem 
             { 
                 ContestID = id,
@@ -215,6 +237,7 @@ namespace Tyvj.Controllers
                 Point = Point
             });
             DbContext.SaveChanges();
+            RefreshContestListCache();
             return RedirectToAction("Problem", "Contest", new { id = id });
         }
 
@@ -229,6 +252,7 @@ namespace Tyvj.Controllers
             var cp = DbContext.ContestProblems.Find(CPID);
             DbContext.ContestProblems.Remove(cp);
             DbContext.SaveChanges();
+            RefreshContestListCache();
             return RedirectToAction("Problem", "Contest", new { id = id });
         }
 
@@ -249,6 +273,7 @@ namespace Tyvj.Controllers
             };
             DbContext.Contests.Add(contest);
             DbContext.SaveChanges();
+            RefreshContestListCache();
             return RedirectToAction("Edit", "Contest", new { id=contest.ID});
         }
     }

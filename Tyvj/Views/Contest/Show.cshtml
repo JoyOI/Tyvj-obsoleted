@@ -14,15 +14,18 @@
                 @Html.Sanitized(Model.Description)
             </div>
         </div>
-        <div class="tyvj-content" style="padding-top:10px;">
-            <div class="tyvj-boder-top tyvj-content-inner">
-                <h2>题目列表</h2>
-                @foreach (var p in Model.ContestProblems.OrderBy(x=>x.Point))
-                { 
-                    <p>@p.Number: <a href="/p/contest/@p.ID">@p.Problem.Title</a></p>
-                }
+        @if (DateTime.Now >= Model.Begin || (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role > UserRole.Master || ViewBag.CurrentUser.ID == Model.UserID)))
+        {
+            <div class="tyvj-content" style="padding-top:10px;">
+                <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>题目列表</h2>
+                    @foreach (var p in Model.ContestProblems.OrderBy(x => x.Point))
+                    {
+                        <p>@p.Number: <a href="/p/contest/@p.ID">@p.Problem.Title</a></p>
+                    }
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 <div class="tyvj-right" style="width:200px;">
@@ -45,16 +48,16 @@
         <li><a class="action" href="/Contest/@Model.ID">比赛首页</a></li>
         @if (Model.Begin <= DateTime.Now)
         {
-            if (Model.Format == ContestFormat.OI && DateTime.Now >= Model.End || Model.Format != ContestFormat.OI)
+            if (Model.Format == ContestFormat.OI && DateTime.Now >= Model.End || Model.Format != ContestFormat.OI || (User.Identity.IsAuthenticated && (Model.UserID == ViewBag.CurrentUser.ID || ViewBag.CurrentUser.Role >= UserRole.Master)))
             {
                 <li><a class="action" href="/Contest/@Model.ID/Standings">比赛排名</a></li>
                 <li><a class="action" href="/Contest/@Model.ID/Statistics">数据统计</a></li>
-                <li><a class="action" href="/Contest/@Model.ID/Statuses">提交记录</a></li>
                 if (Model.Format == ContestFormat.Codeforces)
                 {
                     <li><a class="action" href="/Contest/@Model.ID/Hacks">Hack记录</a></li>
                 }
             }
+            <li><a class="action" href="/Contest/@Model.ID/Statuses">提交记录</a></li>
         }
         @if (User.Identity.IsAuthenticated && (Model.UserID == ViewBag.CurrentUser.ID || ViewBag.CurrentUser.Role >= UserRole.Master))
         {

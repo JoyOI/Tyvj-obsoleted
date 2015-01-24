@@ -37,6 +37,7 @@ namespace Tyvj.Controllers
             var topic = DbContext.Topics.Find(id);
             topic.LastReply = reply.Time;
             DbContext.SaveChanges();
+            HomeController.RefreshHomeTopicsCache();
             return Content("OK");
         }
 
@@ -52,6 +53,7 @@ namespace Tyvj.Controllers
             {
                 DbContext.Replies.Remove(reply);
                 DbContext.SaveChanges();
+                HomeController.RefreshHomeTopicsCache();
                 return Content("OK");
             }
             else

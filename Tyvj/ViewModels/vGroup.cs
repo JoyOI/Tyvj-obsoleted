@@ -15,6 +15,8 @@ namespace Tyvj.ViewModels
             Title = HttpUtility.HtmlEncode(group.Title);
             Description = HttpUtility.HtmlEncode(group.Description);
             Gravatar = Helpers.Gravatar.GetAvatarURL(group.Gravatar, 200);
+            if (Description.Length > 51)
+                Description = Description.Substring(0, 50) + "...";
         }
 
         public int ID { get; set; }

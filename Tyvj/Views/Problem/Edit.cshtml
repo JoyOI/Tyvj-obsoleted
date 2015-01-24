@@ -36,9 +36,10 @@
                                 <tr><td class="tyvj-status-info-left">备注</td><td><textarea class="ckeditor" id="txtHint" name="Hint">@Model.Hint</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left">隐藏题目</td><td>@Html.CheckBox("Hide", Model.Hide)</td></tr>
                                  @if (ViewBag.CurrentUser.Role >= UserRole.Master)
-                                {
+                                 {
+                                    <tr><td class="tyvj-status-info-left">题目评级</td><td>@Html.TextBox("Difficulty", Model.Difficulty) 用于计算Rating</td></tr>
                                     <tr><td class="tyvj-status-info-left">官方标识</td><td>@Html.CheckBox("Official", Model.Official) 勾选后列表中会显示官方标签</td></tr>
-                                }
+                                 }
                                 <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnSave" class="button button-def" /></td></tr>
                             </tbody>
                         </table>

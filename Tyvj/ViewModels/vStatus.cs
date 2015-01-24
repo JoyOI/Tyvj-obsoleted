@@ -18,13 +18,34 @@ namespace Tyvj.ViewModels
             ProblemTitle = HttpUtility.HtmlEncode(Status.Problem.Title);
             ResultAsInt = Status.ResultAsInt;
             Result = CommonEnums.JudgeResultDisplay[Status.ResultAsInt];
-            try
+            if (Status.TimeUsage == null || Status.Score == null || Status.MemoryUsage == null)
             {
-                TimeUsage = Status.JudgeTasks.Sum(x => x.TimeUsage);
-                MemoryUsage = Status.JudgeTasks.Max(x => x.MemoryUsage); 
-                Score = Status.JudgeTasks.Where(x => x.Result == JudgeResult.Accepted).Count() * 100 / Status.JudgeTasks.Count;
+                try
+                {
+                    TimeUsage = Status.JudgeTasks.Sum(x => x.TimeUsage);
+                    MemoryUsage = Status.JudgeTasks.Max(x => x.MemoryUsage);
+                    Score = Status.JudgeTasks.Where(x => x.Result == JudgeResult.Accepted).Count() * 100 / Status.JudgeTasks.Count;
+                }
+                catch
+                {
+                    TimeUsage = 0;
+                    MemoryUsage = 0;
+                    Score = 0;
+                }
+                var db = new DataModels.DB();
+                var s = db.Statuses.Find(Status.ID);
+                s.TimeUsage = TimeUsage;
+                s.MemoryUsage = MemoryUsage;
+                s.Score = s.Score;
+                db.SaveChanges();
             }
-            catch 
+            else
+            {
+                TimeUsage = Status.TimeUsage.Value;
+                MemoryUsage = Status.MemoryUsage.Value;
+                Score = Status.Score.Value;
+            }
+            if (Status.Result == JudgeResult.Hidden)
             {
                 TimeUsage = 0;
                 MemoryUsage = 0;

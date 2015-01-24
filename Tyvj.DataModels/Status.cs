@@ -42,6 +42,15 @@ namespace Tyvj.DataModels
         [Column("language")]
         public int LanguageAsInt { get; set; }
 
+        [Column("score")]
+        public int? Score { get; set; }
+
+        [Column("time_usage")]
+        public int? TimeUsage { get; set; }
+
+        [Column("memory_usage")]
+        public int? MemoryUsage { get; set; }
+
         [NotMapped]
         public Language Language
         {

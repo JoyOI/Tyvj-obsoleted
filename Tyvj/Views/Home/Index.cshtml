@@ -8,7 +8,7 @@
         {
             <tr @Html.Sanitized(c.StatusAsInt == 1 ? "class=\"highlight\"" : "")>
                 <td class="c1">
-                    <div class="title">@Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
+                    <div class="title">@(c.Official ? Html.Sanitized("<span style='color:rgb(255,128,128)'>[Official]</span>") :Html.Sanitized("")) @Html.ActionLink(c.Title, "Show", "Contest", new { id = c.ID }, null)</div>
                     <div class="footer"><span>赛制：@c.Format / 参与人数：@c.Join / 开始时间：@c.Begin / 时长：@c.Duration</span></div>
                 </td>
                 @if (c.StatusAsInt == 0)
@@ -64,6 +64,9 @@
         <ul>
             <li><a href="http://www.qbxt.cn">清北学堂</a></li>
             <li><a href="http://www.codeforces.com">Codeforces</a></li>
+            <li><a href="http://tieba.baidu.com/f?kw=noip">百度NOIP吧</a></li>
+            <li><a href="http://www.topcoder.com/">Top Coder</a></li>
+            <li><a href="http://www.codecomb.net/">Code Comb</a></li>
         </ul>
     </div>
 </div>

@@ -72,7 +72,7 @@ namespace Tyvj.Controllers
             }
 
             //更新提交/ac数据
-            if (string.IsNullOrEmpty(user.SubmitList) || string.IsNullOrEmpty(user.AcceptedList))
+            if (string.IsNullOrEmpty(user.SubmitList) || string.IsNullOrEmpty(user.AcceptedList) || true)
             {
                 var sub = (from s in DbContext.Statuses
                            where s.UserID == user.ID
@@ -107,6 +107,8 @@ namespace Tyvj.Controllers
             }
             else
             {
+                if (user.Role == UserRole.Temporary)
+                    return Message("您已被封号，系统禁止您登录！");
                 FormsAuthentication.SetAuthCookie(user.Username, model.Remember);
                 user.LastLoginTime = DateTime.Now;
                 DbContext.SaveChanges();
@@ -148,7 +150,7 @@ namespace Tyvj.Controllers
         public ActionResult Contests(int id)
         {
             var user = DbContext.Users.Find(id);
-            var contests = (from c in DbContext.Contests
+            var contests = (from c in ContestController.ContestListCache
                             where c.UserID == id
                             orderby c.ID descending
                             select c).ToList();

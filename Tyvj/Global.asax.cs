@@ -17,6 +17,9 @@ namespace Tyvj
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Controllers.ProblemController.RefreshProblemListCache();
+            Controllers.ContestController.RefreshContestListCache();
+            Controllers.HomeController.RefreshHomeTopicsCache();
         }
     }
 }

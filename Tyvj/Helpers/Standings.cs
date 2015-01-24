@@ -56,7 +56,7 @@ namespace Tyvj.Helpers
             Sort(contest.Format, ref standings);
 
             //推送排名变化
-            SignalR.UserHub.context.Clients.All.onStandingChanged(contest_id, new_standing);
+            SignalR.UserHub.context.Clients.Group("Standings").onStandingChanged(contest_id, new_standing);
         }
     }
 }

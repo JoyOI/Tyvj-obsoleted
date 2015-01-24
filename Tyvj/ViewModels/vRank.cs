@@ -21,7 +21,7 @@ namespace Tyvj.ViewModels
                 Motto = "";
             var DbContext = new DB();
             var ACCount = user.AcceptedCount;
-            var HideProblemIDs = (from p in DbContext.Problems
+            var HideProblemIDs = (from p in Controllers.ProblemController.ProblemListCache
                                       where p.Hide == true
                                       select p.ID).ToList();
             var HideCount = (from s in DbContext.Statuses
