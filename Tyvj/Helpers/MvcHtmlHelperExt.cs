@@ -70,21 +70,6 @@ namespace Tyvj.Helpers
             return new MvcHtmlString(Helpers.ColorName.GetLevel(credits));
         }
 
-        //public static MvcHtmlString GetResultCss<TModel>(this HtmlHelper<TModel> self, Entity.JudgeResult Result)
-        //{
-        //    string[] dic = {"ac", "pe", "wa", "ole", "tle", "mle", "rte", "ce", "se", "hacked", "running", "pending","hidden"};
-        //    var css = dic[(int)Result];
-        //    return new MvcHtmlString(css);
-        //}
-
-        //public static MvcHtmlString GetResultShortTitle<TModel>(this HtmlHelper<TModel> self, Entity.JudgeResult Result)
-        //{
-        //    string[] dic = { "AC", "PE", "WA", "OLE", "TLE", "MLE", "RE", "CE", "SE", "HKD", "RUN", "PND", "HID" };
-        //    var css = dic[(int)Result];
-        //    return new MvcHtmlString(css);
-        
-        //}
-
         public static MvcHtmlString GetLanguageClass<TModel>(this HtmlHelper<TModel> self, Language Language)
         {
             string[] LanguageDisplay = { "c", "cpp", "cpp", "java", "pascal", "python", "python", "ruby", "csharp", "vbnet" };

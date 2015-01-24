@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Text.RegularExpressions;
+using System.Net;
 using Tyvj.DataModels;
 using Tyvj.ViewModels;
 
@@ -47,7 +48,7 @@ namespace Tyvj.Controllers
                 return Redirect("/");
             }
             User user;
-            if(model.Username.IndexOf("@")>0)
+            if(model.Username.IndexOf("@") > 0)
                 user = (from u in DbContext.Users
                         where u.Email == model.Username
                         select u).SingleOrDefault();
@@ -112,6 +113,7 @@ namespace Tyvj.Controllers
                 FormsAuthentication.SetAuthCookie(user.Username, model.Remember);
                 user.LastLoginTime = DateTime.Now;
                 DbContext.SaveChanges();
+                Helpers.Gravatar.RefreshGravatar(user.ID);
                 if (Request.UrlReferrer == null)
                     return Redirect("/");
                 else
@@ -265,7 +267,7 @@ namespace Tyvj.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeProfile(int id, string QQ, string School, int Sex, int CommonLanguage, string Gravatar, string Motto)
+        public ActionResult ChangeProfile(int id, string QQ, string School, string Address, int Sex, int CommonLanguage, string Motto)
         {
             if (CurrentUser.Role < UserRole.Master && CurrentUser.ID != id)
                 return Content("您没有权限执行本操作");
@@ -274,8 +276,8 @@ namespace Tyvj.Controllers
             user.School = School;
             user.SexAsInt = Sex;
             user.CommonLanguageAsInt = CommonLanguage;
-            user.Gravatar = Gravatar;
             user.Motto = Motto;
+            user.Address = Address;
             DbContext.SaveChanges();
             return Content("个人资料修改成功");
         }
@@ -291,6 +293,70 @@ namespace Tyvj.Controllers
             user.RoleAsInt = Role;
             DbContext.SaveChanges();
             return Content("用户角色修改成功");
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeAvatar(int id, int AvatarMode, string Gravatar)
+        {
+            if (CurrentUser.Role < UserRole.Master && CurrentUser.ID != id)
+                return Message("您没有权限执行本操作!");
+            if (AvatarMode == 1)
+            {
+                if(!Helpers.Regexes.Email.IsMatch(Gravatar))
+                    return Message("Gravatar邮箱地址不合法!");
+                var user = DbContext.Users.Find(id);
+                user.Gravatar = Gravatar;
+                var wc = new WebClient();
+                user.Avatar = wc.DownloadData(Helpers.Gravatar.GetAvatarURL(user.Gravatar, 180));
+                DbContext.SaveChanges();
+                return RedirectToAction("Settings", "User", new { id = id });
+            }
+            else
+            {
+                var user = DbContext.Users.Find(id);
+                var file = Request.Files[0];
+                if (file.ContentLength > 256 * 1024)
+                    return Message("您上传的头像文件大小为" + file.ContentLength / 1024 + "KB，超出系统规定的256KB，请返回重试！");
+                var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
+                var filename = timestamp + ".tmp";
+                var dir = Server.MapPath("~") + @"\Temp\";
+                file.SaveAs(dir + filename);
+                user.Avatar = System.IO.File.ReadAllBytes(dir+filename);
+                System.IO.File.Delete(dir + filename);
+                user.Gravatar = null;
+                DbContext.SaveChanges();
+                return RedirectToAction("Settings", "User", new { id = id });
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult DailySign()
+        {
+            int uid = ViewBag.CurrentUser.ID;
+            var today = DateTime.Now.Date;
+            var cnt = (from ds in DbContext.DailySigns
+                       where ds.UserID == uid
+                       && ds.Time >= today
+                       select ds).Count();
+            if (cnt == 0)
+            {
+                DbContext.DailySigns.Add(new DataModels.DailySign
+                {
+                    UserID = uid,
+                    Time = DateTime.Now
+                });
+                var user = DbContext.Users.Find(uid);
+                user.Coins += 10;
+                DbContext.SaveChanges();
+                return Message("签到成功，您获得了 10 枚金币！");
+            }
+            else
+            {
+                return Message("您今天已经签到，请明天再来！");
+            }
         }
     }
 }

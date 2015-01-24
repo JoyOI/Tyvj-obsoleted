@@ -62,6 +62,13 @@ namespace Tyvj
             );
 
             routes.MapRoute(
+                name: "Avatar",
+                url: "Avatar/{id}",
+                defaults: new { controller = "Avatar", action = "Index" },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapRoute(
                name: "Group",
                url: "Group/{id}",
                defaults: new { controller = "Group", action = "Show" },

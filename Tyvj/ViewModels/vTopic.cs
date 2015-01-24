@@ -13,7 +13,7 @@ namespace Tyvj.ViewModels
             ID = topic.ID;
             ForumID = topic.ForumID;
             ForumTitle = topic.Forum.Title;
-            Gravatar = Helpers.Gravatar.GetAvatarURL(topic.User.Gravatar, 180);
+            Gravatar = "/Avatar/" + topic.UserID;
             Nickname = HttpUtility.HtmlEncode(topic.User.Username);
             RepliesCount = topic.Replies.Count;
             Time = topic.LastReply;

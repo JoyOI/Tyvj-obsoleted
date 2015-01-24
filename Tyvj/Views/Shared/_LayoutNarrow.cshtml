@@ -67,7 +67,7 @@
                 <a href="/User/@ViewBag.CurrentUser.ID">
                     <div class="tyvj-nav-item tyvj-right">
                         <div class="tyvj-nav-face-container">
-                            @Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 32, "tyvj-nav-face")
+                            <img src="/Avatar/@ViewBag.CurrentUser.ID" class="tyvj-nav-face" />
                         </div>
                         <div class="tyvj-nav-face-name">@ViewBag.CurrentUser.Username</div>
                     </div>
@@ -112,7 +112,7 @@
                     }
                 </div>
             </div>
-            <p id="tyvj-copyright">Copyright © 2009-2014 清北学堂教育科技有限公司</p>
+            <p id="tyvj-copyright">Copyright © 2009-2015 清北学堂教育科技有限公司</p>
         </div>
     </div>
 </body>

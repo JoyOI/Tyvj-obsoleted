@@ -74,6 +74,15 @@ namespace Tyvj.DataModels
         [Column("submit_list")]
         public string SubmitList { get; set; }
 
+        [Column("avatar")]
+        public byte[] Avatar { get; set; }
+
+        [Column("coins")]
+        public int Coins { get; set; }
+
+        [Column("address")]
+        public string Address { get; set; }
+
         [NotMapped]
         public Language CommonLanguage
         {

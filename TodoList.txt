@@ -1,0 +1,31 @@
+  数据库结构变更：
+  
+  Users表
+  增加Avatar、Coins字段
+
+  增加Quests表
+  ID, UserID, ProblemID, Status, GetTime, FinishTime
+
+  增加Reviews表
+  ID, UserID, ProblemID, Level, Comment, Time
+
+  Problem表
+  增加VIP字段
+
+  Contest表
+  增加JoinMethod, GroupID字段
+
+  新增VIPRequests表
+  ID, Content, UserID, Status, Time字段
+
+  新增TestCasePaid表
+  ID, UserID, TestCaseID, Time
+
+  Topic表
+  新增Reward字段（int）
+
+  Reply表
+  新增Awarded字段
+
+  Daily表
+  ID, UserID, Time

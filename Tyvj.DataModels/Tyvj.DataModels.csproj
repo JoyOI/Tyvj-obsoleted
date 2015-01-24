@@ -57,6 +57,7 @@
     <Compile Include="Contest.cs" />
     <Compile Include="ContestProblem.cs" />
     <Compile Include="ContestRegister.cs" />
+    <Compile Include="DailySign.cs" />
     <Compile Include="EmailVerification.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="Group.cs" />

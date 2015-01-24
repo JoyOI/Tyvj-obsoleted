@@ -15,7 +15,7 @@ namespace Tyvj.ViewModels
             Nickname = HttpUtility.HtmlEncode(user.Username);
             Credit = user.Ratings.Sum(x => x.Credit) + 1500;
             Rank = rank;
-            Gravatar = Helpers.Gravatar.GetAvatarURL(user.Gravatar, 200);
+            Gravatar = "/Avatar/" + user.ID;
             Motto = HttpUtility.HtmlEncode(user.Motto);
             if (Motto == null)
                 Motto = "";

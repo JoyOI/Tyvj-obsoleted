@@ -183,6 +183,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AvatarController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\ContestController.cs" />
@@ -567,6 +568,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
+    <Folder Include="Views\Avatar\" />
     <Folder Include="Views\Verify\" />
   </ItemGroup>
   <ItemGroup>

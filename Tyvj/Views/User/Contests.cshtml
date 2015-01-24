@@ -51,13 +51,18 @@
 <div class="tyvj-right" style="width:200px;">
     <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
         <p><a href="/User/@Model.ID">@Model.Username</a></p>
-        <p>@Html.Gravatar(Model.Gravatar, 80)</p>
+        <p><img src="/Avatar/@Model.ID" style="width:80px" /></p>
         <p>@Model.Role.ToString()</p>
     </div>
     <div class="tyvj-border-top-gray tyvj-side-content">
         <h3>操作</h3>
     </div>
     <ul class="section" id="actions" style="margin-left:10px">
+        @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID == Model.ID)
+        {
+            <li><a class="action highlight" href="/User/DailySign">每日签到</a></li>
+            <li><a class="action highlight" href="/User/Quest">日常任务</a></li>
+        }
         <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
         <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>
         <li><a class="action" href="/User/@Model.ID/Statuses">Ta的评测记录</a></li>
