@@ -79,6 +79,7 @@
     <Compile Include="TestCase.cs" />
     <Compile Include="Topic.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="VIPRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

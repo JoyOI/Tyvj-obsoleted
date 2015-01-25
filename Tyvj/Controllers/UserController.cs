@@ -267,7 +267,7 @@ namespace Tyvj.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeProfile(int id, string QQ, string School, string Address, int Sex, int CommonLanguage, string Motto)
+        public ActionResult ChangeProfile(int id, string QQ, string School,string Name, string Address, int Sex, int CommonLanguage, string Motto)
         {
             if (CurrentUser.Role < UserRole.Master && CurrentUser.ID != id)
                 return Content("您没有权限执行本操作");
@@ -278,6 +278,7 @@ namespace Tyvj.Controllers
             user.CommonLanguageAsInt = CommonLanguage;
             user.Motto = Motto;
             user.Address = Address;
+            user.Name = Name;
             DbContext.SaveChanges();
             return Content("个人资料修改成功");
         }
@@ -429,6 +430,68 @@ namespace Tyvj.Controllers
             else
             {
                 return Message("你还未完成今日任务！");
+            }
+        }
+
+        [Authorize]
+        public ActionResult VIP()
+        {
+            ViewBag.CheckUserGroup = CurrentUser.Role == UserRole.Member;
+            ViewBag.CheckQQ = CurrentUser.QQ.Length >= 5;
+            ViewBag.CheckAddress = CurrentUser.Address.Length >= 3;
+            ViewBag.CheckSchool = CurrentUser.School.Length >= 2;
+            ViewBag.CheckName = CurrentUser.Name.Length >= 2;
+            ViewBag.AllowRequest = false;
+            var cnt = (from vr in DbContext.VIPRequests
+                       where vr.UserID == CurrentUser.ID
+                       && vr.StatusAsInt == (int)VIPRequestStatus.Pending
+                       select vr).Count();
+            ViewBag.LastRequest = (from vr in DbContext.VIPRequests
+                                   where vr.UserID == CurrentUser.ID
+                                   orderby vr.Time descending
+                                   select vr).FirstOrDefault();
+            if (ViewBag.CheckUserGroup && ViewBag.CheckQQ && ViewBag.CheckAddress && ViewBag.CheckSchool && ViewBag.CheckName && cnt == 0)
+                ViewBag.AllowRequest = true;
+            return View(CurrentUser);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult VIP(string Content)
+        {
+            ViewBag.CheckUserGroup = CurrentUser.Role == UserRole.Member;
+            ViewBag.CheckQQ = CurrentUser.QQ.Length >= 5;
+            ViewBag.CheckAddress = CurrentUser.Address.Length >= 3;
+            ViewBag.CheckSchool = CurrentUser.School.Length >= 2;
+            ViewBag.CheckName = CurrentUser.Name.Length >= 2;
+            ViewBag.AllowRequest = false;
+            var cnt = (from vr in DbContext.VIPRequests
+                       where vr.UserID == CurrentUser.ID
+                       && vr.StatusAsInt == (int)VIPRequestStatus.Pending
+                       select vr).Count();
+            ViewBag.LastRequest = (from vr in DbContext.VIPRequests
+                                   where vr.UserID == CurrentUser.ID
+                                   orderby vr.Time descending
+                                   select vr).FirstOrDefault();
+            if (ViewBag.CheckUserGroup && ViewBag.CheckQQ && ViewBag.CheckAddress && ViewBag.CheckSchool && ViewBag.CheckName && cnt == 0)
+                ViewBag.AllowRequest = true;
+            if (ViewBag.AllowRequest)
+            {
+                DbContext.VIPRequests.Add(new VIPRequest
+                {
+                    Status = VIPRequestStatus.Pending,
+                    Time = DateTime.Now,
+                    UserID = CurrentUser.ID,
+                    Reason = "",
+                    Content = Content
+                });
+                DbContext.SaveChanges();
+                return Message("您的申请已提交，请耐心等待审核。");
+            }
+            else
+            {
+                return Message("请勿重复提交申请！");
             }
         }
     }

@@ -33,6 +33,7 @@ namespace Tyvj.DataModels
         public DbSet<GroupContest> GroupContest { get; set; }
         public DbSet<DailySign> DailySigns { get; set; }
         public DbSet<Quest> Quests { get; set; }
+        public DbSet<VIPRequest> VIPRequests { get; set; }
         public DB()
             : base("mysqldb")
         { 

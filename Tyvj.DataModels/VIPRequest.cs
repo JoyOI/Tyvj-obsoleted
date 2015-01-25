@@ -34,6 +34,9 @@ namespace Tyvj.DataModels
         [Column("status")]
         public int StatusAsInt { get; set; }
 
+        [Column("reason")]
+        public string Reason { get; set; }
+
         [NotMapped]
         public VIPRequestStatus Status
         {
