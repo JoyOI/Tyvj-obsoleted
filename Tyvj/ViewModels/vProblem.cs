@@ -18,6 +18,9 @@ namespace Tyvj.ViewModels
             Title = HttpUtility.HtmlEncode(Problem.Title);
             Accepted = Problem.AcceptedCount;
             Submitted = Problem.SubmitCount;
+            UserID = Problem.UserID;
+            Username = HttpUtility.HtmlEncode(Problem.User.Username);
+            VIP = Problem.VIP;
         }
         public vProblem(Problem Problem, List<int> ac, List<int> submit)
             : this(Problem)
@@ -33,7 +36,10 @@ namespace Tyvj.ViewModels
         public string Title { get; set; }
         public int Accepted { get; set; }
         public int Submitted { get; set; }
+        public bool VIP { get; set; }
         public bool Hide { get; set; }
+        public int UserID { get; set; }
+        public string Username { get; set; }
         public int Ratio
         {
             get 

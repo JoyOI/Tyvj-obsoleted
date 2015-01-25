@@ -40,6 +40,7 @@
                                     <tr><td class="tyvj-status-info-left">题目评级</td><td>@Html.TextBox("Difficulty", Model.Difficulty) 用于计算Rating</td></tr>
                                     <tr><td class="tyvj-status-info-left">官方标识</td><td>@Html.CheckBox("Official", Model.Official) 勾选后列表中会显示官方标签</td></tr>
                                  }
+                                <tr><td class="tyvj-status-info-left">VIP题目</td><td>@Html.CheckBox("VIP", Model.VIP) 勾选后该题仅供VIP使用</td></tr>
                                 <tr><td class="tyvj-status-info-left"></td><td><input type="button" value="保存" id="btnSave" class="button button-def" /></td></tr>
                             </tbody>
                         </table>

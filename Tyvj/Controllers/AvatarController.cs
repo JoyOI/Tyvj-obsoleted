@@ -9,6 +9,7 @@ namespace Tyvj.Controllers
     public class AvatarController : BaseController
     {
         // GET: Avatar
+        [OutputCache(Duration = 3600)]
         public ActionResult Index(int id)
         {
             var user = DbContext.Users.Find(id);

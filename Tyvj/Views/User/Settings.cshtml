@@ -158,7 +158,7 @@
 <div class="tyvj-right" style="width:200px;">
     <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
         <p><a href="/User/@Model.ID">@Model.Username</a></p>
-        <p><img src="/Avatar/@Model.ID" style="width:80px" /></p>
+        <p><img src="/Avatar/@Model.ID" style="width:80px;height:80px" /></p>
         <p>@Model.Role.ToString()</p>
     </div>
     <div class="tyvj-border-top-gray tyvj-side-content">
@@ -169,6 +169,7 @@
         {
             <li><a class="action highlight" href="/User/DailySign">每日签到</a></li>
             <li><a class="action highlight" href="/User/Quest">日常任务</a></li>
+            <li><a class="action highlight" href="/User/VIP">我要成为VIP</a></li>
         }
         <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
         <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>

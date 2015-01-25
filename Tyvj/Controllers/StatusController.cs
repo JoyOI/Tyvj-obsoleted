@@ -121,6 +121,8 @@ namespace Tyvj.Controllers
             var user = (User)ViewBag.CurrentUser;
             if (problem == null || (problem.Hide && !IsMaster() && CurrentUser.ID != problem.ID && !contest_id.HasValue))
                 return Content("Problem not existed");
+            if(problem.VIP && user.Role < UserRole.VIP && problem.UserID != user.ID)
+                return Content("Need VIP");
             Contest contest = new Contest();
             if (contest_id != null)
             {

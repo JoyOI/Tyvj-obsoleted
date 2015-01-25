@@ -358,5 +358,78 @@ namespace Tyvj.Controllers
                 return Message("您今天已经签到，请明天再来！");
             }
         }
+
+        [Authorize]
+        public ActionResult Quest()
+        {
+            var today = DateTime.Now.Date;
+            var cnt = (from q in DbContext.Quests
+                       where q.UserID == CurrentUser.ID
+                       && q.Time >= today
+                       select q).Count();
+            if (cnt == 0)
+            {
+                var aclist = Helpers.AcList.GetList(CurrentUser.AcceptedList);
+                var problem = (from p in DbContext.Problems
+                               where p.AcceptedCount > 0
+                               && !aclist.Contains(p.ID)
+                               orderby Guid.NewGuid()
+                               select p).FirstOrDefault();
+                if(problem == null)
+                    problem = (from p in DbContext.Problems
+                               orderby Guid.NewGuid()
+                               select p).FirstOrDefault();
+                DbContext.Quests.Add(new Quest
+                {
+                    ProblemID = problem.ID,
+                    UserID = CurrentUser.ID,
+                    Status = QuestStatus.Pending,
+                    Time = DateTime.Now
+                });
+                DbContext.SaveChanges();
+            }
+            var quest = (from q in DbContext.Quests
+                         where q.UserID == CurrentUser.ID
+                         && q.Time >= today
+                         select q).FirstOrDefault();
+            var check = (from s in DbContext.Statuses
+                         where s.Time >= today
+                         && s.ProblemID == quest.ProblemID
+                         && s.UserID == quest.UserID
+                         && s.ResultAsInt == (int)JudgeResult.Accepted
+                         select s).Count() > 0;
+            ViewBag.Check = check;
+            ViewBag.Quest = quest;
+            return View(CurrentUser);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult QuestFinish()
+        {
+            var today = DateTime.Now.Date;
+            var quest = (from q in DbContext.Quests
+                         where q.UserID == CurrentUser.ID
+                         && q.Time >= today
+                         select q).FirstOrDefault();
+            var check = (from s in DbContext.Statuses
+                         where s.Time >= today
+                         && s.ProblemID == quest.ProblemID
+                         && s.UserID == quest.UserID
+                         && s.ResultAsInt == (int)JudgeResult.Accepted
+                         select s).Count() > 0;
+            if (check)
+            {
+                quest.Status = QuestStatus.Finished;
+                var user = DbContext.Users.Find(CurrentUser.ID);
+                user.Coins += 30;
+                DbContext.SaveChanges();
+                return Message("恭喜您完成了今日的日常任务，获得了30枚金币！");
+            }
+            else
+            {
+                return Message("你还未完成今日任务！");
+            }
+        }
     }
 }

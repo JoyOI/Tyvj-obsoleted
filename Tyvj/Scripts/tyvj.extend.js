@@ -252,6 +252,10 @@ function LoadProblems() {
                 var problem_tags = "";
                 if (problems[i].Official)
                     problem_tags += '<a style="float:right" href="javascript:;"><span class="label orange">官方题目</span></a>';
+                else
+                    problem_tags += '<a href="/User/'+problems[i].UserID+'" style="float:right" href="javascript:;"><span class="label purple">'+problems[i].Username+'</span></a>';
+                if(problems[i].VIP)
+                    problem_tags += '<a style="float:right" href="javascript:;"><span class="label blue">VIP</span></a>';
                 if (problems[i].Hide)
                     problem_tags += '<a style="float:right" href="javascript:;"><span class="label gray">隐藏</span></a>';
                 if (!Signed)
@@ -655,6 +659,10 @@ $(document).ready(function () {
             }
             else if (data == "Insufficient permissions") {
                 CastMsg("权限不足！");
+                $.colorbox.close();
+            }
+            else if (data == "Need VIP") {
+                CastMsg("本题仅对VIP用户开放！");
                 $.colorbox.close();
             }
             else if (data == "Locked") {

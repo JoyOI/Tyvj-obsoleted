@@ -45,7 +45,7 @@
     <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
         <h3 style="text-align:left">用户信息</h3>
         <p><a href="/User/@Model.UserID">@Model.User.Username</a></p>
-        <p>@Html.Gravatar(Model.User.Gravatar, 80)</p>
+        <p><img src="/Avatar/@Model.UserID" style="width:80px;height:80px" /></p>
         <p>@Model.User.Role.ToString()</p>
     </div>
 

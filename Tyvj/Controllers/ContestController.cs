@@ -221,6 +221,10 @@ namespace Tyvj.Controllers
                 return Message("请不要重复添加同一道题目");
             }
             var Problem = DbContext.Problems.Find(PID);
+            if (Problem.VIP && ViewBag.CurrentUser.Role < UserRole.Master && ViewBag.CurrentUser.ID != Problem.ID)
+            {
+                return Message("您没有权限使用这道题");
+            }
             if (Problem == null)
                 return Message("没有找到这道题目");
             if (!IsMaster() && Problem.Hide && Problem.UserID != CurrentUser.ID)

@@ -16,6 +16,10 @@
     <div class="tyvj-shadow">
         <div class="tyvj-content-header">
             <strong>P@(Model.ID)</strong> @Model.Title
+            @if (!Model.Official)
+            {
+                <span style="float:right">From: <a href="/User/@Model.UserID" style="color:#fff">@Model.User.Username</a></span>
+            }
         </div>
         <div class="tyvj-content" style="padding-top:10px;">
             <div class="tyvj-content-subtitle">

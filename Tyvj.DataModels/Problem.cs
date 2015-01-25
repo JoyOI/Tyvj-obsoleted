@@ -45,6 +45,9 @@ namespace Tyvj.DataModels
         [Column("hide")]
         public bool Hide { get; set; }
 
+        [Column("vip")]
+        public bool VIP { get; set; }
+
         [Column("user_id")]
         [ForeignKey("User")]
         public int UserID { get; set; }

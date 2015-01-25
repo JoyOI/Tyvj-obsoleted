@@ -110,6 +110,13 @@ namespace Tyvj.Controllers
             if (id != null)
             {
                 problem = DbContext.Problems.Find(id.Value);
+                if (problem.VIP)
+                {
+                    if(!User.Identity.IsAuthenticated)
+                        return Message("没有找到题目");
+                    if(problem.UserID != ViewBag.CurrentUser.ID && ViewBag.CurrentUser.Role < UserRole.VIP)
+                        return Message("没有找到题目");
+                }
                 pid = problem.ID;
                 if (problem.Hide && (CurrentUser == null || !IsMaster() && CurrentUser.ID != problem.UserID))
                     return Message("没有找到题目");
@@ -178,8 +185,8 @@ namespace Tyvj.Controllers
         [HttpPost]
         public ActionResult Create(string ProblemTitle)
         {
-            var problem = new Problem 
-            { 
+            var problem = new Problem
+            {
                 UserID = CurrentUser.ID,
                 RangeValidator = "",
                 SpecialJudge = "",
@@ -190,9 +197,10 @@ namespace Tyvj.Controllers
                 Title = ProblemTitle,
                 Hide = true,
                 Background = "",
-                Description="请在此填写题目描述",
+                Description = "请在此填写题目描述",
                 Input = "请在此填写输入格式",
-                Output = "请在此填写输出格式"
+                Output = "请在此填写输出格式",
+                VIP = false
             };
             DbContext.Problems.Add(problem);
             DbContext.SaveChanges();
@@ -213,7 +221,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide, int? Difficulty)
+        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide, int? Difficulty, bool VIP)
         {
             var problem = DbContext.Problems.Find(id);
             if (!IsMaster() && problem.UserID != CurrentUser.ID)
@@ -225,6 +233,7 @@ namespace Tyvj.Controllers
             problem.Output = Output;
             problem.Hint = Hint;
             problem.Hide = Hide;
+            problem.VIP = VIP;
             if (TimeLimit <= 2000 || IsMaster())
                 problem.TimeLimit = TimeLimit;
             else
