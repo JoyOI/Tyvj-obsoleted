@@ -6,6 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tyvj.DataModels
 {
+    public enum ContestJoinMethod
+    {
+        Everyone,
+        Group,
+        Appoint,
+        Password
+    }
+
     [Table("contests")]
     public class Contest
     {
@@ -38,6 +46,24 @@ namespace Tyvj.DataModels
         
         [Column("official")]
         public bool Official { get; set; }
+
+        [Column("group_id")]
+        [ForeignKey("Group")]
+        public int? GroupID { get; set; }
+
+        public virtual Group Group { get; set; }
+
+        [Column("join_method")]
+        public int JoinMethodAsInt { get; set; }
+
+        public virtual ICollection<ContestRegister> Competitors { get; set; }
+
+        [NotMapped]
+        public ContestJoinMethod JoinMethod
+        {
+            get { return (ContestJoinMethod)JoinMethodAsInt; }
+            set { JoinMethodAsInt = (int)value; }
+        }
 
         [NotMapped]
         public ContestFormat Format

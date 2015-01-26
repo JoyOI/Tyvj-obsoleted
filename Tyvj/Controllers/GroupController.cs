@@ -212,10 +212,10 @@ namespace Tyvj.Controllers
         public ActionResult GetGroupContests(int? Page, int id)
         {
             if (Page == null) Page = 0;
-            IEnumerable<Contest> _contests = (from c in DbContext.GroupContest
+            IEnumerable<Contest> _contests = (from c in DbContext.Contests
                                               where c.GroupID == id
-                                              && !(DateTime.Now >= c.Contest.Begin && DateTime.Now < c.Contest.End)
-                                              select c.Contest);
+                                              orderby c.Begin descending
+                                              select c);
             _contests = _contests.OrderByDescending(x => x.End).Skip(10 * Page.Value).Take(10).ToList();
             var contests = new List<vContest>();
             foreach (var c in _contests)
@@ -234,7 +234,8 @@ namespace Tyvj.Controllers
                 Description = "",
                 JoinMethod = GroupJoinMethod.Everyone,
                 Gravatar = CurrentUser.Gravatar,
-                UserID = CurrentUser.ID
+                UserID = CurrentUser.ID,
+                Time = DateTime.Now
             };
             DbContext.Groups.Add(group);
             DbContext.GroupMembers.Add(new GroupMember

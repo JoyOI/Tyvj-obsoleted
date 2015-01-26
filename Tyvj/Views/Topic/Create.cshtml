@@ -9,7 +9,7 @@
             {
             @Html.AntiForgeryToken()
             @Html.Hidden("ForumID", Request.RequestContext.RouteData.Values["id"])
-            <p>@Html.TextBoxFor(x => x.Title, new { placeHolder = "请输入标题", @class = "textbox" ,@style="width:500px;"})</p>
+    <p>@Html.TextBoxFor(x => x.Title, new { placeHolder = "请输入标题", @class = "textbox", @style = "width:500px;" }) @Html.TextBoxFor(x => x.Reward, new { placeHolder = "悬赏金币", style= "width:100px", @class = "textbox" })</p>
             <p>@Html.TextAreaFor(x => x.Content, null)</p>
             <p><input id="btnSubmit" type="submit" class="button button-def" value="发表"></p>
             }

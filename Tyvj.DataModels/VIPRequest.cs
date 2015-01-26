@@ -43,5 +43,17 @@ namespace Tyvj.DataModels
             get { return (VIPRequestStatus)StatusAsInt; }
             set { StatusAsInt = (int)value; }
         }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as VIPRequest;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

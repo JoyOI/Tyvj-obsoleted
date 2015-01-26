@@ -73,10 +73,12 @@
     <Compile Include="Quest.cs" />
     <Compile Include="Rating.cs" />
     <Compile Include="Reply.cs" />
+    <Compile Include="Review.cs" />
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionTag.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="TestCase.cs" />
+    <Compile Include="TestCasePaid.cs" />
     <Compile Include="Topic.cs" />
     <Compile Include="User.cs" />
     <Compile Include="VIPRequest.cs" />

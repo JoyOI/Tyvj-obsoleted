@@ -23,5 +23,17 @@ namespace Tyvj.DataModels
         public int UserID { get; set; }
 
         public virtual User User { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as ContestRegister;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

@@ -65,7 +65,17 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
             if (!Helpers.Contest.UserInContest(user.ID,id))
-                return RedirectToAction("Register", "Contest", new { id = id });
+            {
+                switch (contest.JoinMethod)
+                {
+                    case ContestJoinMethod.Password:
+                        return RedirectToAction("Register", "Contest", new { id = id });
+                    case ContestJoinMethod.Appoint:
+                        return Message("您未被邀请参加本场比赛！");
+                    case ContestJoinMethod.Group:
+                        return Message("本场比赛仅限" + contest.Group.Title + "团队内部参加！");
+                }
+            }
             if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !IsMaster())
                 return Message("目前不提供比赛排名显示。");
             ViewBag.AllowHack = false;
@@ -83,7 +93,18 @@ namespace Tyvj.Controllers
             var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
             var contest = DbContext.Contests.Find(id);
             if (!Helpers.Contest.UserInContest(user.ID, id))
-                return RedirectToAction("Register", "Contest", new { id = id });
+            {
+                switch (contest.JoinMethod)
+                {
+                    case ContestJoinMethod.Password:
+                        return RedirectToAction("Register", "Contest", new { id = id });
+                    case ContestJoinMethod.Appoint:
+                        return Message("您未被邀请参加本场比赛！");
+                    case ContestJoinMethod.Group:
+                        return Message("本场比赛仅限" + contest.Group.Title + "团队内部参加！");
+                }
+            }
+                
             if (contest.Format == ContestFormat.OI && DateTime.Now < contest.End && !IsMaster())
                 return Json(null, JsonRequestBehavior.AllowGet);
             var standings = Helpers.Standings.Build(id);
@@ -124,7 +145,17 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             var user = ViewBag.CurrentUser == null ? new User() : (User)ViewBag.CurrentUser;
             if (!Helpers.Contest.UserInContest(user.ID, id))
-                return RedirectToAction("Register", "Contest", new { id = id });
+            {
+                switch (contest.JoinMethod)
+                {
+                    case ContestJoinMethod.Password:
+                        return RedirectToAction("Register", "Contest", new { id = id });
+                    case ContestJoinMethod.Appoint:
+                        return Message("您未被邀请参加本场比赛！");
+                    case ContestJoinMethod.Group:
+                        return Message("本场比赛仅限" + contest.Group.Title + "团队内部参加！");
+                }
+            }
             var statistics = new int[contest.ContestProblems.Count, 9];
             var i = 0;
             foreach (var p in contest.ContestProblems.OrderBy(x => x.Point))
@@ -170,6 +201,9 @@ namespace Tyvj.Controllers
             var contest = DbContext.Contests.Find(id);
             if (!IsMaster() && CurrentUser.ID != contest.UserID)
                 return Message("您无权执行本操作");
+            ViewBag.Groups = (from g in DbContext.Groups
+                          where g.UserID == contest.UserID
+                          select g).ToList();
             return View(contest);
         }
 
@@ -177,7 +211,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, string Description, DateTime Begin, DateTime End, int Format, string Password, bool? Official)
+        public ActionResult Edit(int id, string Title, string Description, DateTime Begin, DateTime End, int Format, bool? Official)
         {
             var contest = DbContext.Contests.Find(id);
             if (!IsMaster() && CurrentUser.ID != contest.UserID)
@@ -187,10 +221,13 @@ namespace Tyvj.Controllers
             contest.Description = Description;
             contest.Begin = Begin;
             contest.End = End;
-            contest.Password = Password;
             contest.FormatAsInt = Format;
             if (CurrentUser.Role >= UserRole.Master)
             {
+                if (!contest.Official && Official.Value)
+                {
+                    contest.User.Coins += 50;
+                }
                 contest.Official = Official.Value;
             }
             DbContext.SaveChanges();
@@ -273,12 +310,75 @@ namespace Tyvj.Controllers
                 Description = "请在此处填写比赛描述",
                 Format = ContestFormat.OI,
                 Password = "",
-                UserID = CurrentUser.ID
+                UserID = CurrentUser.ID,
+                JoinMethod = ContestJoinMethod.Everyone,
+                GroupID = null
             };
             DbContext.Contests.Add(contest);
             DbContext.SaveChanges();
             RefreshContestListCache();
             return RedirectToAction("Edit", "Contest", new { id=contest.ID});
+        }
+
+        public ActionResult AddCompetitor(int id, string Username)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Content("No access");
+            var user = (from u in DbContext.Users
+                        where u.Username == Username
+                        select u).FirstOrDefault();
+            if (user == null)
+                return Content("User not found");
+            contest.JoinMethod = ContestJoinMethod.Appoint;
+            var cr = new ContestRegister
+            {
+                UserID = user.ID,
+                ContestID = contest.ID
+            };
+            DbContext.ContestRegisters.Add(cr);
+            DbContext.SaveChanges();
+            return Content(cr.ID.ToString());
+        }
+
+        public ActionResult DeleteCompetitor(int id)
+        {
+            var competitor = DbContext.ContestRegisters.Find(id);
+            if (!IsMaster() && CurrentUser.ID != competitor.Contest.UserID)
+                return Content("您无权执行本操作！");
+            if (competitor.Contest.JoinMethod != ContestJoinMethod.Appoint)
+                return Content("您无权执行本操作！");
+            DbContext.ContestRegisters.Remove(competitor);
+            DbContext.SaveChanges();
+            return Content("OK");
+        }
+
+        public ActionResult SetJoinMode(int id, int JoinMode, int? GroupID, string Password)
+        {
+            var contest = DbContext.Contests.Find(id);
+            if (!IsMaster() && CurrentUser.ID != contest.UserID)
+                return Content("您无权执行本操作！");
+            contest.JoinMethod = (ContestJoinMethod)JoinMode;
+            switch (contest.JoinMethod)
+            {
+                case ContestJoinMethod.Everyone:
+                    break;
+                case ContestJoinMethod.Password:
+                    if (string.IsNullOrEmpty(Password))
+                        return Content("密码不能为空！");
+                    contest.Password = Password;
+                    break;
+                case ContestJoinMethod.Group:
+                    if (!GroupID.HasValue)
+                        return Content("请选择一个团队");
+                    var group = DbContext.Groups.Find(GroupID.Value);
+                    if (group == null || group.UserID != CurrentUser.ID)
+                        return Content("没有该团队或您不是团队管理员。");
+                    contest.GroupID = GroupID.Value;
+                    break;
+            }
+            DbContext.SaveChanges();
+            return Content("参赛方式保存成功！");
         }
     }
 }

@@ -39,6 +39,9 @@ namespace Tyvj.DataModels
 
         public virtual User User { get; set; }
 
+        [Column("reward")]
+        public int Reward { get; set; }
+
         public virtual ICollection<Reply> Replies { get; set; }
 
         public override bool Equals(object obj)

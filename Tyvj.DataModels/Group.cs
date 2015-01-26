@@ -31,6 +31,9 @@ namespace Tyvj.DataModels
         [Column("join_method")]
         public int JoinMethodAsInt { get; set; }
 
+        [Column("time")]
+        public DateTime Time { get; set; }
+
         [NotMapped]
         public GroupJoinMethod JoinMethod
         {

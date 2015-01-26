@@ -18,11 +18,11 @@
                                     <div>
                                         <a href="/User/@Model.UserID">@Html.Nickname(Model.User.Username, Model.User.Ratings.Sum(x => x.Credit) + 1500, "post-info")</a>
                                     </div>
-                                    <div>@Html.Gravatar(Model.User.Gravatar, 180, "face")</div>
+                                    <div><img src="/Avatar/@Model.UserID" class="face" /></div>
                                 </td>
                                 <td class="dlr">
                                     <div class="head">
-                                        <span class="title">@Model.Title</span>
+                                        <span class="title">@(Model.Reward > 0? "[悬赏: "+Model.Reward+"] " :"")@Model.Title</span>
                                         &nbsp;&nbsp;
                                         <span class="time">@@@Html.ToTimeTip(Model.Time)</span>
                                         <span class="action">
@@ -92,7 +92,7 @@
                                 <tr class="dl">
                                     <td class="dll">
                                         <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
-                                        <div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div>
+                                        <div><img src="/Avatar/@ViewBag.CurrentUser.ID" class="face" /></div>
                                     </td>
                                     <td class="dlr">
                                         <div class="head" id="headWarning">
@@ -104,7 +104,7 @@
                                                 @using (Html.BeginForm("Create", "Reply", new { id = Model.ID }, FormMethod.Post, new { id = "frmPostReply" }))
                                                 {
                                                     <div id="replyGravatar" class="rl">
-                                                        <div>@Html.Gravatar(((User)ViewBag.CurrentUser).Gravatar, 180, "face1")</div>
+                                                        <div><img src="/Avatar/@ViewBag.CurrentUser.ID" class="face1" /></div>
                                                     </div>
                                                     <div class="replyForm" id="replyForm">
                                                         <div id="replyName">@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
@@ -167,12 +167,12 @@
                 var father_id = $("#father_id").val();
                 $.post("/Reply/Create/"+id,$("#frmPostReply").serialize(),function(){
                     if(father_id==""){
-                        var str="<tr class='dl'><td class='dll'><div><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a></div><div>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face")</div></td><td class='dlr'>"
+                        var str="<tr class='dl'><td class='dll'><div><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a></div><div><img src='/Avatar/@ViewBag.CurrentUser.ID' class='face1' /></div></td><td class='dlr'>"
                              + "<div class='head'><span class='time'>@@刚刚</span></div><div class='content'>"+content+"</div></td></tr>";
                         var reply_list_before= $("#discuss_detail_list tr:eq(1)");
                         reply_list_before.after(str);
                     }else{
-                        var str="<div class='rwrap tyvj-clear' id='reply_@ViewBag.CurrentUser.ID'><div class='rl'>@Html.Gravatar((string)ViewBag.CurrentUser.Gravatar, 180, "face1")</div>"
+                        var str="<div class='rwrap tyvj-clear' id='reply_@ViewBag.CurrentUser.ID'><div class='rl'><img src='/Avatar/@ViewBag.CurrentUser.ID' /></div>"
                             +"<div class='rr'><div class='info'><a href='/User/@ViewBag.CurrentUser.ID'>@ViewBag.CurrentUser.Username</a>@@刚刚</div><div class='content'><div class='comment-content'>"+content+"</div></div></div></div>";
                         var reply_list_before= $("#NewReply"+father_id);
                         reply_list_before.after(str);

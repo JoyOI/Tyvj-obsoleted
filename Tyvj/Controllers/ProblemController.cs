@@ -464,5 +464,88 @@ namespace Tyvj.Controllers
             var problem = DbContext.Problems.Find(id);
             return View(problem);
         }
+
+        public ActionResult Comment(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (!User.Identity.IsAuthenticated)
+                ViewBag.AbleToComment = false;
+            else
+            {
+                var review = (from r in DbContext.Reviews
+                              where r.UserID == CurrentUser.ID
+                              && r.ProblemID == id
+                              select r).FirstOrDefault();
+                if (review != null)
+                    ViewBag.AbleToComment = false;
+                else
+                {
+                    ViewBag.AbleToComment = true;
+                    if (problem.UserID == CurrentUser.ID)
+                        ViewBag.AbleToComment = false;
+                    if (problem.VIP && CurrentUser.Role < UserRole.VIP)
+                        ViewBag.AbleToComment = false;
+                    if (problem.Hide && CurrentUser.Role < UserRole.Master && CurrentUser.ID != problem.UserID)
+                        return Message("没有找到该题目");
+                }
+            }
+            return View(problem);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Comment(int id, int Review, string Content)
+        {
+            if (Content.Length == 0) return Message("评论内容不能为空！");
+            var review = (from r in DbContext.Reviews
+                          where r.UserID == CurrentUser.ID
+                          && r.ProblemID == id
+                          select r).FirstOrDefault();
+            if (review == null)
+            {
+                var problem = DbContext.Problems.Find(id);
+                if (problem.UserID == CurrentUser.ID)
+                    return Message("不能评价自己的题目！");
+                if (problem.VIP && CurrentUser.Role < UserRole.VIP)
+                    return Message("没有找到该题目！");
+                if (problem.Hide && CurrentUser.Role < UserRole.Master)
+                    return Message("不能对隐藏的题目进行评价！");
+                DbContext.Reviews.Add(new DataModels.Review
+                {
+                    Comment = Content,
+                    LevelAsInt = Review,
+                    ProblemID = id,
+                    Time = DateTime.Now,
+                    UserID = CurrentUser.ID
+                });
+                DbContext.SaveChanges();
+                var cnt = (from r in DbContext.Reviews
+                           where r.ProblemID == problem.ID
+                           && r.LevelAsInt == (int)ReviewLevel.Good
+                           select r).Count();
+                if (cnt == 10)
+                {
+                    problem.User.Coins += 50;
+                    DbContext.SaveChanges();
+                }
+                return Message("评价成功！");
+            }
+            else
+            {
+                return Message("请勿重复评价题目！");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Data(int id)
+        {
+            var problem = DbContext.Problems.Find(id);
+            if (problem.Hide && CurrentUser.Role < UserRole.Master && problem.UserID != CurrentUser.ID)
+                return Message("没有找到该题目！");
+            if(problem.VIP && CurrentUser.Role < UserRole.VIP && problem.UserID != CurrentUser.ID)
+                return Message("没有找到该题目！");
+            return View(problem);
+        }
     }
 }

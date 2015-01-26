@@ -23,6 +23,7 @@ namespace Tyvj.ViewModels
             HasReply = topic.Replies.Count == 0 ? false : true;
             LastReplyNickname = topic.Replies.Count == 0 ? null : topic.Replies.OrderBy(x => x.Time).Last().User.Username;
             LastReplyUserID = topic.Replies.Count == 0 ? null : (int?)(topic.Replies.OrderBy(x => x.Time).Last().UserID);
+            Reward = topic.Reward;
         }
         public int ID { get; set; }
         public string Nickname { get; set; }
@@ -38,5 +39,6 @@ namespace Tyvj.ViewModels
         public string LastReplyNickname { get; set; }
         public int? LastReplyUserID { get; set; }
         public DateTime Time { get; set; }
+        public int Reward { get; set; }
     }
 }

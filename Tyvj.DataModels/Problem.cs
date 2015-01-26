@@ -105,6 +105,8 @@ namespace Tyvj.DataModels
 
         public virtual ICollection<Solution> Solutions { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as Problem;

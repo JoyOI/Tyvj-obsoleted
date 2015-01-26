@@ -82,5 +82,32 @@ namespace Tyvj.Controllers
             System.Threading.Tasks.Task.Factory.StartNew(() => { Helpers.Ratings.RatingDelete(ContestID); });
             return Content("True");
         }
+
+        [Authorize]
+        public ActionResult VIP()
+        {
+            if (!IsMaster())
+                return Message("您没有权限执行本操作！");
+            var requests = (from vr in DbContext.VIPRequests
+                            where vr.StatusAsInt == (int)DataModels.VIPRequestStatus.Pending
+                            orderby vr.Time ascending
+                            select vr).ToList();
+            return View(requests);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult VIP(int id, string Reason, int status)
+        {
+            if (!IsMaster())
+                return Content("Failed");
+            var vr = DbContext.VIPRequests.Find(id);
+            vr.StatusAsInt = status;
+            vr.Reason = Reason;
+            if (vr.Status == DataModels.VIPRequestStatus.Accepted)
+                vr.User.Role = DataModels.UserRole.VIP;
+            DbContext.SaveChanges();
+            return Content("OK");
+        }
     }
 }

@@ -55,6 +55,13 @@ namespace Tyvj
            );
 
             routes.MapRoute(
+               name: "ProblemComments",
+               url: "p/{id}/comment",
+               defaults: new { controller = "Problem", action = "Comment" },
+               constraints: new { id = @"\d+" }
+           );
+
+            routes.MapRoute(
                 name: "Status",
                 url: "Status/{id}",
                 defaults: new { controller = "Status", action = "Show" },

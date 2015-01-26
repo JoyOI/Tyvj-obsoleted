@@ -61,6 +61,16 @@ namespace Tyvj.Controllers
                 return Message("内容不能为空！" );
             if (string.IsNullOrEmpty(model.Title))
                 return Message("标题不能为空！");
+            if (model.Reward > 0)
+            {
+                if (CurrentUser.Coins < model.Reward)
+                    return Message("您的金币不足，无法发出悬赏。");
+                else
+                {
+                    var user = DbContext.Users.Find(CurrentUser.ID);
+                    user.Coins -= model.Reward;
+                }
+            }
             var topic = new DataModels.Topic
             {
                 ForumID = model.ForumID,
@@ -69,7 +79,8 @@ namespace Tyvj.Controllers
                 UserID = CurrentUser.ID,
                 Time = DateTime.Now,
                 Top = false,
-                LastReply = DateTime.Now
+                LastReply = DateTime.Now,
+                Reward = model.Reward
             };
             DbContext.Topics.Add(topic);
             DbContext.SaveChanges();
@@ -149,6 +160,21 @@ namespace Tyvj.Controllers
             {
                 return Content("NO");
             }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult Reward(int id)
+        {
+            var reply = DbContext.Replies.Find(id);
+            if (reply.Topic.UserID != CurrentUser.ID)
+                return Message("您无权执行本操作！");
+            if (reply.UserID == CurrentUser.ID)
+                return Message("您不能采纳自己的回答！");
+            reply.User.Coins += reply.Topic.Reward;
+            reply.Awarded = true;
+            DbContext.SaveChanges();
+            return Message("采纳成功！");
         }
 	}
 }

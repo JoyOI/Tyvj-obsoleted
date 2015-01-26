@@ -197,6 +197,7 @@
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SolutionController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
+    <Compile Include="Controllers\TestCaseController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VerifyController.cs" />
@@ -566,6 +567,10 @@
     <Content Include="Views\Admin\Rating.cshtml" />
     <Content Include="Views\User\Quest.cshtml" />
     <Content Include="Views\User\VIP.cshtml" />
+    <Content Include="Views\Admin\VIP.cshtml" />
+    <Content Include="Views\Problem\Comment.cshtml" />
+    <Content Include="Views\Problem\Data.cshtml" />
+    <Content Include="Views\TestCase\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

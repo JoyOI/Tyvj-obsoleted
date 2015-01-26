@@ -33,8 +33,11 @@ namespace Tyvj.DataModels
         [Column("father_id")]
         [ForeignKey("Father")]
         public int? FatherID { get; set; }
+
         public virtual Reply Father { get; set; }
 
+        [Column("awarded")]
+        public bool Awarded { get; set; }
 
         public virtual ICollection<Reply> Replies { get; set; }
         public override bool Equals(object obj)

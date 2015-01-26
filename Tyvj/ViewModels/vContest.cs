@@ -24,6 +24,21 @@ namespace Tyvj.ViewModels
             if (DateTime.Now < Contest.Begin) StatusAsInt = 0;
             else if (DateTime.Now < Contest.End) StatusAsInt = 1;
             else StatusAsInt = 2;
+            switch (Contest.JoinMethod)
+            {
+                case ContestJoinMethod.Appoint:
+                    Private = "指定人员";
+                    break;
+                case ContestJoinMethod.Group:
+                    Private = Contest.Group.Title + "团队";
+                    break;
+                case ContestJoinMethod.Password:
+                    Private = "密码";
+                    break;
+                default:
+                    Private = "";
+                    break;
+            }
         }
         public int ID { get; set; }
         public string Format { get; set; }
@@ -31,6 +46,7 @@ namespace Tyvj.ViewModels
         public string Title { get; set; }
         public string Begin { get; set; }
         public string Duration { get; set; }
+        public string Private { get; set; }
         public string Status 
         { 
             get 

@@ -118,6 +118,11 @@
                             <tr><td class="tyvj-status-info-left">Email</td><td>@Model.Email.Replace("@","#")</td></tr>
                             <tr><td class="tyvj-status-info-left">QQ</td><td>@Model.QQ</td></tr>
                             <tr><td class="tyvj-status-info-left">学校</td><td>@Model.School</td></tr>
+                            @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Role >= UserRole.Master)
+                            {
+                                <tr><td class="tyvj-status-info-left">真实姓名</td><td>@Model.Name</td></tr>
+                                <tr><td class="tyvj-status-info-left">通信地址</td><td>@Model.Address</td></tr>
+                            }
                         </tbody>
                     </table>
                 </div>

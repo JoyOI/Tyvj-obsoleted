@@ -34,6 +34,8 @@ namespace Tyvj.DataModels
         public DbSet<DailySign> DailySigns { get; set; }
         public DbSet<Quest> Quests { get; set; }
         public DbSet<VIPRequest> VIPRequests { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<TestCasePaid> TestCasePaids { get; set; }
         public DB()
             : base("mysqldb")
         { 

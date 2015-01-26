@@ -1,19 +1,4 @@
   数据库结构变更：
- 
-  增加Reviews表
-  ID, UserID, ProblemID, Level, Comment, Time
 
   Contest表
   增加JoinMethod, GroupID字段
-
-  新增TestCasePaid表
-  ID, UserID, TestCaseID, Time
-
-  Topic表
-  新增Reward字段（int）
-
-  Reply表
-  新增Awarded字段
-
-  Daily表
-  ID, UserID, Time

@@ -233,7 +233,11 @@ namespace Tyvj.Controllers
                 SubmitList = "",
                 Sex = Sex.Male,
                 AcceptedCount = 0,
-                SubmitCount = 0
+                SubmitCount = 0,
+                Avatar = new byte[0],
+                Address = "",
+                Name = "",
+                Coins = 0
             });
             DbContext.SaveChanges();
             var email_verification = (from ev in DbContext.EmailVerifications
@@ -374,6 +378,8 @@ namespace Tyvj.Controllers
                 var problem = (from p in DbContext.Problems
                                where p.AcceptedCount > 0
                                && !aclist.Contains(p.ID)
+                               && !p.Hide
+                               && !p.VIP
                                orderby Guid.NewGuid()
                                select p).FirstOrDefault();
                 if(problem == null)

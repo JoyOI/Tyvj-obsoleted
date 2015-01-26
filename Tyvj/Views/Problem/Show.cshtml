@@ -99,6 +99,7 @@
         }
         @if (ViewBag.ContestID == null)
         {
+            <li><a class="action" href="/Problem/Data/@Model.ID">查看测试数据</a></li>
             <li><a class="action" href="/Problem/@Model.ID/solution">查看题解</a></li>
         }
         <li><a class="action" href="/p/@Model.ID/statuses" target="_self">查看本题提交记录</a></li>
@@ -111,6 +112,33 @@
             }
         }
     </ul>
+    @if (ViewBag.ContestID == null)
+    {
+        <div class="tyvj-border-top-gray tyvj-side-content">
+            <h3>题目评价</h3>
+            <table style="line-height:25px;">
+                <tr>
+                    <td style="width:80px"><img src="~/Images/c1.png" /> 好评</td>
+                    <td>@Model.Reviews.Where(x=>x.LevelAsInt == (int)ReviewLevel.Good).Count()</td>
+                </tr>
+                <tr>
+                    <td style="width:80px"><img src="~/Images/c2.png" /> 中评</td>
+                    <td>@Model.Reviews.Where(x => x.LevelAsInt == (int)ReviewLevel.Medium).Count()</td>
+                </tr>
+                <tr>
+                    <td style="width:80px"><img src="~/Images/c3.png" /> 差评</td>
+                    <td>@Model.Reviews.Where(x => x.LevelAsInt == (int)ReviewLevel.Bad).Count()</td>
+                </tr>
+            </table>
+        </div>
+        <ul class="section" id="actions">
+            @if (User.Identity.IsAuthenticated)
+                {
+                <li><a class="action" href="/p/@Model.ID/Comment">我来评价</a></li>
+                <li><a class="action" href="/p/@Model.ID/Comment">查看题目评价</a></li>
+}
+        </ul>
+}
     @if (User.Identity.IsAuthenticated && ViewBag.Statuses.Count > 0)
     {
         <div class="tyvj-border-top-gray tyvj-side-content">

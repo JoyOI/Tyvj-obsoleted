@@ -10,6 +10,11 @@
     .select {
         width: 120px;
     }
+
+    .cpt {
+        float:left;
+        padding: 10px;
+    }
 </style>
 <div class="tyvj-left" style="width:755px;">
     <div class="tyvj-shadow">
@@ -21,34 +26,92 @@
                 <h2>基本信息设置</h2>
                 @using (Html.BeginForm("Edit", "Contest", new { id = Model.ID }, FormMethod.Post, null))
                 {
-                    @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
                 <div class="tyvj-status-info">
-                        <table>
-                            <tbody>
-                                <tr><td class="tyvj-status-info-left">比赛名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>
-                                <tr>
-                                    <td class="tyvj-status-info-left">比赛赛制</td>
-                                    <td>
-                                        <select class="select" id="lstFormat" name="Format">
-                                            <option value="0" @(Model.Format == ContestFormat.OI ? "selected" : "")>OI</option>
-                                            <option value="1" @(Model.Format == ContestFormat.ACM ? "selected" : "")>ACM</option>
-                                            <option value="2" @(Model.Format == ContestFormat.Codeforces ? "selected" : "")>Codeforces</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr><td class="tyvj-status-info-left">开始时间</td><td>@Html.TextBox("Begin", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
-                                <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.End.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
-                                <tr><td class="tyvj-status-info-left">比赛密码</td><td>@Html.Password("Password", "", new { @class = "textbox" }) (留空为公开赛)</td></tr>
-                                <tr><td class="tyvj-status-info-left">比赛介绍</td><td><textarea class="ckeditor" name="Description">@Model.Description</textarea></td></tr>
-                                @if (ViewBag.CurrentUser.Role >= UserRole.Master)
+                    <table>
+                        <tbody>
+                            <tr><td class="tyvj-status-info-left">比赛名称</td><td>@Html.TextBox("Title", Model.Title, new { @class = "textbox" })</td></tr>
+                            <tr>
+                                <td class="tyvj-status-info-left">比赛赛制</td>
+                                <td>
+                                    <select class="select" id="lstFormat" name="Format">
+                                        <option value="0" @(Model.Format == ContestFormat.OI ? "selected" : "")>OI</option>
+                                        <option value="1" @(Model.Format == ContestFormat.ACM ? "selected" : "")>ACM</option>
+                                        <option value="2" @(Model.Format == ContestFormat.Codeforces ? "selected" : "")>Codeforces</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr><td class="tyvj-status-info-left">开始时间</td><td>@Html.TextBox("Begin", Model.Begin.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
+                            <tr><td class="tyvj-status-info-left">结束时间</td><td>@Html.TextBox("End", Model.End.ToString("yyyy-MM-dd HH:mm"), new { @class = "textbox" })</td></tr>
+                            <tr><td class="tyvj-status-info-left">比赛介绍</td><td><textarea class="ckeditor" name="Description">@Model.Description</textarea></td></tr>
+                            @if (ViewBag.CurrentUser.Role >= UserRole.Master)
                                 {
-                                    <tr><td class="tyvj-status-info-left">官方标识</td><td>@Html.CheckBox("Official", Model.Official) 勾选后列表中会显示官方标签</td></tr>
+                                <tr><td class="tyvj-status-info-left">官方标识</td><td>@Html.CheckBox("Official", Model.Official) 勾选后列表中会显示官方标签</td></tr>
                                 }
-                                <tr><td class="tyvj-status-info-left"></td><td><input type="submit" value="保存" id="btnSave" class="button button-def" /></td></tr>
-                            </tbody>
-                        </table></div>
+                            <tr><td class="tyvj-status-info-left"></td><td><input type="submit" value="保存" id="btnSave" class="button button-def" /></td></tr>
+                        </tbody>
+                    </table>
+                </div>
                         }
+            </div>
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>参赛人员设定</h2>
+                <div class="tyvj-status-info">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="tyvj-status-info-left">参赛方式</td>
+                                <td>
+                                    <select id="ContestJoinMode" class="select">
+                                        <option value="0" @(Model.JoinMethodAsInt == 0 ? "selected" : "")>任何人</option>
+                                        <option value="1" @(Model.JoinMethodAsInt == 1 ? "selected" : "")>指定团队</option>
+                                        <option value="2" @(Model.JoinMethodAsInt == 2 ? "selected" : "")>指定人员</option>
+                                        <option value="3" @(Model.JoinMethodAsInt == 3 ? "selected" : "")>输入密码</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="jmGroup">
+                                <td>团队</td>
+                                <td>
+                                    @if (ViewBag.Groups.Count == 0)
+                                    {
+                                        <span>没有可用的团队</span>
+}
+else
+{
+    <select id="lstGroup" class="select">
+        @foreach (Group g in ViewBag.Groups)
+        {
+            <option value="@g.ID" @(Model.GroupID.HasValue && g.ID == Model.GroupID.Value ? "selected" : "")>@g.Title</option>
+        }
+    </select>
+}
+                                </td>
+                            </tr>
+                            <tr id="jmPassword">
+                                <td>参赛密码</td>
+                                <td><input type="text" class="textbox" id="txtJoinPassword" value="@Model.Password" /></td>
+                            </tr>
+                            <tr id="jmAppoint">
+                                <td>参赛人员</td>
+                                <td>
+                                    <input placeholder="用户名" id="txtJoinUsername" class="textbox" /> <input type="button" id="btnAddCompetitor" value="添加" class="button button-def" /><br />
+                                    <div id="lstJoin">
+                                        @foreach (var u in Model.Competitors)
+                                        {
+                                            <div class="cpt" id="competitor_@u.ID"><a href="javascript:DeleteCompetitor(@u.ID)"><img src="~/Images/no.png" /></a><a href="/User/@u.UserID" target="_blank">@u.User.Username</a></div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="jmSave">
+                                <td></td>
+                                <td><input type="button" class="button button-def" value="保存" id="btnJoinSave" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </div>
+                </div>
         </div>
     </div>
 </div>
@@ -59,3 +122,66 @@
         <li><a class="action" href="/Contest/@Model.ID/Problem">比赛题目设置</a></li>
     </ul>
 </div>
+<script>
+    $("#btnJoinSave").click(function () {
+        $.post("/Contest/SetJoinMode/@Model.ID", {
+            GroupID: $("#lstGroup").val(),
+            Password: $("#txtJoinPassword").val(),
+            JoinMode: $("#ContestJoinMode").val()
+        }, function (data) {
+            CastMsg(data);
+        });
+    });
+    function JoinMethodDisplay()
+    {
+        var method = $("#ContestJoinMode").val();
+        if (method == 0) {
+            $("#jmSave").show();
+            $("#jmPassword").hide();
+            $("#jmGroup").hide();
+            $("#jmAppoint").hide();
+        }
+        else if(method == 1){
+            $("#jmSave").show();
+            $("#jmPassword").hide();
+            $("#jmGroup").show();
+            $("#jmAppoint").hide();
+        }
+        else if (method == 2) {
+            $("#jmSave").hide();
+            $("#jmPassword").hide();
+            $("#jmGroup").hide();
+            $("#jmAppoint").show();
+        }
+        else{
+            $("#jmSave").show();
+            $("#jmPassword").show();
+            $("#jmGroup").hide();
+            $("#jmAppoint").hide();
+        }
+    }
+    JoinMethodDisplay();
+    $("#ContestJoinMode").change(function () { JoinMethodDisplay(); });
+    function DeleteCompetitor(id)
+    {
+        $.post("/Contest/DeleteCompetitor/" + id, {}, function () { });
+        $("#competitor_"+id).remove();
+    }
+    $("#btnAddCompetitor").click(function () {
+        var un = $("#txtJoinUsername").val();
+        $.post("/Contest/AddCompetitor/@Model.ID", { Username: un }, function (data) {
+            if (data == "No access")
+            {
+                CastMsg("您没有权限执行本操作");
+            }
+            else if (data == "User not found")
+            {
+                CastMsg("没有找到用户");
+            }
+            else
+            {
+                $("#lstJoin").append('<div class="cpt" id="competitor_'+data+'"><a href="javascript:DeleteCompetitor('+data+')"><img src="/Images/no.png" /></a>'+un+'</div>');
+            }
+        });
+    });
+</script>

@@ -12,14 +12,23 @@ namespace Tyvj.Helpers
         { 
             var DbContext = new DB();
             var contest = DbContext.Contests.Find(ContestID);
-            if (string.IsNullOrEmpty(contest.Password))
+            switch (contest.JoinMethod)
             {
-                return true;
+                case ContestJoinMethod.Everyone:
+                    return true;
+                case ContestJoinMethod.Group:
+                    if ((from gm in DbContext.GroupMembers where gm.UserID == UserID select gm).Count() > 0)
+                        return true;
+                    else
+                        return false;
+                case ContestJoinMethod.Appoint:
+                case ContestJoinMethod.Password:
+                    if ((from cr in DbContext.ContestRegisters where cr.UserID == UserID && ContestID == cr.ContestID select cr).Count() > 0)
+                        return true;
+                    else
+                        return false;
+                default: return false;
             }
-            return (from cr in DbContext.ContestRegisters
-                    where cr.UserID == UserID
-                    && cr.ContestID == ContestID
-                    select cr).Count() > 0;
         }
         public static IQueryable<Status> GetStatuses(int ProblemID, int ContestID)
         { 

@@ -164,7 +164,7 @@ function LoadContests() {
                 var color = contests[i].StatusAsInt != 0 ? "#333" : "green";
                 $("#lstContests").append('<tr><td class="c1">'
                                                  + '<div class="title"><a href="/Contest/' + contests[i].ID + '">' + contests[i].Title + '</a></div>'
-                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + official + '</span></div></td>'
+                                                 + '<div class="footer"><span>赛制：' + contests[i].Format + ' / 参与人数：' + contests[i].Join + ' / 开始时间：' + contests[i].Begin + ' / 时长：' + contests[i].Duration + official + (contests[i].Private.length == 0?'':(' / 私有赛: '+contests[i].Private))+'</span></div></td>'
                                                  + '<td class="c2"><span style="color:' + color + '">' + contests[i].Status + '</span></td></tr>');
             }
             lock = false;
@@ -343,9 +343,11 @@ function LoadTopics() {
                 } else{
                     var str='<tr class="">;'
                 }
+                var reward = "[悬赏: "+topics[i].Reward+"] ";
+                if (topics[i].Reward == 0) reward = "";
                 str =str+ '<td class="c1"><img class="face" src=' + topics[i].Gravatar + '></img>'
                                                   + '</td><td class="c2">'
-                                                  + '<div class="title"><a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
+                                                  + '<div class="title">'+reward+'<a href="/Topic/' + topics[i].ID + '">' + topics[i].Title + '</a></div>'
                                                   + '<div class="footer">作者：<a href="/User/' + topics[i].UserID + '">' + topics[i].Nickname + '</a>  /  发表在 <a href="/Forum/' + topics[i].ForumID + '"> ' + topics[i].ForumTitle + '</a> ' + (topics[i].HasReply ? ' /  最新回复：<a href="/User/' + topics[i].LastReplyUserID + '">' + topics[i].LastReplyNickname + '</a> @' + topics[i].LastReplyTime : '') + '</div>'
                                                   + '</td>'
                                                   + '<td class="c3">' + topics[i].RepliesCount + '</td></tr>';
@@ -537,7 +539,7 @@ function LoadGroups() {
                                 + '    <img class="face" src="' + groups[i].Gravatar + '">'
                                 + '</td>'
                                 + '<td class="c2">'
-                                + '    <div class="title"><a href="/Group/' + groups[i].ID + '/Show">' + groups[i].Title + '</a></div>'
+                                + '    <div class="title"><a href="/Group/' + groups[i].ID + '/Show">' + groups[i].Title + '</a> <small style="font-size:12px;color:gray">创建于: '+groups[i].Time+' / 创始人: <a style="font-size:12px;" href="/User/'+groups[i].UserID+'">'+groups[i].Username+'</a> / 人数: '+groups[i].MemberCount+'</small></div>'
                                 + '    <div class="footer">' + groups[i].Description + '</div>'
                                 + '</td>'
                                 + '</tr>';

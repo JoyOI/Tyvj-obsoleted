@@ -1,0 +1,43 @@
+﻿@model TestCase
+@{
+    ViewBag.Title = "查看测试数据";
+}
+
+<style>
+    .tyvj-left h1, .tyvj-left h2, .tyvj-left h3 {
+        margin: 20px 0;
+    }
+
+    .tyvj-content-inner {
+        font-size: 14px;
+        padding-bottom: 15px;
+    }
+</style>
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow">
+        <div class="tyvj-content-header">
+            <strong>P@(Model.ProblemID)</strong> @Model.Problem.Title
+            @if (!Model.Problem.Official)
+            {
+                <span style="float:right">From: <a href="/User/@Model.Problem.UserID" style="color:#fff">@Model.Problem.User.Username</a></span>
+            }
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                <h2>测试数据</h2>
+                <div class="tyvj-content-inner">
+                    <h3>输入</h3>
+                    <blockquote>@Html.Sanitized(HttpUtility.HtmlEncode(Model.Input.TrimEnd('\n')).Replace("\n", "<br/>"))</blockquote>
+                    <h3>输出</h3>
+                    <blockquote>@Html.Sanitized(HttpUtility.HtmlEncode(Model.Output.TrimEnd('\n')).Replace("\n", "<br/>"))</blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <ul class="section" id="actions">
+        <li><a class="action" href="/p/@Model.ProblemID">返回题目</a></li>
+        <li><a class="action" href="/Problem/Data/@Model.ProblemID">返回测试数据列表</a></li>
+    </ul>
+</div>
