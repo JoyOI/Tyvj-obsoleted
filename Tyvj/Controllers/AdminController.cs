@@ -18,14 +18,23 @@ namespace Tyvj.Controllers
         }
 
         [Authorize]
-        public ActionResult Users(int? page)
+        public ActionResult Users(int? page, string o)
         {
             if (!IsMaster())
                 return Message("您无权执行本操作");
             if (page == null) page = 0;
-            var users = (from u in DbContext.Users
+            IEnumerable<Tyvj.DataModels.User> users = (from u in DbContext.Users
                          orderby u.ID ascending
-                         select u).Skip(page.Value * 100).Take(100);
+                         select u);
+            if (o == "Role")
+                users = users.OrderByDescending(x => x.RoleAsInt);
+            if (o == "Login")
+                users = users.OrderByDescending(x=>x.LastLoginTime);
+            if (o == "Register")
+                users = users.OrderByDescending(x => x.RegisterTime);
+            if (o == "School")
+                users = users.OrderByDescending(x => x.School);
+            users = users.Skip(page.Value * 100).Take(100).ToList();
             ViewBag.UserCount = DbContext.Users.Count();
             ViewBag.PageIndex = page.Value;
             return View(users);
