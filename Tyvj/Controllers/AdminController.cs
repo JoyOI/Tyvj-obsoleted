@@ -118,5 +118,19 @@ namespace Tyvj.Controllers
             DbContext.SaveChanges();
             return Content("OK");
         }
+
+        [Authorize]
+        public ActionResult Problem()
+        {
+            if (!IsMaster())
+                return Message("您没有权限执行本操作！");
+            var problems = (from p in DbContext.Problems
+                            where !p.Official
+                            orderby p.Reviews.Where(x => x.LevelAsInt == (int)Tyvj.DataModels.ReviewLevel.Good).Count() descending,
+                             p.Reviews.Where(x => x.LevelAsInt == (int)Tyvj.DataModels.ReviewLevel.Medium).Count() descending,
+                             p.Reviews.Where(x => x.LevelAsInt == (int)Tyvj.DataModels.ReviewLevel.Bad).Count() descending
+                            select p).ToList();
+            return View(problems);
+        }
     }
 }

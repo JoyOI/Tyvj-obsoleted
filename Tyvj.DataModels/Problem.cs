@@ -57,6 +57,9 @@ namespace Tyvj.DataModels
         [Column("standard_problem_language")]
         public int StandardProgramLanguageAsInt { get; set; }
 
+        [Column("series")]
+        public string Series { get; set; }
+
         [NotMapped]
         public Language StandardProgramLanguage
         {

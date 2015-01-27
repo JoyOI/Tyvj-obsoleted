@@ -571,6 +571,7 @@
     <Content Include="Views\Problem\Comment.cshtml" />
     <Content Include="Views\Problem\Data.cshtml" />
     <Content Include="Views\TestCase\Index.cshtml" />
+    <Content Include="Views\Admin\Problem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -221,7 +221,7 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Edit(int id, string Title, int TimeLimit, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide, int? Difficulty, bool VIP)
+        public ActionResult Edit(int id, string Title, int TimeLimit,string Series, int MemoryLimit, string Description, string Background, string Input, string Output, string Hint, bool? Official, bool Hide, int? Difficulty, bool VIP)
         {
             var problem = DbContext.Problems.Find(id);
             if (!IsMaster() && problem.UserID != CurrentUser.ID)
@@ -234,6 +234,7 @@ namespace Tyvj.Controllers
             problem.Hint = Hint;
             problem.Hide = Hide;
             problem.VIP = VIP;
+            problem.Series = Series.Trim();
             if (TimeLimit <= 2000 || IsMaster())
                 problem.TimeLimit = TimeLimit;
             else

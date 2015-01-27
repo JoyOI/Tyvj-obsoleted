@@ -219,8 +219,6 @@ namespace Tyvj.Controllers
             if (Title.Length == 0) return Message("请输入比赛名称");
             contest.Title = Title;
             contest.Description = Description;
-            contest.Begin = Begin;
-            contest.End = End;
             contest.FormatAsInt = Format;
             if (CurrentUser.Role >= UserRole.Master)
             {
@@ -229,6 +227,42 @@ namespace Tyvj.Controllers
                     contest.User.Coins += 50;
                 }
                 contest.Official = Official.Value;
+                contest.Begin = Begin;
+                contest.End = End;
+            }
+            else if (CurrentUser.Role == UserRole.VIP)
+            {
+                if (contest.Begin != Begin && contest.End != End)
+                {
+                    if ((End - Begin).TotalDays > 7)
+                    {
+                        if (CurrentUser.Coins < ((End - Begin).TotalDays - 7) * 10)
+                        {
+                            return Message("您的金币不足，不能创建时长" + (End - Begin).TotalDays + "天的比赛。");
+                        }
+                        else
+                        {
+                            CurrentUser.Coins -= (int)(((End - Begin).TotalDays - 7) * 10);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (contest.Begin != Begin && contest.End != End)
+                {
+                    if ((End - Begin).TotalDays > 3)
+                    {
+                        if (CurrentUser.Coins < ((End - Begin).TotalDays - 3) * 10)
+                        {
+                            return Message("您的金币不足，不能创建时长" + (End - Begin).TotalDays + "天的比赛。");
+                        }
+                        else
+                        {
+                            CurrentUser.Coins -= (int)(((End - Begin).TotalDays - 3) * 10);
+                        }
+                    }
+                }
             }
             DbContext.SaveChanges();
             RefreshContestListCache();

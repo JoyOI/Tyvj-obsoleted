@@ -34,6 +34,7 @@
                                 <tr><td class="tyvj-status-info-left">输入格式</td><td><textarea class="ckeditor" id="txtInput" name="Input">@Model.Input</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left">输出格式</td><td><textarea class="ckeditor" id="txtOutput" name="Output">@Model.Output</textarea></td></tr>
                                 <tr><td class="tyvj-status-info-left">备注</td><td><textarea class="ckeditor" id="txtHint" name="Hint">@Model.Hint</textarea></td></tr>
+                                <tr><td class="tyvj-status-info-left">题目系列</td><td>@Html.TextBox("Series", Model.Series, new { @class = "textbox", placeHolder="12个字符内" })</td></tr>
                                 <tr><td class="tyvj-status-info-left">隐藏题目</td><td>@Html.CheckBox("Hide", Model.Hide)</td></tr>
                                  @if (ViewBag.CurrentUser.Role >= UserRole.Master)
                                  {

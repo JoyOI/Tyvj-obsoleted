@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Problem>
+@{
+    ViewBag.Title = "Problem";
+}
+
+<style>
+    th {
+        text-align: left;
+    }
+</style>
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow tyvj-boder-top">
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-content-inner">
+                @using (Html.BeginForm("Rating", "Admin", null, FormMethod.Post, new { id = "frmCountRating" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ContestID" id="CountContestID" />
+                }
+                @using (Html.BeginForm("Rating", "Admin", null, FormMethod.Post, new { id = "frmDeleteRating" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ContestID" id="DeleteContestID" />
+                }
+                <h2 style="margin: 10px 0 0 0;">题目评价</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>题目名称</th>
+                            <th>上传者</th>
+                            <th>好评</th>
+                            <th>中评</th>
+                            <th>差评</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            <tr>
+                                <td><a href="/p/@(p.ID)">P@(p.ID) @p.Title</a></td>
+                                <td><a href="/User/@p.UserID">@p.User.Username</a></td>
+                                <td><img src="/Images/c1.png" /> @p.Reviews.Where(x => x.LevelAsInt == (int)ReviewLevel.Good).Count()</td>
+                                <td><img src="/Images/c2.png" /> @p.Reviews.Where(x => x.LevelAsInt == (int)ReviewLevel.Medium).Count()</td>
+                                <td><img src="/Images/c3.png" /> @p.Reviews.Where(x => x.LevelAsInt == (int)ReviewLevel.Bad).Count()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <ul class="section" id="actions">
+        <li><a class="action" href="/Admin" target="_self">管理后台</a></li>
+        <li><a class="action" href="/Admin/Users" target="_self">用户管理</a></li>
+        <li><a class="action" href="/Admin/Rating" target="_self">Rating管理</a></li>
+        <li><a class="action" href="/Admin/VIP" target="_self">会员审核</a></li>
+        <li><a class="action" href="/Admin/Problem" target="_self">题目评价</a></li>
+    </ul>
+</div>

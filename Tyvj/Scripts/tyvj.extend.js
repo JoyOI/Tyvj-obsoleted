@@ -258,6 +258,8 @@ function LoadProblems() {
                     problem_tags += '<a style="float:right" href="javascript:;"><span class="label blue">VIP</span></a>';
                 if (problems[i].Hide)
                     problem_tags += '<a style="float:right" href="javascript:;"><span class="label gray">隐藏</span></a>';
+                if(problems[i].Series.length > 0)
+                    problem_tags += '<a style="float:right" href="javascript:;"><span class="label red">'+problems[i].Series+'</span></a>';
                 if (!Signed)
                     $("#lstProblems").append('<tr data-id="' + problems[i].ID + '" class="tyvj-list-body-tr even"><td class="tyvj-list-td vjlc3" style="text-align:left"><div class="wrap"><div class="title">'
                                                  + '<a href="/p/' + problems[i].ID + '" target="_self" class="pid">P' + problems[i].ID + '</a> '

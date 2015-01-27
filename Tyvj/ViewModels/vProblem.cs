@@ -21,6 +21,7 @@ namespace Tyvj.ViewModels
             UserID = Problem.UserID;
             Username = HttpUtility.HtmlEncode(Problem.User.Username);
             VIP = Problem.VIP;
+            Series = Problem.Series;
         }
         public vProblem(Problem Problem, List<int> ac, List<int> submit)
             : this(Problem)
@@ -40,6 +41,7 @@ namespace Tyvj.ViewModels
         public bool Hide { get; set; }
         public int UserID { get; set; }
         public string Username { get; set; }
+        public string Series { get; set; }
         public int Ratio
         {
             get 
