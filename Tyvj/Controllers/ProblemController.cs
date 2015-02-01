@@ -115,7 +115,7 @@ namespace Tyvj.Controllers
                     if(!User.Identity.IsAuthenticated)
                         return Message("没有找到题目");
                     if(problem.UserID != ViewBag.CurrentUser.ID && ViewBag.CurrentUser.Role < UserRole.VIP)
-                        return Message("没有找到题目");
+                        return Message("本题目仅供VIP会员使用，请您在会员中心中申请成为会员后再试！");
                 }
                 pid = problem.ID;
                 if (problem.Hide && (CurrentUser == null || !IsMaster() && CurrentUser.ID != problem.UserID))

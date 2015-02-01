@@ -6,7 +6,7 @@
 {
     <tr class="dl" id="reply_@(reply.ID)">
         <td class="dll">
-            <div><a href="/User/@reply.UserID">@Html.Nickname(reply.User.Username, reply.User.Ratings.Sum(x => x.Credit) + 1500, "comment-info")</a></div>
+            <div><a href="/User/@reply.UserID">@Html.Nickname(reply.User.Username, reply.User.Role, "comment-info")</a></div>
             <div><img src="/Avatar/@reply.UserID" class="face" /></div>
         </td>
         <td class="dlr">
@@ -58,7 +58,7 @@
                             </div>
                             <div class="rr">
                                 <div class="info">
-                                    <a href="/User/@replyinreply.UserID">@Html.Nickname(replyinreply.User.Username, replyinreply.User.Ratings.Sum(x => x.Credit) + 1500, "comment-info")</a> @@@Html.ToTimeTip(replyinreply.Time)
+                                    <a href="/User/@replyinreply.UserID">@Html.Nickname(replyinreply.User.Username, replyinreply.User.Role, "comment-info")</a> @@@Html.ToTimeTip(replyinreply.Time)
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         if (reply.UserID == ViewBag.CurrentUser.ID || ((User)ViewBag.CurrentUser).Role >= UserRole.Master)

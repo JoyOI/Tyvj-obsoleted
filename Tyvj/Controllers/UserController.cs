@@ -170,6 +170,7 @@ namespace Tyvj.Controllers
 
             EmailVerification email_verification = (from ev in DbContext.EmailVerifications
                                                     where ev.Email == Email
+                                                    && ev.TypeAsInt == (int)VerifyType.Register
                                                     select ev).SingleOrDefault();
             if (email_verification == null)
             {
@@ -177,7 +178,8 @@ namespace Tyvj.Controllers
                 {
                     Email = Email,
                     Time = DateTime.Now.AddHours(2),
-                    Token = Helpers.String.RandomString(16)
+                    Token = Helpers.String.RandomString(16),
+                    Type = VerifyType.Register
                 };
                 DbContext.EmailVerifications.Add(email_verification);
             }
@@ -499,6 +501,47 @@ namespace Tyvj.Controllers
             {
                 return Message("请勿重复提交申请！");
             }
+        }
+
+        public ActionResult Forgot()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Forgot(string Email)
+        {
+            var user = (from u in DbContext.Users
+                        where u.Email == Email
+                        select u).SingleOrDefault();
+            if (user == null) return Message("没有找到这个邮箱对应的帐号！");
+            EmailVerification email_verification = (from ev in DbContext.EmailVerifications
+                                                    where ev.Email == Email
+                                                    && ev.TypeAsInt == (int)VerifyType.Forgot
+                                                    select ev).SingleOrDefault();
+            if (email_verification == null)
+            {
+                email_verification = new EmailVerification
+                {
+                    Email = Email,
+                    Time = DateTime.Now.AddHours(2),
+                    Token = Helpers.String.RandomString(16),
+                    Type = VerifyType.Forgot
+                };
+                DbContext.EmailVerifications.Add(email_verification);
+            }
+            else
+            {
+                email_verification.Time = DateTime.Now.AddHours(2);
+                email_verification.Token = Helpers.String.RandomString(16);
+            }
+            DbContext.SaveChanges();
+            var Sitename = "Tyvj";
+            var SiteAddress = Request.Url.ToString().Replace(Request.RawUrl.ToString(), "");
+            string strEmail = "<!DOCTYPE HTML><html><head><meta charset=\"UTF-8\"/><title>[Title]</title><style>p{margin:5px 0px}a{color:#1D76C7;text-decoration:none}.body{margin:0px;color:#333333;font-size:14px;font-family:Tahoma,'Segoe UI',Verdana,微软雅黑,'Microsoft YaHei',宋体;padding:30px;background-color:#F2F2F2}.container{box-shadow:rgba(0,0,0,0.3)0px 0px 15px;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;background-color:#FFF}.header{color:#FFF;padding:10px;line-height:200%;font-size:15px;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-bottom-width:3px;border-bottom-style:solid;border-bottom-color:#85CAEB;background-color:#3AA9DE}.problem-body{padding:30px}.link{padding:5px 10px;border-left-width:10px;border-left-style:solid;border-left-color:#E2EFFA;margin:20px 20px 20px 0px}.footer{color:#444;padding:10px;font-size:12px;border-top-width:1px;border-top-style:solid;border-top-color:#DDD;border-top-left-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;background-color:#F4F4F4}</style></head><body><div class=\"body\"><div class=\"container\"><div class=\"header\">找回密码 - " + Sitename + "</div><div class=\"body\"><p><strong>您好，我们收到了您找回密码的请求，请根据下面的提示信息继续完成注册操作。</strong></p><p>请点击下面的链接完成找回工作，当您设置新的密码后将会自动登录" + Sitename + "系统：</p><blockquote class=\"link\"><p><a href=\"" + SiteAddress + "/Verify/Forgot/" + email_verification.ID + "/" + email_verification.Token + "\" target=\"_blank\">" + SiteAddress + "/Verify/Forgot/" + email_verification.ID + "/" + email_verification.Token + "</a></p></blockquote><p>如果这次操作不是您本人的行为，请忽略本条邮件。</p></div><div class=\"footer\"><p>这封邮件由<a href=\"" + SiteAddress + "\"target=\"_blank\">" + Sitename + "</a>自动发送，请勿直接回复。</p></div></div></div></body></html>";
+            Helpers.SMTP.Send(email_verification.Email, Sitename + " 找回密码邮箱验证", strEmail);
+            return Message("我们已经向您的邮箱中邮递了一封带有验证链接的信件，请根据邮件链接中的提示继续操作！");
         }
     }
 }

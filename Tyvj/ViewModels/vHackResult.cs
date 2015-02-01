@@ -13,10 +13,10 @@ namespace Tyvj.ViewModels
         {
             ID = hack.ID;
             HackerID = hack.HackerID;
-            HackerName = Helpers.ColorName.GetNicknameHtml(hack.Hacker.Username, hack.Hacker.Ratings.Sum(x=>x.Credit)+1500);
+            HackerName = Helpers.ColorName.GetNicknameHtml(hack.Hacker.Username, hack.Hacker.Role);
             HackerGravatar = Helpers.Gravatar.GetAvatarURL(hack.Hacker.Gravatar, 180);
             DefenderID = hack.DefenderID;
-            DefenderName = Helpers.ColorName.GetNicknameHtml(hack.Defender.Username, hack.Defender.Ratings.Sum(x => x.Credit) + 1500);
+            DefenderName = Helpers.ColorName.GetNicknameHtml(hack.Defender.Username, hack.Defender.Role);
             DefenderGravatar = Helpers.Gravatar.GetAvatarURL(hack.Defender.Gravatar, 180);
             Result = CommonEnums.HackResultDisplay[hack.ResultAsInt];
             if (hack.Result == HackResult.Success)
@@ -35,10 +35,10 @@ namespace Tyvj.ViewModels
         {
             ID = hack.ID;
             HackerID = hack.HackerID;
-            HackerName = Helpers.ColorName.GetNicknameHtml(hack.Hacker.Username, hack.Hacker.Ratings.Sum(x => x.Credit) + 1500);
+            HackerName = Helpers.ColorName.GetNicknameHtml(hack.Hacker.Username, hack.Hacker.Role);
             HackerGravatar = Helpers.Gravatar.GetAvatarURL(hack.Hacker.Gravatar, 180);
             DefenderID = hack.DefenderID;
-            DefenderName = Helpers.ColorName.GetNicknameHtml(hack.Defender.Username, hack.Defender.Ratings.Sum(x => x.Credit) + 1500);
+            DefenderName = Helpers.ColorName.GetNicknameHtml(hack.Defender.Username, hack.Defender.Role);
             DefenderGravatar = Helpers.Gravatar.GetAvatarURL(hack.Defender.Gravatar, 180);
             Result ="Hacked";
             Css = "status-text-wa";

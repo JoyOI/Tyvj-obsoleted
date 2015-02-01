@@ -14,6 +14,49 @@ namespace Tyvj.Controllers
         {
             if (!IsMaster())
                 return Message("您无权执行本操作");
+            var today = DateTime.Now.Date;
+            ViewBag.TUser = (from u in DbContext.Users
+                             where u.RegisterTime >= today
+                             select u).Count();
+            ViewBag.TActive = (from u in DbContext.Users
+                             where u.LastLoginTime >= today
+                               select u).Count();
+            ViewBag.TStatus = (from s in DbContext.Statuses
+                               where s.Time >= today
+                               select s).Count();
+            var week = DateTime.Now.AddDays(-7);
+            ViewBag.WUser = (from u in DbContext.Users
+                             where u.RegisterTime >= week
+                             select u).Count();
+            ViewBag.WActive = (from u in DbContext.Users
+                               where u.LastLoginTime >= week
+                               select u).Count();
+            ViewBag.WStatus = (from s in DbContext.Statuses
+                               where s.Time >= week
+                               select s).Count();
+            var month = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            ViewBag.MUser = (from u in DbContext.Users
+                             where u.RegisterTime >= month
+                             select u).Count();
+            ViewBag.MActive = (from u in DbContext.Users
+                               where u.LastLoginTime >= month
+                               select u).Count();
+            ViewBag.MStatus = (from s in DbContext.Statuses
+                               where s.Time >= month
+                               select s).Count();
+            var yesterday = DateTime.Now.Date.AddDays(-1);
+            ViewBag.YUser = (from u in DbContext.Users
+                             where u.RegisterTime >= yesterday
+                               && u.RegisterTime < today
+                             select u).Count();
+            ViewBag.YActive = (from u in DbContext.Users
+                               where u.LastLoginTime >= yesterday
+                               && u.LastLoginTime < today
+                               select u).Count();
+            ViewBag.YStatus = (from s in DbContext.Statuses
+                               where s.Time >= yesterday
+                               && s.Time < today
+                               select s).Count();
             return View();
         }
 

@@ -16,7 +16,7 @@
                             <tr class="dl owner">
                                 <td class="dll">
                                     <div>
-                                        <a href="/User/@Model.UserID">@Html.Nickname(Model.User.Username, Model.User.Ratings.Sum(x => x.Credit) + 1500, "post-info")</a>
+                                        <a href="/User/@Model.UserID">@Html.Nickname(Model.User.Username, Model.User.Role, "post-info")</a>
                                     </div>
                                     <div><img src="/Avatar/@Model.UserID" class="face" /></div>
                                 </td>
@@ -91,7 +91,7 @@
                             {
                                 <tr class="dl">
                                     <td class="dll">
-                                        <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500)</div>
+                                        <div>@Html.Nickname((string)ViewBag.CurrentUser.Username, ((User)ViewBag.CurrentUser).Role)</div>
                                         <div><img src="/Avatar/@ViewBag.CurrentUser.ID" class="face" /></div>
                                     </td>
                                     <td class="dlr">
@@ -107,7 +107,7 @@
                                                         <div><img src="/Avatar/@ViewBag.CurrentUser.ID" class="face1" /></div>
                                                     </div>
                                                     <div class="replyForm" id="replyForm">
-                                                        <div id="replyName">@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Ratings.Sum(x => x.Credit) + 1500, "comment-info")</div>
+                                                        <div id="replyName">@Html.Nickname(((User)ViewBag.CurrentUser).Username, ((User)ViewBag.CurrentUser).Role, "comment-info")</div>
                                                         @Html.AntiForgeryToken()
                                                         <textarea id="content" name="content"></textarea>
                                                         <input type="hidden" value="" name="father_id" id="father_id" />

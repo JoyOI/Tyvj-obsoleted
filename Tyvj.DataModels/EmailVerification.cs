@@ -7,6 +7,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tyvj.DataModels
 {
+    public enum VerifyType
+    {
+        Register,
+        Forgot
+    }
+
     [Table("email_verifications")]
     public class EmailVerification
     {
@@ -21,6 +27,15 @@ namespace Tyvj.DataModels
 
         [Column("time")]
         public DateTime Time { get; set; }
+
+        [Column("type")]
+        public int TypeAsInt { get; set; }
+
+        public virtual VerifyType Type
+        {
+            get { return (VerifyType)TypeAsInt; }
+            set { TypeAsInt = (int)value; }
+        }
 
         public override bool Equals(object obj)
         {

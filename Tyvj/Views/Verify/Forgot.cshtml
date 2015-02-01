@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "找回密码";
+    Layout = "~/Views/Shared/_LayoutNarrow.cshtml";
+}
+<style>
+    table {
+        line-height: 40px;
+    }
+</style>
+<div class="container_12 tyvj-block">
+    <div class="tyvj-shadow tyvj-content-narrow">
+        <div class="tyvj-content-narrow-header">找回密码</div>
+        <div class="tyvj-content" style="margin-top:40px;">
+            @using (Html.BeginForm("ResetPassword", "Verify", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <table>
+                    <tr>
+                        <td class="tyvj-status-info-left">更改密码</td>
+                        <td>@Html.Password("Password", new { @class = "textbox" })</td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left">重复密码</td>
+                        <td>@Html.Password("Repeat", "", new { @class = "textbox" })<span id="RepeatInfo" class="reg-desc">请重复输入密码</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tyvj-status-info-left"></td>
+                        <td><input type="submit" class="button button-def" value="提交"></td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+</div>

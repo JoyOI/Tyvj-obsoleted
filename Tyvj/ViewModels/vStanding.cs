@@ -22,7 +22,7 @@ namespace Tyvj.ViewModels
             Key2 = Details.Sum(x => x.Key2);
             Key3 = Details.Sum(x => x.Key3);
             Gravatar = "/Avatar/" + user.ID;
-            Nickname = Helpers.ColorName.GetNicknameHtml(user.Username, user.Ratings.Sum(x => x.Credit) + 1500);
+            Nickname = Helpers.ColorName.GetNicknameHtml(user.Username, user.Role);
             UserID = user.ID;
             Display1 = Key1.ToString();
             switch (contest.Format)

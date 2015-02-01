@@ -572,12 +572,13 @@
     <Content Include="Views\Problem\Data.cshtml" />
     <Content Include="Views\TestCase\Index.cshtml" />
     <Content Include="Views\Admin\Problem.cshtml" />
+    <Content Include="Views\Verify\Forgot.cshtml" />
+    <Content Include="Views\User\Forgot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
     <Folder Include="Views\Avatar\" />
-    <Folder Include="Views\Verify\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

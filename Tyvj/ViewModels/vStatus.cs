@@ -51,7 +51,7 @@ namespace Tyvj.ViewModels
                 MemoryUsage = 0;
                 Score = 0;
             }
-            Username = HttpUtility.HtmlEncode(Status.User.Username);
+            Username = Helpers.ColorName.GetNicknameHtml(Status.User.Username, Status.User.Role);
             Language = CommonEnums.LanguageDisplay[Status.LanguageAsInt];
             Time = Status.Time.ToString("yyyy-MM-dd HH:mm:ss");
         }

@@ -19,7 +19,7 @@ namespace Tyvj.ViewModels
                 Description = Description.Substring(0, 50) + "...";
             Time = group.Time.ToString("yyyy-MM-dd");
             MemberCount = group.Members.Count.ToString();
-            Username = group.User.Username;
+            Username = Helpers.ColorName.GetNicknameHtml(group.User.Username, group.User.Role);
             UserID = group.UserID;
         }
 

@@ -44,14 +44,14 @@ namespace Tyvj.Helpers
             return new MvcHtmlString(tag);
         }
 
-        public static MvcHtmlString Nickname<TModel>(this HtmlHelper<TModel> self, string nickname, int ratings)
+        public static MvcHtmlString Nickname<TModel>(this HtmlHelper<TModel> self, string nickname, UserRole role)
         {
-            return new MvcHtmlString(ColorName.GetNicknameHtml(nickname, ratings));
+            return new MvcHtmlString(ColorName.GetNicknameHtml(nickname, role));
         }
 
-        public static MvcHtmlString Nickname<TModel>(this HtmlHelper<TModel> self, string nickname, int ratings, string @class)
+        public static MvcHtmlString Nickname<TModel>(this HtmlHelper<TModel> self, string nickname, UserRole role, string @class)
         {
-            return new MvcHtmlString(ColorName.GetNicknameHtml(nickname, ratings, @class));
+            return new MvcHtmlString(ColorName.GetNicknameHtml(nickname, role, @class));
         }
 
         public static MvcHtmlString Sanitized<TModel>(this HtmlHelper<TModel> self, string html)

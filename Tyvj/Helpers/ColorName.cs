@@ -9,14 +9,13 @@ namespace Tyvj.Helpers
 {
     public static class ColorName
     {
-        public static string GetColor(int Ratings)
+        public static string GetColor(UserRole Role)
         {
-            if (Ratings < 1000) return "inherit";
-            if (Ratings < 1500) return "green";
-            if (Ratings < 1700) return "DodgerBlue";
-            if (Ratings < 2000) return "purple ";
-            if (Ratings < 2400) return "orange";
-            return "red";
+            if (Role >= UserRole.Master)
+                return "#000";
+            else if (Role == UserRole.VIP)
+                return "red";
+            return "inherit";
         }
         public static string GetLevel(int Ratings)
         {
@@ -27,14 +26,14 @@ namespace Tyvj.Helpers
             return "S";
         }
 
-        public static string GetNicknameHtml(string Nickname, int Ratings)
+        public static string GetNicknameHtml(string Nickname, UserRole UserRole)
         {
-            return string.Format("<span style='color:{0}'>{1}</span>", GetColor(Ratings), HttpUtility.HtmlEncode(Nickname));
+            return string.Format("<span style='color:{0}'>{1}</span>", GetColor(UserRole), HttpUtility.HtmlEncode(Nickname));
         }
 
-        public static string GetNicknameHtml(string Nickname, int Ratings, string @class)
+        public static string GetNicknameHtml(string Nickname, UserRole UserRole, string @class)
         {
-            return string.Format("<span style='color:{0}' class='{1}'>{2}</span>", GetColor(Ratings), @class, HttpUtility.HtmlEncode(Nickname));
+            return string.Format("<span style='color:{0}' class='{1}'>{2}</span>", GetColor(UserRole), @class, HttpUtility.HtmlEncode(Nickname));
         }
     }
 }
