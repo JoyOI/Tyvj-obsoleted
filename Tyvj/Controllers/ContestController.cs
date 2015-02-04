@@ -245,6 +245,8 @@ namespace Tyvj.Controllers
                             CurrentUser.Coins -= (int)(((End - Begin).TotalDays - 7) * 10);
                         }
                     }
+                    contest.Begin = Begin;
+                    contest.End = End;
                 }
             }
             else
@@ -262,6 +264,8 @@ namespace Tyvj.Controllers
                             CurrentUser.Coins -= (int)(((End - Begin).TotalDays - 3) * 10);
                         }
                     }
+                    contest.Begin = Begin;
+                    contest.End = End;
                 }
             }
             DbContext.SaveChanges();
