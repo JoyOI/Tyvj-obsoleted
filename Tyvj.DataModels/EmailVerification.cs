@@ -31,7 +31,8 @@ namespace Tyvj.DataModels
         [Column("type")]
         public int TypeAsInt { get; set; }
 
-        public virtual VerifyType Type
+        [NotMapped]
+        public VerifyType Type
         {
             get { return (VerifyType)TypeAsInt; }
             set { TypeAsInt = (int)value; }

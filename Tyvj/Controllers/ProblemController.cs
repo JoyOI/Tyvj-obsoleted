@@ -200,7 +200,8 @@ namespace Tyvj.Controllers
                 Description = "请在此填写题目描述",
                 Input = "请在此填写输入格式",
                 Output = "请在此填写输出格式",
-                VIP = false
+                VIP = false,
+                Series = ""
             };
             DbContext.Problems.Add(problem);
             DbContext.SaveChanges();

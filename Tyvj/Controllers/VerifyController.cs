@@ -24,7 +24,7 @@ namespace Tyvj.Controllers
 
         public ActionResult Forgot(string id, string token)
         {
-            var email_verification = DbContext.EmailVerifications.Find(id);
+            var email_verification = DbContext.EmailVerifications.Find(Convert.ToInt32(id));
             if (email_verification == null || email_verification.Type == DataModels.VerifyType.Register)
                 return Message("对不起，您的验证链接不合法，无法继续进行密码找回");
             if (DateTime.Now > email_verification.Time)
