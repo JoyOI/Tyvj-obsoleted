@@ -43,12 +43,14 @@ namespace Tyvj.Controllers
                             orderby n.Time descending
                             select n).Take(5).ToList();
             //检查缓存
-            if (ContestController.ContestListCache == null || ContestController.ContestListCache.Count == 0)
-                ContestController.RefreshContestListCache();
-            if (HomeController.HomeTopicsCache == null || HomeController.HomeTopicsCache.Count == 0)
-                HomeController.RefreshHomeTopicsCache();
-            if (ProblemController.ProblemListCache == null || ProblemController.ProblemListCache.Count == 0)
-                ProblemController.RefreshProblemListCache();
+            System.Threading.Tasks.Task.Factory.StartNew(()=> {
+                if (ContestController.ContestListCache == null || ContestController.ContestListCache.Count == 0)
+                    ContestController.RefreshContestListCache();
+                if (HomeController.HomeTopicsCache == null || HomeController.HomeTopicsCache.Count == 0)
+                    HomeController.RefreshHomeTopicsCache();
+                if (ProblemController.ProblemListCache == null || ProblemController.ProblemListCache.Count == 0)
+                    ProblemController.RefreshProblemListCache();
+            });
         }
         public bool IsMaster()
         {

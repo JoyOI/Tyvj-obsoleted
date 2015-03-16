@@ -445,10 +445,10 @@ namespace Tyvj.Controllers
         public ActionResult VIP()
         {
             ViewBag.CheckUserGroup = CurrentUser.Role == UserRole.Member;
-            ViewBag.CheckQQ = CurrentUser.QQ.Length >= 5;
-            ViewBag.CheckAddress = CurrentUser.Address.Length >= 3;
-            ViewBag.CheckSchool = CurrentUser.School.Length >= 2;
-            ViewBag.CheckName = CurrentUser.Name.Length >= 2;
+            ViewBag.CheckQQ = CurrentUser.QQ != null && CurrentUser.QQ.Length >= 5;
+            ViewBag.CheckAddress = CurrentUser.Address != null && CurrentUser.Address.Length >= 3;
+            ViewBag.CheckSchool = CurrentUser.School != null && CurrentUser.School.Length >= 2;
+            ViewBag.CheckName = CurrentUser.Name != null && CurrentUser.Name.Length >= 2;
             ViewBag.AllowRequest = false;
             var cnt = (from vr in DbContext.VIPRequests
                        where vr.UserID == CurrentUser.ID

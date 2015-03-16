@@ -19,39 +19,39 @@
                         @Html.AntiForgeryToken()
                         <p><input type="text" name="username" class="textbox" placeholder="用户名" /> <input type="submit" class="button button-def" value="编辑用户" /></p>
                     }
-                        <table>
-                            <thead>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><a href="/Admin/Users">UID</a></th>
+                                <th>用户名</th>
+                                <th><a href="/Admin/Users?o=Role">角色</a></th>
+                                <th><a href="/Admin/Users?o=School">学校</a></th>
+                                <th><a href="/Admin/Users?o=Register">注册时间</a></th>
+                                <th><a href="/Admin/Users?o=Login">上次登录</a></th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (User u in Model)
+                            {
                                 <tr>
-                                    <th><a href="/Admin/Users">UID</a></th>
-                                    <th>用户名</th>
-                                    <th><a href="/Admin/Users?o=Role">角色</a></th>
-                                    <th><a href="/Admin/Users?o=School">学校</a></th>
-                                    <th><a href="/Admin/Users?o=Register">注册时间</a></th>
-                                    <th><a href="/Admin/Users?o=Login">上次登录</a></th>
-                                    <th>操作</th>
+                                    <td>@u.ID</td>
+                                    <td>@u.Username</td>
+                                    <td>@u.Role</td>
+                                    <td>@u.School</td>
+                                    <td>@u.RegisterTime</td>
+                                    <td>@u.LastLoginTime</td>
+                                    <td><a href="/User/@u.ID/Settings">修改</a></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (User u in Model)
-                                {
-                                    <tr>
-                                        <td>@u.ID</td>
-                                        <td>@u.Username</td>
-                                        <td>@u.Role</td>
-                                        <td>@u.School</td>
-                                        <td>@u.RegisterTime</td>
-                                        <td>@u.LastLoginTime</td>
-                                        <td><a href="/User/@u.ID/Settings">修改</a></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                            }
+                        </tbody>
+                    </table>
                     <p>
                         @if (ViewBag.PageIndex > 0)
                         {
-                            <a href="@(Request.RawUrl.IndexOf("?")>=0?(Request.RawUrl+"&") : (Request.RawUrl + "?"))page=@(ViewBag.PageIndex-1)">上一页</a>
+                            @Html.ActionLink("上一页", "Users", "Admin", new { Page = ViewBag.PageIndex - 1 }, null)
                         }
-                        <a href="@(Request.RawUrl.IndexOf("?")>=0?(Request.RawUrl+"&") : (Request.RawUrl + "?"))page=@(ViewBag.PageIndex+1)">下一页</a>
+                        @Html.ActionLink("下一页", "Users", "Admin", new { Page = ViewBag.PageIndex + 1 }, null);
                     </p>
                 </div>
             </div>
