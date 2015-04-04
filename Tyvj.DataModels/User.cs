@@ -86,6 +86,9 @@ namespace Tyvj.DataModels
         [Column("name")]
         public string Name { get; set; }
 
+        [Column("phone")]
+        public string Phone { get; set; }
+
         [NotMapped]
         public Language CommonLanguage
         {

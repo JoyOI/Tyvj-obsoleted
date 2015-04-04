@@ -63,6 +63,14 @@
                         {
                             <p><img src="~/Images/no.png" /> 请您在个人设置中完善“通信地址”一项</p>
                         }
+                        @if (ViewBag.CheckPhone)
+                        {
+                            <p><img src="~/Images/ok.png" /> 您的手机号码通过了资格审查</p>
+                        }
+                        else
+                        {
+                            <p><img src="~/Images/no.png" /> 请您在个人设置中完善“手机号码”一项</p>
+                        }
                         @if (ViewBag.AllowRequest)
                         {
                             using (Html.BeginForm("VIP","User", FormMethod.Post))
@@ -105,7 +113,8 @@
             <li><a class="action highlight" href="/User/DailySign">每日签到</a></li>
             <li><a class="action highlight" href="/User/Quest">日常任务</a></li>
                 <li><a class="action highlight" href="/User/VIP">我要成为VIP</a></li>
-        }
+                <li><a class="action highlight" href="/User/Coin">金币转账</a></li>
+}
         <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
         <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>
         <li><a class="action" href="/User/@Model.ID/Statuses">Ta的评测记录</a></li>

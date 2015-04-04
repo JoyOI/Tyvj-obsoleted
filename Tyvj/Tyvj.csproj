@@ -574,6 +574,7 @@
     <Content Include="Views\Admin\Problem.cshtml" />
     <Content Include="Views\Verify\Forgot.cshtml" />
     <Content Include="Views\User\Forgot.cshtml" />
+    <Content Include="Views\User\Coin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
