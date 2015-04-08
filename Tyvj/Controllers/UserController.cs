@@ -450,7 +450,7 @@ namespace Tyvj.Controllers
             ViewBag.CheckAddress = CurrentUser.Address != null && CurrentUser.Address.Length >= 3;
             ViewBag.CheckSchool = CurrentUser.School != null && CurrentUser.School.Length >= 2;
             ViewBag.CheckName = CurrentUser.Name != null && CurrentUser.Name.Length >= 2;
-            ViewBag.CheckPhone = CurrentUser.Phone.Length >= 11;
+            ViewBag.CheckPhone = CurrentUser.Phone != null && CurrentUser.Phone.Length >= 11;
             ViewBag.AllowRequest = false;
             var cnt = (from vr in DbContext.VIPRequests
                        where vr.UserID == CurrentUser.ID

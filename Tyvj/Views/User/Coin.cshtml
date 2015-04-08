@@ -3,5 +3,48 @@
     ViewBag.Title = "金币转账";
 }
 
-<h2>Coin</h2>
-
+<div class="tyvj-left" style="width:755px;">
+    <div class="tyvj-shadow">
+        <div class="tyvj-content-header">
+            <strong>@Model.Username @(Model.Sex == Sex.Male ? "♂" : "♀")</strong>
+        </div>
+        <div class="tyvj-content" style="padding-top:10px;">
+            <div class="tyvj-boder-top tyvj-content-inner">
+                @using (Html.BeginForm("VIP", "User", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <h2>金币转账</h2>
+                    <p>数量：<input type="text" value="0" /> 最多 @ViewBag.CurrentUser.Coins</p>
+                    <p>用户：<input type="text" placeholder="用户名" /></p>
+                    <p><input type="submit" value="转账" /></p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tyvj-right" style="width:200px;">
+    <div class="tyvj-border-top-gray tyvj-side-content tyvj-block" style="text-align:center">
+        <p><a href="/User/@Model.ID">@Model.Username</a></p>
+        <p><img src="/Avatar/@Model.ID" style="width:80px;height:80px" /></p>
+        <p>@Model.Role.ToString()</p>
+    </div>
+    <div class="tyvj-border-top-gray tyvj-side-content">
+        <h3>操作</h3>
+    </div>
+    <ul class="section" id="actions" style="margin-left:10px">
+        @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.ID == Model.ID)
+            {
+            <li><a class="action highlight" href="/User/DailySign">每日签到</a></li>
+            <li><a class="action highlight" href="/User/Quest">日常任务</a></li>
+            <li><a class="action highlight" href="/User/VIP">我要成为VIP</a></li>
+                <li><a class="action highlight" href="/User/Coin">金币转账</a></li>
+        }
+        <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
+        <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>
+        <li><a class="action" href="/User/@Model.ID/Statuses">Ta的评测记录</a></li>
+        @if (User.Identity.IsAuthenticated && (ViewBag.CurrentUser.Role >= UserRole.Master || Model.ID == ViewBag.CurrentUser.ID))
+            {
+            <li><a class="action" href="/User/@Model.ID/Settings">个人设置</a></li>
+        }
+    </ul>
+</div>

@@ -1,4 +1,0 @@
-  数据库结构变更：
-
-  Contest表
-  增加JoinMethod, GroupID字段
