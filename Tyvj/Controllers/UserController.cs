@@ -550,7 +550,7 @@ namespace Tyvj.Controllers
         [Authorize]
         public ActionResult Coin()
         {
-            return View();
+            return View(CurrentUser);
         }
 
         [Authorize]
