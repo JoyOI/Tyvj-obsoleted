@@ -10,12 +10,12 @@
         </div>
         <div class="tyvj-content" style="padding-top:10px;">
             <div class="tyvj-boder-top tyvj-content-inner">
-                @using (Html.BeginForm("VIP", "User", FormMethod.Post))
+                @using (Html.BeginForm("Coin", "User", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken();
                     <h2>金币转账</h2>
-                    <p>数量：<input type="text" value="0" /> 最多 @ViewBag.CurrentUser.Coins</p>
-                    <p>用户：<input type="text" placeholder="用户名" /></p>
+                    <p>数量：<input type="text" name="Count" value="0" /> 最多 @ViewBag.CurrentUser.Coins</p>
+                    <p>用户：<input type="text" name="Username" placeholder="用户名" /></p>
                     <p><input type="submit" value="转账" /></p>
                 }
             </div>

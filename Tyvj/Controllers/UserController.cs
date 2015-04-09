@@ -557,6 +557,8 @@ namespace Tyvj.Controllers
         [HttpPost]
         public ActionResult Coin(int Count, string Username)
         {
+            if (Count <= 0)
+                return Message("金币数量不合法");
             if (CurrentUser.Coins >= Count)
             {
                 var user = (from u in DbContext.Users
