@@ -36,6 +36,7 @@ namespace Tyvj.DataModels
         public DbSet<VIPRequest> VIPRequests { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<TestCasePaid> TestCasePaids { get; set; }
+        public DbSet<CoinLog> CoinLogs { get; set; }
         public DB()
             : base("mysqldb")
         { 

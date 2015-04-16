@@ -16,7 +16,11 @@
                     <h2>金币转账</h2>
                     <p>数量：<input type="text" name="Count" value="0" /> 最多 @ViewBag.CurrentUser.Coins</p>
                     <p>用户：<input type="text" name="Username" placeholder="用户名" /></p>
-                    <p><input type="submit" value="转账" /></p>
+                    <p><input type="submit" class="button button-def" value="转账" /></p>
+                }
+                @foreach (CoinLog cl in ViewBag.CoinLogs)
+                {
+                    <p>@cl.Giver.Username 赠送了 @cl.Count 枚金币 给 @cl.Receiver.Username</p>
                 }
             </div>
         </div>
@@ -37,7 +41,7 @@
             <li><a class="action highlight" href="/User/DailySign">每日签到</a></li>
             <li><a class="action highlight" href="/User/Quest">日常任务</a></li>
             <li><a class="action highlight" href="/User/VIP">我要成为VIP</a></li>
-                <li><a class="action highlight" href="/User/Coin">金币转账</a></li>
+            <li><a class="action highlight" href="/User/Coin">金币转账</a></li>
         }
         <li><a class="action" href="/User/@Model.ID">Ta的资料</a></li>
         <li><a class="action" href="/User/@Model.ID/Contests">Ta举办的比赛</a></li>

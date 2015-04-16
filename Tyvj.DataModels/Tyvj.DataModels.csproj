@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlgorithmTag.cs" />
+    <Compile Include="CoinLog.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Contest.cs" />
     <Compile Include="ContestProblem.cs" />

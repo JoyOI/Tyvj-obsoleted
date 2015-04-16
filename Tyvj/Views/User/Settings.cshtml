@@ -108,10 +108,10 @@
                                 <tr id="avtUpload"><td class="tyvj-status-info-left">上传头像</td><td class="tyvj-status-info-middle"><input type="file" name="Avatar" /></td><td><small>最大256KB，支持.jpg, .png, .gif, .bmp格式。</small></td></tr>
                                 <tr id="avtGravatar"><td class="tyvj-status-info-left">Gravatar</td><td class="tyvj-status-info-middle">@Html.TextBox("Gravatar", Model.Gravatar, new { @class = "textbox" })</td><td><small><a href="https://www.gravatar.com/">Gravatar</a>是一个全球通用的头像服务。</small></td></tr>
                                 <tr><td class="tyvj-status-info-left"></td><td class="tyvj-status-info-middle"><img src="/Avatar/@Model.ID" style="width:120px" /></td><td></td></tr>
-                                <tr><td class="tyvj-status-info-left"></td><td class="tyvj-status-info-middle"><input type="submit" value="保存" id="btnChangeAvatar" class="button" /></td><td></td></tr>
+                                <tr><td class="tyvj-status-info-left"></td><td class="tyvj-status-info-middle"><input type="submit" value="保存" id="btnChangeAvatar" class="button" /> 72小时内生效</td><td></td></tr>
                             </tbody>
                         </table>
-                                                }
+                        }
                 </div>
             </div>
         </div>

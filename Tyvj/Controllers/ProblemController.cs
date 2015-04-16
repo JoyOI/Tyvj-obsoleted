@@ -127,6 +127,8 @@ namespace Tyvj.Controllers
                 problem = cp.Problem;
                 contest = cp.Contest;
                 pid = problem.ID;
+                if (!User.Identity.IsAuthenticated || !Helpers.Contest.UserInContest(CurrentUser.ID, cp.ContestID))
+                    return Message("没有找到该题目");
                 if (DateTime.Now >= contest.End)
                     return RedirectToAction("Show", "Problem", new { id = problem.ID });
                 ViewBag.ContestID = cp.ContestID;

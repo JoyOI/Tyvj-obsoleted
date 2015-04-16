@@ -550,6 +550,10 @@ namespace Tyvj.Controllers
         [Authorize]
         public ActionResult Coin()
         {
+            ViewBag.CoinLogs = (from cl in DbContext.CoinLogs
+                                where cl.ReceiverUserID == CurrentUser.ID || cl.GiverUserID == CurrentUser.ID
+                                orderby cl.Time descending
+                                select cl).Take(20).ToList();
             return View(CurrentUser);
         }
 
@@ -568,6 +572,12 @@ namespace Tyvj.Controllers
                     return Message("没有找到指定的用户！");
                 CurrentUser.Coins -= Count;
                 user.Coins += Count;
+                DbContext.CoinLogs.Add(new CoinLog {
+                    GiverUserID = CurrentUser.ID,
+                    ReceiverUserID = user.ID,
+                    Count = Count,
+                    Time = DateTime.Now
+                });
                 DbContext.SaveChanges();
                 return Message("转账成功！");
             }
