@@ -20,6 +20,9 @@
 
 <div class="tyvj-right grid_3">
     <div class="tyvj-shadow tyvj-boder-top tyvj-content">
+        <h2>检索</h2>
+        <p><input type="text" placeholder="团队名称" id="txtGroupTitle" /></p>
+        <p><input type="button" id="btnSearchGroup" class="button button-def" value="检索" /></p>
         @if (User.Identity.IsAuthenticated)
         {
             <h2>团队操作</h2>
@@ -29,3 +32,10 @@
         }
     </div>
 </div>
+<script>
+    $('#btnSearchGroup').click(function () {
+        page = 0;
+        lock = false;
+        Load();
+    });
+</script>

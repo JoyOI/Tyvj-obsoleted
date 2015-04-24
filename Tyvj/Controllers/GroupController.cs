@@ -115,11 +115,12 @@ namespace Tyvj.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetGroups(int page)
+        public ActionResult GetGroups(int page, string Title)
         {
             var _groups = (from g in DbContext.Groups
-                            orderby g.Members.Count descending
-                            select g).Skip(10 * page).Take(10).ToList();
+                           where g.Title.Contains(Title)
+                           orderby g.Members.Count descending
+                           select g).Skip(10 * page).Take(10).ToList();
             var groups = new List<vGroup>();
             foreach (var g in _groups)
                 groups.Add(new vGroup(g));

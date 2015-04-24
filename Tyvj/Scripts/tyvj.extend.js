@@ -526,7 +526,8 @@ function LoadGroups() {
     if ($("#lstGroups").length > 0) {
         $.getJSON("/Group/GetGroups", {
             page: page,
-            rnd: Math.random()
+            rnd: Math.random(),
+            Title: $("#txtGroupTitle").val()
         }, function (groups) {
             $("#btnMore").html("点击加载更多");
             if (groups.length < 10) {
