@@ -43,6 +43,11 @@ namespace Tyvj.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(vLogin model)
         {
+            if (Request.UrlReferrer == null)
+            {
+                ViewBag.Info = "不存在这个用户！";
+                return View();
+            }
             if (User.Identity.IsAuthenticated == true)
             {
                 return Redirect("/");
