@@ -23,6 +23,10 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="tyvj-boder-top tyvj-content-inner">
+                    <h2>标题</h2>
+                    <p>
+                        <input type="text" name="Title" class="textbox" />
+                    </p>
                     <h2>解题思路</h2>
                     <div class="tyvj-content-inner">
                         <textarea name="Content" class="ckeditor">@Model.Content</textarea>
