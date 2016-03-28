@@ -53,6 +53,7 @@
             else
             {
                 <a href="javascript:$('#frmLogout').submit();"><div class="tyvj-nav-item tyvj-right">注销</div></a>
+                <a href="/User/DailySign"><div class="tyvj-nav-item tyvj-right">签到</div></a>
                 if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Role >= UserRole.Master)
                 {
                     <a href="/Admin"><div class="tyvj-nav-item tyvj-right">管理</div></a>
