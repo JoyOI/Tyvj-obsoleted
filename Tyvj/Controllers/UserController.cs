@@ -322,7 +322,7 @@ namespace Tyvj.Controllers
                 var user = DbContext.Users.Find(id);
                 user.Gravatar = Gravatar;
                 var wc = new WebClient();
-                user.Avatar = wc.DownloadData(Helpers.Gravatar.GetAvatarURL(user.Gravatar, 180));
+                //user.Avatar = wc.DownloadData(Helpers.Gravatar.GetAvatarURL(user.Gravatar, 180));
                 DbContext.SaveChanges();
                 return RedirectToAction("Settings", "User", new { id = id });
             }
