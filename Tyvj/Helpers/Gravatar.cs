@@ -15,38 +15,49 @@ namespace Tyvj.Helpers
     {
         public static void RefreshGravatar(int UserID)
         {
-            using (var db = new DB())
+            try
             {
-                var user = db.Users.Find(UserID);
-                if (user.Gravatar != null)
+                using (var db = new DB())
                 {
-                    if (DateTime.Now >= user.LastLoginTime.AddDays(3) || user.Avatar.Count() == 0)
+                    var user = db.Users.Find(UserID);
+                    if (user.Gravatar != null)
                     {
-                        var wc = new WebClient();
-                        user.Avatar = wc.DownloadData(GetAvatarURL(user.Gravatar, 180));
-                        db.SaveChanges();
+                        if (DateTime.Now >= user.LastLoginTime.AddDays(3) || user.Avatar.Count() == 0)
+                        {
+                            var wc = new WebClient();
+                            user.Avatar = wc.DownloadData(GetAvatarURL(user.Gravatar, 180));
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
+            catch { }
         }
 
         public static string GetAvatarURL(string email, int size)
         {
-            string md5 = ToHexString(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(email)));
-            string url = string.Format("http://gravatar.duoshuo.com/avatar/{0}?s={1}&d=mm", md5, size);
-            return url;
+            try
+            {
+                string md5 = ToHexString(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(email)));
+                string url = string.Format("http://gravatar.duoshuo.com/avatar/{0}?s={1}&d=mm", md5, size);
+                return url;
+            }
+            catch { return "https://avatars3.githubusercontent.com/u/28256913?v=3&s=200"; }
         }
 
         static string ToHexString(byte[] bytes)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in bytes)
+            try
             {
-                string tmp = Convert.ToString(b, 16);
-                if (tmp.Length == 1) sb.Append('0').Append(tmp);
-                else sb.Append(tmp);
-            }
-            return sb.ToString();
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    string tmp = Convert.ToString(b, 16);
+                    if (tmp.Length == 1) sb.Append('0').Append(tmp);
+                    else sb.Append(tmp);
+                }
+                return sb.ToString();
+            } catch { return string.Empty; }
         }
     }
 }
