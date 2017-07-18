@@ -5,6 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using Tyvj.DataModels;
 using Tyvj.ViewModels;
+using JoyOI.ManagementService.SDK;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Migrations;
+using System.Net.Http;
+using System.Threading.Tasks;
+
 
 namespace Tyvj.Controllers
 {
@@ -115,7 +121,7 @@ namespace Tyvj.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult Create(int problem_id, string code, int language_id, int? contest_id)
+        public async Task<ActionResult> Create(int problem_id, string code, int language_id, int? contest_id)
         {
             var problem = DbContext.Problems.Find(problem_id);
             var user = (User)ViewBag.CurrentUser;
@@ -224,7 +230,7 @@ namespace Tyvj.Controllers
                 if (contest.Format == ContestFormat.OI && DateTime.Now >= contest.Begin && DateTime.Now < contest.End)
                     return Content("OI");
             }
-            else
+            else // 不是比赛任务
             {
                 foreach (var id in testcase_ids)
                 {
@@ -239,16 +245,58 @@ namespace Tyvj.Controllers
                     });
                 }
                 DbContext.SaveChanges();
-                foreach (var jt in status.JudgeTasks)
+                if (string.IsNullOrWhiteSpace(problem.SpecialJudge) && (status.Language == Language.C || status.Language == Language.Cxx || status.Language == Language.Pascal)) // 如果是c,c++,pascal则由JoyOI接管评测
                 {
-                    try
+                    var sourceName = "Main."; // 拼接选手源代码文件名
+                    if (status.Language == Language.C)
+                        sourceName += "c";
+                    else if (status.Language == Language.Cxx)
+                        sourceName += "cpp";
+                    else
+                        sourceName += "pas";
+
+                    var client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\client.pfx", "123456");
+                    var blobs = new List<BlobInfo>(20);
+                    blobs.Add(new BlobInfo { Id = Guid.Parse("0083c7bd-7c14-1035-82ec-54eca0c82300"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
+                    var sourceBlobId = await client.PutBlobAsync(sourceName, System.Text.Encoding.UTF8.GetBytes(status.Code)); // 将选手文件上传至Management Service
+                    blobs.Add(new BlobInfo { Id = sourceBlobId, Name = sourceName }); // 将选手代码放入文件集合中
+
+                    // 准备测试用例
+                    var caseIndex = 0;
+                    foreach (var jt in status.JudgeTasks)
                     {
-                        var group = SignalR.JudgeHub.GetNode();
-                        if (group == null) return Content("No Online Judger");
-                        SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
-                        SignalR.JudgeHub.ThreadBusy(group);
+                        if (string.IsNullOrWhiteSpace(jt.TestCase.InputBlobId)) // 如果Management Service没有该测试用例则上传
+                        {
+                            var inputCaseBlobId = await client.PutBlobAsync("case_input_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Input));
+                            jt.TestCase.InputBlobId = inputCaseBlobId.ToString();
+                            await DbContext.SaveChangesAsync();
+                        }
+                        if (string.IsNullOrWhiteSpace(jt.TestCase.OutputBlobId)) // 如果Management Service没有该测试用例则上传
+                        {
+                            var outputCaseBlobId = await client.PutBlobAsync("case_output_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Output));
+                            jt.TestCase.OutputBlobId = outputCaseBlobId.ToString();
+                            await DbContext.SaveChangesAsync();
+                        }
+                        blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
+                        blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });
                     }
-                    catch { }
+
+                    var stateMachineId = await client.PutStateMachineInstanceAsync("TyvjJudgeStateMachine", "http://tyvj.cn", blobs); // 创建StateMachine实例
+                    status.StateMachineId = stateMachineId.ToString();
+                }
+                else
+                {
+                    foreach (var jt in status.JudgeTasks)
+                    {
+                        try
+                        {
+                            var group = SignalR.JudgeHub.GetNode();
+                            if (group == null) return Content("No Online Judger");
+                            SignalR.JudgeHub.context.Clients.Group(group).Judge(new CodeComb.Judge.Models.JudgeTask(jt));
+                            SignalR.JudgeHub.ThreadBusy(group);
+                        }
+                        catch { }
+                    }
                 }
                 SignalR.UserHub.context.Clients.Group("Status").onStatusCreated(new vStatus(status));//推送新状态
             }

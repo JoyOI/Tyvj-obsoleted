@@ -51,6 +51,9 @@ namespace Tyvj.DataModels
         [Column("memory_usage")]
         public int? MemoryUsage { get; set; }
 
+        [Column("state_machine_id")]
+        public string StateMachineId { get; set; }
+
         [NotMapped]
         public Language Language
         {

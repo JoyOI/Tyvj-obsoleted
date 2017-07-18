@@ -37,6 +37,12 @@ namespace Tyvj.DataModels
         [Column("hash")]
         public string Hash { get; set; }
 
+        [Column("joyoi_input_blob_id")]
+        public string InputBlobId { get; set; }
+
+        [Column("joyoi_output_blob_id")]
+        public string OutputBlobId { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as TestCase;

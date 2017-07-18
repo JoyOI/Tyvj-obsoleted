@@ -18,6 +18,7 @@ namespace Tyvj.ViewModels
             ProblemTitle = HttpUtility.HtmlEncode(Status.Problem.Title);
             ResultAsInt = Status.ResultAsInt;
             Result = CommonEnums.JudgeResultDisplay[Status.ResultAsInt];
+            IsJoyOI = !string.IsNullOrEmpty(Status.StateMachineId);
             if (Status.TimeUsage == null || Status.Score == null || Status.MemoryUsage == null)
             {
                 try
@@ -68,5 +69,6 @@ namespace Tyvj.ViewModels
         public string Username { get; set; }
         public string Language { get; set; }
         public string Time { get; set; }
+        public bool IsJoyOI { get; set; }
     }
 }
