@@ -279,6 +279,7 @@ namespace Tyvj.Controllers
                         }
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });
+                        ++caseIndex;
                     }
 
                     var stateMachineId = await client.PutStateMachineInstanceAsync("TyvjJudgeStateMachine", "http://tyvj.cn", blobs); // 创建StateMachine实例
