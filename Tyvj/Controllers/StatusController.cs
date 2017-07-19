@@ -269,21 +269,19 @@ namespace Tyvj.Controllers
                         {
                             var inputCaseBlobId = await client.PutBlobAsync("case_input_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Input));
                             jt.TestCase.InputBlobId = inputCaseBlobId.ToString();
-                            DbContext.SaveChanges();
                         }
                         if (string.IsNullOrWhiteSpace(jt.TestCase.OutputBlobId)) // 如果Management Service没有该测试用例则上传
                         {
                             var outputCaseBlobId = await client.PutBlobAsync("case_output_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Output));
                             jt.TestCase.OutputBlobId = outputCaseBlobId.ToString();
-                            DbContext.SaveChanges();
                         }
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });
                         ++caseIndex;
                     }
-
                     var stateMachineId = await client.PutStateMachineInstanceAsync("TyvjJudgeStateMachine", "http://tyvj.cn", blobs); // 创建StateMachine实例
                     status.StateMachineId = stateMachineId.ToString();
+                    DbContext.SaveChanges();
                 }
                 else
                 {
