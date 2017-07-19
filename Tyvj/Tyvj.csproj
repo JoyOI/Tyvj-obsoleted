@@ -210,6 +210,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\DistinctBy.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AvatarController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
