@@ -276,9 +276,15 @@ namespace Tyvj.Controllers
                             var outputCaseBlobId = await client.PutBlobAsync("case_output_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Output));
                             jt.TestCase.OutputBlobId = outputCaseBlobId.ToString();
                         }
-                        blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
-                        blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });
-                        blobs = blobs.DistinctBy(x => x.Id).ToList();
+                        if (!blobs.Any(x => x.Id == Guid.Parse(jt.TestCase.InputBlobId)))
+                        {
+                            blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
+                            blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });
+                        }
+                        else
+                        {
+                            continue;
+                        }
                         ++caseIndex;
                     }
                     var stateMachineId = await client.PutStateMachineInstanceAsync("TyvjJudgeStateMachine", "http://tyvj.cn", blobs); // 创建StateMachine实例
