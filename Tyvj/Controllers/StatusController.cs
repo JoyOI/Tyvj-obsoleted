@@ -255,7 +255,7 @@ namespace Tyvj.Controllers
                     else
                         sourceName += "pas";
 
-                    var client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\client.pfx", "123456");
+                    var client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\webapi-client.pfx", "123456");
                     var blobs = new List<BlobInfo>(20);
                     blobs.Add(new BlobInfo { Id = Guid.Parse("0083c7bd-7c14-1035-82ec-54eca0c82300"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
                     var sourceBlobId = await client.PutBlobAsync(sourceName, System.Text.Encoding.UTF8.GetBytes(status.Code)); // 将选手文件上传至Management Service
@@ -269,13 +269,13 @@ namespace Tyvj.Controllers
                         {
                             var inputCaseBlobId = await client.PutBlobAsync("case_input_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Input));
                             jt.TestCase.InputBlobId = inputCaseBlobId.ToString();
-                            await DbContext.SaveChangesAsync();
+                            DbContext.SaveChanges();
                         }
                         if (string.IsNullOrWhiteSpace(jt.TestCase.OutputBlobId)) // 如果Management Service没有该测试用例则上传
                         {
                             var outputCaseBlobId = await client.PutBlobAsync("case_output_" + jt.TestCaseID + ".txt", System.Text.Encoding.UTF8.GetBytes(jt.TestCase.Output));
                             jt.TestCase.OutputBlobId = outputCaseBlobId.ToString();
-                            await DbContext.SaveChangesAsync();
+                            DbContext.SaveChanges();
                         }
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.InputBlobId), Name = "input_" + caseIndex + ".txt" });
                         blobs.Add(new BlobInfo { Id = Guid.Parse(jt.TestCase.OutputBlobId), Name = "output_" + caseIndex + ".txt" });

@@ -62,9 +62,6 @@
     <Reference Include="JoyOI.ManagementService.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JoyOI.ManagementService.Model.1.0.0-alpha-10041\lib\netstandard2.0\JoyOI.ManagementService.Model.dll</HintPath>
     </Reference>
-    <Reference Include="JoyOI.ManagementService.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JoyOI.ManagementService.SDK.1.0.0-alpha-10041\lib\netstandard2.0\JoyOI.ManagementService.SDK.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.1.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
@@ -121,8 +118,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
@@ -253,6 +248,9 @@
     <Compile Include="Helpers\String.cs" />
     <Compile Include="Helpers\Time.cs" />
     <Compile Include="Helpers\Zip.cs" />
+    <Compile Include="JoyOI\HttpClientExtension.cs" />
+    <Compile Include="JoyOI\ManagementServiceClient.cs" />
+    <Compile Include="JoyOI\ManagementServiceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\Client.cs" />
     <Compile Include="SignalR\JudgeHub.cs" />
