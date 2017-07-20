@@ -172,7 +172,8 @@ namespace Tyvj.Controllers
             var _testcase_ids = (from tc in problem.TestCases
                                 where tc.Type != TestCaseType.Sample
                                 orderby tc.Type ascending
-                                select new { tc.ID, tc.InputBlobId }).ToList();
+                                select new { tc.ID, tc.InputBlobId })
+                                .ToList();
             var testcase_ids = _testcase_ids.Select(x => x.ID).ToList();
             if (contest_id != null)
             {
@@ -233,8 +234,12 @@ namespace Tyvj.Controllers
             }
             else // 不是比赛任务
             {
+                var distinctSet = new HashSet<string>();
                 foreach (var id in _testcase_ids)
                 {
+                    if (distinctSet.Any(x => x == id.InputBlobId))
+                        continue;
+                    distinctSet.Add(id.InputBlobId);
                     DbContext.JudgeTasks.Add(new JudgeTask
                     {
                         StatusID = status.ID,
