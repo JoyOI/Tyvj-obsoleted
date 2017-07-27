@@ -16,6 +16,8 @@ namespace Tyvj.Controllers
 {
     public class StatusController : BaseController
     {
+        private static readonly ManagementServiceClient client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\webapi-client.pfx", "123456");
+
         // GET: Status
         public ActionResult Index(int? uid, int? cid, int?pid)
         {
@@ -237,7 +239,7 @@ namespace Tyvj.Controllers
                 var distinctSet = new HashSet<string>();
                 foreach (var id in _testcase_ids)
                 {
-                    if (distinctSet.Any(x => x == id.InputBlobId))
+                    if (distinctSet.Any(x => x == id.InputBlobId && !string.IsNullOrWhiteSpace(id.InputBlobId)))
                         continue;
                     distinctSet.Add(id.InputBlobId);
                     DbContext.JudgeTasks.Add(new JudgeTask
@@ -251,19 +253,24 @@ namespace Tyvj.Controllers
                     });
                 }
                 DbContext.SaveChanges();
-                if (string.IsNullOrWhiteSpace(problem.SpecialJudge) && (status.Language == Language.C || status.Language == Language.Cxx || status.Language == Language.Pascal)) // 如果是c,c++,pascal则由JoyOI接管评测
+                if (string.IsNullOrWhiteSpace(problem.SpecialJudge) && (status.Language == Language.C || status.Language == Language.Cxx || status.Language == Language.Pascal || status.Language == Language.Cxx11 || status.Language == Language.Cxx14 || status.Language == Language.Java)) // 如果是c,c++,pascal则由JoyOI接管评测
                 {
-                    var sourceName = "Main."; // 拼接选手源代码文件名
+                    var sourceName = "Main"; // 拼接选手源代码文件名
                     if (status.Language == Language.C)
-                        sourceName += "c";
+                        sourceName += ".c";
                     else if (status.Language == Language.Cxx)
-                        sourceName += "cpp";
+                        sourceName += ".cpp";
+                    else if (status.Language == Language.Cxx11)
+                        sourceName += "11.cpp";
+                    else if (status.Language == Language.Cxx14)
+                        sourceName += "14.cpp";
+                    else if (status.Language == Language.Java)
+                        sourceName += ".java";
                     else
-                        sourceName += "pas";
+                        sourceName += ".pas";
 
-                    var client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\webapi-client.pfx", "123456");
                     var blobs = new List<BlobInfo>(20);
-                    blobs.Add(new BlobInfo { Id = Guid.Parse("0083c7bd-7c14-1035-82ec-54eca0c82300"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
+                    blobs.Add(new BlobInfo { Id = Guid.Parse("0083ca85-9ede-1004-a386-ac64710fd926"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
                     var sourceBlobId = await client.PutBlobAsync(sourceName, System.Text.Encoding.UTF8.GetBytes(status.Code)); // 将选手文件上传至Management Service
                     blobs.Add(new BlobInfo { Id = sourceBlobId, Name = sourceName }); // 将选手代码放入文件集合中
 
@@ -454,10 +461,9 @@ namespace Tyvj.Controllers
                             sourceName += "cpp";
                         else
                             sourceName += "pas";
-
-                        var client = new ManagementServiceClient("https://mgmtsvc.1234.sh", @"D:\Tyvj\webapi-client.pfx", "123456");
+                        
                         var blobs = new List<BlobInfo>(20);
-                        blobs.Add(new BlobInfo { Id = Guid.Parse("0083c7bd-7c14-1035-82ec-54eca0c82300"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
+                        blobs.Add(new BlobInfo { Id = Guid.Parse("0083ca85-9ede-1004-a386-ac64710fd926"), Name = "Validator.out" }); // 将标准比较器放入文件集合中
                         var sourceBlobId = await client.PutBlobAsync(sourceName, System.Text.Encoding.UTF8.GetBytes(status.Code)); // 将选手文件上传至Management Service
                         blobs.Add(new BlobInfo { Id = sourceBlobId, Name = sourceName }); // 将选手代码放入文件集合中
 

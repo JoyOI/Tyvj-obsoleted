@@ -27,6 +27,11 @@ namespace Tyvj.Controllers
                 {
                     if (callback.Status == "System Error")
                     {
+                        if (status.Result != DataModels.JudgeResult.Running && status.Result != DataModels.JudgeResult.Pending)
+                        {
+                            return Content("ok");
+                        }
+
                         foreach (var x in status.JudgeTasks)
                         {
                             x.ResultAsInt = (int)DataModels.JudgeResult.SystemError;
